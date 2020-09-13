@@ -1,0 +1,220 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="styles.min.css">
+        <link rel="stylesheet" href="bootstrap.min.css">
+
+        <script src="popper.min.js"></script>
+        <script type="text/javascript" src="https://timesofindia.indiatimes.com/videos/jquery_1_11_0_min/version-15,minify-1.cms"></script>
+        <script type="text/javascript" src="bootstrap.min.js"></script>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+        <script type="text/javascript" src="scripts.min.js"></script>
+
+
+        <script type="text/javascript">
+            function SlikeLoader(){this.BASE_SDK_URL="//tvid.in/sdk",this.BEACON_BASE_URL="//slike.indiatimes.com/pixel?",this.PLAYBACK_CAPABILITIES={MSE:window.MediaSource&&window.MediaSource.isTypeSupported('video/mp4; codecs="avc1.42E01E,mp4a.40.2"'),HLS:document.createElement("video").canPlayType("application/vnd.apple.mpegURL")},this.es6Support=this.isES6()}SlikeLoader.prototype.isES6=function(){try{return Function("() => {};"),!0}catch(e){return!1}},SlikeLoader.prototype.loadJs=function(e,o){var i=document.createElement("script"),n=document.getElementsByTagName("head")[0];i.src=e,i.onload=function(){o(!0)},i.onerror=function(){o(!1)},n.appendChild(i)},SlikeLoader.prototype.polyFillNeeded=function(){var e="function"==typeof window.Promise||!1,o="function"==typeof Object.assign||!1,i="function"==typeof window.URL||!1;return!(e&&o&&i)},SlikeLoader.prototype.load=function(e,o){var i=this;i.loadTimeStamp=Date.now(),i.config=e,i.config.noBeacon=!(i.config.video.id||!i.config.video.url),i.callback=o,i.env=e.env?e.env:"prod",i.version=e.version?e.version:"",i.isES5=!!e.isES5&&e.isES5,i.debug=!!e.debug&&e.debug,i.sendBeacon("vj=100&apikey="+i.config.apiKey+"&k="+i.config.video.id);var n=i.getSDKPath();if(i.polyFillNeeded()){var t=i.BASE_SDK_URL+"/lib/polyfills.js";i.loadJs(t,function(e){e?i.loadSDK(n):i.callback(!1,i.config)})}else i.loadSDK(n)},SlikeLoader.prototype.loadSDK=function(e){var i=this;i.loadJs(e,function(e){if(e){var o=Date.now()-i.loadTimeStamp;i.sendBeacon("vj=200&pfs="+o+"&apikey="+i.config.apiKey+"&k="+i.config.video.id),i.callback(!0,i.config)}else i.callback(!1,i.config),i.sendBeacon("vj=151&apikey="+i.config.apiKey+"&k="+i.config.video.id)})},SlikeLoader.prototype.sendBeacon=function(e){var o=this;if(!(o.config.noBeacon||o.config.GDPR_MODE||o.config.player.skipAnalytics)){var i=o.BEACON_BASE_URL+"lts="+o.loadTimeStamp+"&"+e;setTimeout(function(){var e=document.createElement("img");e.src=i,e.onload=function(){e=null}},500)}},SlikeLoader.prototype.getSDKPath=function(){var e=this,o=!1,i=!1,n="",t=e.BASE_SDK_URL;return"stg"==e.env&&(t+="/stg"),e.version&&(t=t+"/"+e.version),parseInt(e.config.player.slikeAdPercent)&&(o=!0),e.PLAYBACK_CAPABILITIES.MSE&&(i=!0),n+=o?"slikeima.":"",n+=i?"hls.":"",e.es6Support&&!e.isES5&&!e.isUnsupportedBrowser()||(n+="es5."),(e.debug||e.getDebugFlagFromLocalStorage())&&(n+="debug."),n+="spl.js",e.config.sdkBase="local"==e.env?"":t,"local"==e.env?"/"+n:t+"/"+(e.version?"":e.config.apiKey+".")+n},SlikeLoader.prototype.getDebugFlagFromLocalStorage=function(){try{return!!localStorage.getItem("__SPL__DEBUG__")}catch(e){return!1}},SlikeLoader.prototype.isUnsupportedBrowser=function(){var e=window.navigator.userAgent,o=e.indexOf("MSIE ");if(0<o)return parseInt(e.substring(o+5,e.indexOf(".",o)),10);if(0<e.indexOf("Trident/")){var i=e.indexOf("rv:");return parseInt(e.substring(i+3,e.indexOf(".",i)),10)}var n=e.indexOf("Edge/");return 0<n?parseInt(e.substring(n+5,e.indexOf(".",n)),10):-1!==e.indexOf("UCBrowser")||-1!==e.indexOf("UBrowser")},window.spl=new SlikeLoader;
+        </script>
+
+
+    </head>
+
+    <body>
+        <div class="login" id="loginEl">
+            <div class="d-flex justify-content-center h-100">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Sign In</h3>
+                    </div>
+                    <div class="card-body">
+                        <!-- <form> -->
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="material-icons">person</i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="username">
+                        </div>
+
+                        <div class="row align-items-center remember">
+                            <input type="checkbox">Remember Me
+                        </div>
+                        <div class="form-group">
+                            <button id="login" onclick="loginSucess()"  class="btn float-right login_btn">Sign In</button>
+                        </div>
+                        <!-- </form> -->
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-center links">
+                            Don't have an account? &nbsp;<a href="#">Sign Up</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="wrapper" >
+            <div  id="vidContainer" style="position:absolute; top:0;left:0;width:100%;height:100%;z-index: 9999;display:none;background-color: #000;" >
+                <video id="vidAnimation" style="width:100%;height:100%;" autoplay muted></video>
+            </div>
+
+            <div id="preloader" class="spinner-border positionCenter H" role="status" style="width: 3rem; height: 3rem;">
+                <span class="sr-only">Loading...</span>
+            </div>
+      
+            <div class="header">
+            <div class="logo">
+              <img src="images/logo.svg" alt="">
+            </div>
+
+            <div class="navigation">
+              <a href="#">Home</a>
+              <a href="#">Information</a>
+              <a href="#">Guide</a>
+            </div>
+            <div class="brandLogo">
+              <img src="images/brand.png" alt="">
+            </div>
+
+            <div class="no-user">
+              Total No Users - <b>20</b> <br>
+              This Location - <b>5</b>
+            </div>
+
+            <div class="header-rhs">
+              <div class="dropdown">
+                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="user-login" data-display="static" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="material-icons">person</i>
+                </a>
+
+                <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="user-login">
+                  <a class="dropdown-item" href="#">Online</a>
+                  <a class="dropdown-item" href="#">Away</a>
+                  <a class="dropdown-item" href="#">Do not Distrub</a>
+                </div>
+              </div>
+              
+              <div class="dropdown">
+                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="settings" data-display="static" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="material-icons">settings</i>
+                </a>   
+                <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="settings">
+                  <a class="dropdown-item" href="#">My Appointments</a>
+                  <a class="dropdown-item" href="#">Logout</a>
+              </div>       
+            </div> 
+
+
+            </div>
+            </div>
+
+            <div class="bodyBg"></div>
+
+            <div class="footerNav">
+       <a href="#">
+          <i class="material-icons">person</i>
+          First Floor
+        </a>
+        <a href="#">
+          <i class="material-icons">home</i>
+          Lobby
+        </a>
+        <a href="#">
+          <i class="material-icons">person</i>
+          Plenary Session
+        </a>
+        <a href="#">
+          <i class="material-icons">person</i>
+          Experience Zone
+        </a>
+        <a href="#">
+          <i class="material-icons">person</i>
+          Security Track
+        </a>        
+        <a href="#">
+          <i class="material-icons">person</i>
+          Networking Lounge
+        </a>
+        <a href="#">
+          <i class="material-icons">folder_shared</i>
+          Resource Center
+        </a>
+        <a href="#" class="divider">&nbsp;
+        </a>
+        <a href="#">
+          <i class="material-icons">chat</i>
+          Group Chat
+        </a>
+        <a href="#">
+          <i class="material-icons">folder</i>
+          Briefcase (3)
+        </a>
+        <a href="#">
+          <i class="material-icons">perm_contact_calendar</i>
+          Partners
+        </a>
+        <a href="#">
+          <i class="material-icons">person</i>
+          Agenda
+        </a>
+        <a href="#">
+          <i class="material-icons">speaker_notes</i>
+          Feedback
+        </a>        
+        <a href="#">
+          <i class="material-icons">person</i>
+          Digital Certification
+        </a> 
+            </div>
+
+            <div class="floater leftPosition" id="floatLeft"></div>
+            <div class="floater rightPosition" id="floatRight"></div>
+
+
+            <div class="modal fade" id="exampleModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel"></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body p0"></div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true"  data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel2"></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body p1"></div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+    <script type="text/javascript">
+      $(".wrapper").hide()
+      var app;
+      $( document ).ready(function() {
+          app = new Application();
+          app.init()
+          
+      });
+
+      var loginSucess = function(){
+        app.loginClicked("events.json?id=f5n9o69lkl")
+      }
+    </script>
+  </body>
+</html>

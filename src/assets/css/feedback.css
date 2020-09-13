@@ -1,0 +1,52 @@
+/*** Feedback ***/
+.feedback {
+    padding: 20px;
+}
+.feedback:after {
+    content: "";
+    clear: both;
+    display: block;
+}
+.feedback ul {
+    margin: 0;
+    padding: 0;
+}
+.feedback li {
+    list-style-type: decimal;
+    margin: 0 0 20px 20px;
+}
+.feedback .form-check {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    height: 55px;
+    font-size: 40px;
+}
+
+.rating>input {
+    display: none
+}
+
+.rating>label {
+    position: relative;
+    width: 1em;
+    cursor: pointer
+}
+
+.rating>label::before {
+    font-family: 'Material Icons';
+    content: "star";
+    position: absolute;
+    color: #333;
+    opacity: 1
+}
+.rating>input:checked~label:before, .rating>label:hover:before,
+.rating>label:hover~label:before {
+    color: #FFD600;
+    opacity: 1
+}
