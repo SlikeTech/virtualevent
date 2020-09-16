@@ -36,8 +36,6 @@ module.exports = function (grunt) {
             css: {
                 files: {
                     'temp/styles.css': [
-                        'src/assets/css/login.css',
-                        'src/assets/css/feedback.css',
                         'src/assets/css/scss_style.css',
                         'src/assets/css/main.css'
                     ],

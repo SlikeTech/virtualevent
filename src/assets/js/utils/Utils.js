@@ -33,6 +33,7 @@ var Utility = (function () {
 		}
 
 		var searchQueue = function(){
+			console.log("SEAECH", arrLoadQueue)
 		  if (arrLoadQueue.length != 0){
 		      arrLoadQueue.splice(0,1);
 		  }
@@ -42,14 +43,13 @@ var Utility = (function () {
 		}
 
 		var loadExternalData = function(obj){          
-		  	//console.log(obj)
-
+		  	
 			var o = {};
-			o.url = "http://172.29.72.27:7015/"+obj.url
+			o.url = baseUrl+obj.url
 			if(obj.type && obj.type === "POST"){
 				o.type = "POST";
 				o.data = obj.data;
-				o.contentType = "text/plain";
+				o.contentType = "application/json";
 				o.datatype = "application/json"
 			}else{
 				
@@ -102,9 +102,15 @@ var Utility = (function () {
         return $str.split($search).join($replace);
     }
 
+    var trim = function (str) {
+        return str.replace(/^\s+|\s+$/g, '');
+    }
+
+
 	return {
 		loader:loader,
-		strngReplace: strngReplace
+		strngReplace: strngReplace,
+		trim: trim
 	}
 })();
  
