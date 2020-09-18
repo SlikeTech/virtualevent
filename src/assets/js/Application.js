@@ -1,5 +1,5 @@
  var Application = function(){
- 	var util_, store_, pRenderer_, router_;
+ 	var util_, store_, pRenderer_, router_, nav_;
  	var login_, preloader;
  
 
@@ -10,6 +10,8 @@
  		pRenderer_ = new PageRenderer();
  		pRenderer_.init(this, pRenderCallback.bind(this));
  		router_ = new Router();
+
+ 		nav_ = new Navigation();
 
  		
 
@@ -53,7 +55,10 @@
  		if(_d.data){
 	 		var g = store_.parseMaster(_d.data);
 	 		if(g.suc){
+
 	 			pRenderer_.renderPage(store_.getPageData(g.actPage));
+	 			nav_.init(pRenderer_, store_)
+
 	 			router_.init(this, browserCallback.bind(this));
 	 			window.location.hash = g.actPage;
 	 		}else{

@@ -18,6 +18,7 @@ var Utility = (function () {
 		}
 
 		var loadSuccess = function(data){
+			//console.log("SUCCESS    ")
 			//console.log("Remove Class 1")
 			$("#preloader").addClass("H");
 			arrLoadQueue[0].cb({"data":data});
@@ -25,6 +26,7 @@ var Utility = (function () {
 		}
 
 		var loadError = function(rs){
+			//console.log("ERROR  ", rs)
 			//console.log("Remove Class 2")
 			$("#preloader").addClass("H");
 		  var obj = {"Status":rs}
@@ -33,7 +35,7 @@ var Utility = (function () {
 		}
 
 		var searchQueue = function(){
-			console.log("SEAECH", arrLoadQueue)
+			//console.log("SEAECH", arrLoadQueue)
 		  if (arrLoadQueue.length != 0){
 		      arrLoadQueue.splice(0,1);
 		  }
@@ -49,44 +51,27 @@ var Utility = (function () {
 			if(obj.type && obj.type === "POST"){
 				o.type = "POST";
 				o.data = obj.data;
-				o.contentType = "application/json";
-				o.datatype = "application/json"
+				//o.contentType = "application/json";
+				//o.datatype = "application/json"
+				o.processData = false;
+				o.contentType = false;
+				//o.crossDomain = true;
 			}else{
-				
 				o.type = "GET";
 				o.datatype = "application/json"
-
 			}
 			
 			o.success = function(_data){
-				
 				loadSuccess(_data);
 			}
 
 			o.error = function(a,c, d){
+				console.log(a,c,d)
 				loadError(d);
 			}
 			
 			$.ajax(o);
 
-			// o.type =  ? "POST" : "GET"
-
-
-		 //  var prop = {
-			// 	url: obj.url,
-			// 	type: 'GET',  
-			// 	contentType: "application/json",  
-				
-			// 	success: function (data) {
-			// 		loadSuccess(data);
-			// 	},
-				
-			// 	error:function(a,c, d){
-			// 		loadError(d);
-			// 	}
-			// }
-	
-			// $.ajax(prop);
 		}
 		return {
 			load:load

@@ -12,6 +12,7 @@ var EventStore = function(){
 			store_['user'] = "";
 			store_['pages'] = _t.pages;
 			store_['actPage'] = _t.homepage;
+			store_['navigation'] = _t.navigation;
 
 			return {suc:true, msg:"Success", actPage: _t.homepage};
 		}
@@ -47,11 +48,18 @@ var EventStore = function(){
 		return "";
 	}
 
+	var getNavigation = function(){
+		return store_.navigation
+	}
+
+
+
 
 	return {
 		getStore:getStore,
 		setStore:setStore,
 		parseMaster:parseMaster,
-		getPageData:getPageData
+		getPageData:getPageData,
+		getNavigation:getNavigation
 	}
 }

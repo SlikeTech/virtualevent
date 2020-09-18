@@ -16,13 +16,16 @@ var PageRenderer = function(){
 	}
 
 	var renderPage = function(obj){
+
 		objActive = obj;
 		if(!obj.width){
+			$("#preloader").removeClass("H");
 			var img = new Image();
 			img.src = obj.image;
 			img.onload = function(){
 				obj['width'] = img.width;
 				obj['height'] = img.height;
+				$("#preloader").addClass("H");
 				getComponents(obj)
 			}
 		}else{
@@ -100,16 +103,23 @@ var PageRenderer = function(){
 
 		if(!!objActive.on_load){
 			if(objActive.on_load.action_type !== "none" && objActive.on_load.action_link !== ""){
-				$("#exampleModal").modal("show");
-				modalContent_.renderModal(objActive.on_load);
+				modalOnLoad(objActive.on_load)
+				/*$("#exampleModal").modal("show");
+				modalContent_.renderModal(objActive.on_load);*/
 			}
 		}
 
      }
 
-     
-     var animateVideo = function(_o){
+     var modalOnLoad = function(_o){
+     	$("#exampleModal").modal("show");
+		modalContent_.renderModal(_o);
+     }
 
+     
+     
+
+     var animateVideo = function(_o){
     	animVideo.addEventListener("loadedmetadata", function metadata(){
      		//remove preloader
      		this.removeEventListener('loadedmetadata', metadata);
@@ -156,6 +166,7 @@ var PageRenderer = function(){
 
 	return {
 		init: init,
-		renderPage: renderPage
+		renderPage: renderPage,
+		modalOnLoad:modalOnLoad
 	}
 }

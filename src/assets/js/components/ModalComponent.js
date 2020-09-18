@@ -40,7 +40,6 @@ var ModalComponent = function(){
 			modelFor_ = "player";
 			videoComponent_.renderVideo(mainModal_[0], {videoid:_o.action_link})
 		}else{
-			
 			if(_o.action_link === ""){
 				//_o.action_link = "users/attendees.json?eventid=f5n9o69lkl"
 				//Utility.loader({url: _o.action_link, cb:mDataLoaded.bind(this)});
@@ -51,6 +50,7 @@ var ModalComponent = function(){
 				//_o.action_link = "playlists.json?uuid=f5n9o69lkl"
 				//_o.action_link = "users/attendees.json?eventid=f5n9o69lkl"
 				//_o.action_link = "users/ausers/mybriefcase.json"
+				//_o.action_link = "agenda.json?eventid=f5n9o69lkl"
 				Utility.loader({url: _o.action_link, cb:mDataLoaded.bind(this)});
 			}
 
@@ -221,23 +221,31 @@ var ModalComponent = function(){
 			}
 			
 			console.log(mData)
-			var objPost = {
-				url 	:objActModal_.action_link,
-				data 	:mData,
-				type 	:"POST",
-				cb 		:dataPosted.bind(this)
-			}
+			// var objPost = {
+			// 	url 	:objActModal_.action_link,
+			// 	data 	:mData,
+			// 	type 	:"POST",
+			// 	cb 		:dataPosted.bind(this)
+			// }
 
 			//Utility.loader(mData);
+
+			var fd = new FormData();
+			fd.appned("data", JSON.stringify(mData)) 
+
+			//Utility.loader({url: _o.action_link, cb:mDataLoaded.bind(this)});
 
 
 			var o = {};
 
 			o.url = testUrl
 			o.type = "POST";
-			o.data = mData;
-			o.contentType = "application/json";
-			o.datatype = "application/json"
+			o.data = fd;
+			o.processData = false;
+			o.contentType = false;
+
+			
+			
 
 			o.success = function(_data){
 				console.log(_data)
@@ -294,9 +302,13 @@ var ModalComponent = function(){
 			}	
 
 			var tm = agen[i].speakers;
-			str += '<div class="col-md-9">';
+			str += '<div class="col-md-5">';
 			str += '<b class="db">Welcome Address</b>'
 			
+			
+			
+			
+
 			var s = ""
 			for(var j=0; j<tm.length; j++){
 				str += tm[j].name+", "+tm[j].company
@@ -305,10 +317,14 @@ var ModalComponent = function(){
 					str += ' | ';
 				}
 			}
-			str += '</div>'			
+			str += '</div>'	
+
+			str += '<div class="col-md-4">';
+			str += '<b class="db">Time: '+agen[i].starttime+'</b>'		
+			str += '</div>'	
 
 			//breiefcase
-			dis = ""
+			//dis = ""
 			str += '<div class="col-md-1 alignText"><a href="#" data-id="'+i+'" class="iconSVG '+dis+'">';
 			str += '<img src="images/briefcase.svg" alt="">';
 			str += '</a>';
@@ -336,7 +352,10 @@ var ModalComponent = function(){
 			var arr = agen.filter(function(it) {
 				return(it.resource.uuid === asid)
 			})
-			renderVideo(arr[0].resource.resource, [{videoid:arr[0].resource}]);
+			
+			var t = arr[0];
+			//debugger
+			renderVideoN({videoid:t.resource.resource, title:t.title});
 		})	
 	}
 
@@ -428,11 +447,11 @@ var ModalComponent = function(){
 		for(var i=0; i<tm.length; i++){
 			
 			str += '<li class="list-group-item">'
-			str += '<div class="row">'
-			str += '<div data-id="'+tm[i].videoid+'" class="col-md-1">'
+			str += '<div class="row"  data-id="'+i+'">'
+			str += '<div class="col-md-1">'
 			str += '<div class="material-icons">videocam</div>'
 			str += '</div>'
-			str += '<div  data-id="'+tm[i].videoid+'" class="col-md-2">'
+			str += '<div class="col-md-2">'
 			str += '<button type="button" class="btn btn-secondary btn-sm upcomingBtn">PLAY</button>'
 			str += '</div><div class="col-md-8">'
 			str += '<b>'+tm[i].description+'</b>'
@@ -454,8 +473,8 @@ var ModalComponent = function(){
 		// })
 
 		$("#modalBodyP0 li button").off("click").on("click", function(){
-			renderVideo($(this).parent().attr("data-id"), tm);
-			
+			var ind = parseInt($(this).parent().parent().attr("data-id"));
+			renderVideoN({videoid:tm[ind].videoid, title:tm[ind].name});
 		})
 
 	}
@@ -706,7 +725,7 @@ var ModalComponent = function(){
 			}
 
 
-			debugger
+			//debugger
 		})
 
 		$('#modalBodyP0 #btnview').off("click").on("click", function(e){
@@ -715,7 +734,7 @@ var ModalComponent = function(){
 
 
 
-			$(".modal-overlay-cont").removeClass("H");
+			//$(".modal-overlay-cont").removeClass("H");
 			var ind = parseInt($(this).attr("data-id"));
 			var ao = mData.data.resources;
 		
@@ -734,7 +753,7 @@ var ModalComponent = function(){
 				oT.videoid = ao[ind].resource;
 				oT.title =  ao[ind].title;
 
-				renderVideoN($("#modalinsidebody")[0], oT)
+				renderVideoN(oT)
 
 				//videoComponent_.renderVideo($("#modalinsidebody")[0], {videoid:vid})
 				//console.log("play")
@@ -840,18 +859,22 @@ var ModalComponent = function(){
 
 	
 	var populateCard = function(_div, _o){
+		$(".modal-overlay-cont").removeClass("H");
 		cardContainer_.renderCard(_div, _o)
 	}
 
-	var renderVideoN = function(_div, _o){
+	var renderVideoN = function(_o){
+		$(".modal-overlay-cont").removeClass("H");
 		$(".modal-overlay-cont #modalinsidelable").text("Now player: "+_o.title);
-		videoComponent_.renderVideo(_div, _o)
+		videoComponent_.renderVideo($("#modalinsidebody")[0], _o)
 	}
 
 	var renderVideo = function(_id, arr){
 		// var t = arr.filter(it => {
 		// 	return it.videoid === _id
 		// });
+
+		//debugger
 
 		videoComponent_.renderVideo($(".modal-body.p1")[0], {videoid:_id})
 		$("#exampleModal").modal("hide");
