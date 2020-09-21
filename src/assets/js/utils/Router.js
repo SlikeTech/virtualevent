@@ -32,11 +32,11 @@ var Router = function(){
         window.addEventListener("hashchange", detectBackOrForward(
             function() { 
 
-              console.log("back", window.location.hash)
+             // console.log("back", window.location.hash)
               callback_(window.location.hash);
             },
             function() { 
-              console.log("forward", window.location.hash)
+             // console.log("forward", window.location.hash)
               callback_(window.location.hash); 
             }
         ));

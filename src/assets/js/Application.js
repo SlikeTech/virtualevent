@@ -1,17 +1,21 @@
  var Application = function(){
- 	var util_, store_, pRenderer_, router_, nav_;
- 	var login_, preloader;
+ 	var util_, pRenderer_, router_, nav_;
+ 	var login_, preloader, user_;
  
 
 
  	var init = function(){
  		uiELements();
- 		store_ =  new EventStore();
+
  		pRenderer_ = new PageRenderer();
  		pRenderer_.init(this, pRenderCallback.bind(this));
  		router_ = new Router();
 
  		nav_ = new Navigation();
+
+ 		user_ = new User();
+
+
 
  		
 
@@ -20,47 +24,65 @@
 
 
  	var loginClicked = function(_url){
- 		 $("#loginEl").hide()
-         $(".wrapper").show()
- 		
-         
-   //  	var temail = $("#loginEl .form-control").val();     
-   //       if(Login.validateEmail(temail)){
-   //       	console.log("corred")
-   //       	var eid = getUrlParameter("id")
-   //       	var c = Login.init();
-   //       	var objPost = {
-			// 	url : "login.json",
-			// 	data : {email: temail, eventid: eid, uuid: c},
-			// 	type :"POST",
-			// 	cb :mJsonLoaded.bind(this)
-			// }
-			
-			// //Utility.loader({url: "events.json?id=f5n9o69lkl", cb:mJsonLoaded.bind(this)});
-			
-         
-   //       }else{
-   //       	console.log("incorrect login id")
-   //       }
-		
-		Utility.loader({url: eventUrl, cb:mJsonLoaded.bind(this)});
-         //debugger
+    	var temail = $("#loginEl .form-control").val();     
+         if(Login.validateEmail(temail)){
+         	var eid = getUrlParameter("id")
+         	var c = Login.init();
+         	
+         	var formData = new FormData();
+			formData.append("email", temail);
+			formData.append("eventid", eid);
 
- 		//Utility.loader({url: _url, cb:mJsonLoaded.bind(this)});
+         	var objPost = {
+				url : "login.json",
+				data : formData,
+				type :"POST",
+				cb :loginSuccess.bind(this)
+			}
+
+			Utility.loader(objPost);
+         }else{
+         	console.log("incorrect login id")
+         }
+ 		
+ 	}
+
+ 	
+ 	var loginSuccess = function(_d){
+ 		EventStore.setUser(_d.data);
+ 		Utility.loader({url: eventUrl, cb:mJsonLoaded.bind(this)});
+		
+		/*if(_d.data){
+			if(_d.data.error){
+				alert(_d.data.msg)
+			}else{
+				EventStore.setUser(_d.data);
+ 				Utility.loader({url: eventUrl, cb:mJsonLoaded.bind(this)});
+			}
+		}else{
+			alert("Invalid Login URL")
+		}*/
  	}
 
  	var mJsonLoaded = function(_d){
+		$("#loginEl").hide();
+         $(".wrapper").show();
 
- 		$("#login").hide();
  		if(_d.data){
-	 		var g = store_.parseMaster(_d.data);
+	 		var g = EventStore.parseMaster(_d.data);
 	 		if(g.suc){
-
-	 			pRenderer_.renderPage(store_.getPageData(g.actPage));
-	 			nav_.init(pRenderer_, store_)
+	 			pRenderer_.renderPage(EventStore.getPageData(g.actPage));
+	 			nav_.init(pRenderer_, pRenderCallback.bind(this))
 
 	 			router_.init(this, browserCallback.bind(this));
 	 			window.location.hash = g.actPage;
+
+	 			
+	 			Utility.loader({url: "users/myprofile.json", cb:function(_d){
+	 				EventStore.setUserProfile(_d.data);
+	 			}});
+	 			
+	 			user_.init(pRenderer_, pRenderCallback.bind(this));
 	 		}else{
 	 			alert("Error")
 	 		}
@@ -74,14 +96,16 @@
  			window.location.hash = _key;
  		}
  		
- 		pRenderer_.renderPage(store_.getPageData(_key));
+ 		pRenderer_.renderPage(EventStore.getPageData(_key));
+ 		user_.audinces()
  		//debugger
  	}
 
  	var browserCallback = function(_key){
- 		console.log("BROWSEE BUTTON")
- 		// if(_key != "")
- 		// pRenderCallback(_key.substr(1), true)
+ 		console.log("BROWSEE BUTTON::", _key)
+ 		if(_key != ""){
+ 			//pRenderCallback(_key.substr(1), true)
+ 		}
  	}
 
  	var uiELements = function(){

@@ -14,9 +14,10 @@ var VideoComponent = function(){
 		
 		$(cont).html('');
     setTimeout(function(){
+      //$(cont).html('<div id="playerContainer" style="width:100%;height:'+$("#modalinsidebody").height()+'px;"></div>');  
       $(cont).html('<div id="playerContainer" style="width:100%;height:400px;"></div>');  
       addVideo(obj)
-    }, 300)
+    }, 500)
 		
 		
 	}
@@ -44,12 +45,18 @@ var VideoComponent = function(){
     
     spl.load(slikeConfig, function (sdkLoadStatus, config) {
         if (sdkLoadStatus) {
+          
+          /*var tmp = new SlikePlayer(config);
+          tmp.on(SlikePlayer.Events.PLAYER_ERROR, function (eventName, data) {
+            console.log('player error', data);
+          });*/
+
           window.player = new SlikePlayer(config);
           window.player.on(SlikePlayer.Events.PLAYER_ERROR, function (eventName, data) {
             console.log('player error', data);
           });
           
-          window.player.on(SlikePlayer.Events.STREAM_STATUS, function (eventName, data) {
+          /*window.player.on(SlikePlayer.Events.STREAM_STATUS, function (eventName, data) {
             if (data.evtStatus == -1) {
               var output = "NOT_STARTED";
               console.log('stream status', output);
@@ -60,7 +67,7 @@ var VideoComponent = function(){
               var output = "PAUSED";
               console.log('stream status', output);
             }
-          });
+          });*/
         }
       });
   }

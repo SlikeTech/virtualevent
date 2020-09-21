@@ -5,6 +5,7 @@ var ModalComponent = function(){
 	var modelFor_;
 	var mainModal_;
 	var cardContainer_;
+	var imageComponent_;
 
 	
 	var init = function(_ref, _cb){
@@ -17,16 +18,18 @@ var ModalComponent = function(){
 		cardContainer_ = new BusinessCard();
 		cardContainer_.init();
 
+		imageComponent_ = new ImageContainer();
+
 
 		initUI();
 	}
 
 	var renderModal = function(_o){
-
+		console.log("calllllll  ", _o)
 		mainModal_.html("");
 		$("#exampleModal .tabs").remove();
 		$("#exampleModal .searchBar").remove();
-		$("#exampleModal .searchBar").remove();
+		//$("#exampleModal .searchBar").remove();
 
 
 		
@@ -35,15 +38,20 @@ var ModalComponent = function(){
 
 		objActModal_ = _o;
 		//
-
 		if(_o.popup_type === "player"){
 			modelFor_ = "player";
 			videoComponent_.renderVideo(mainModal_[0], {videoid:_o.action_link})
+		}else if(_o.popup_type === "user"){
+			mData = _o;
+			getHtml(_o);
+		}else if(_o.popup_type === "leaderBoard"){
+			mData = _o;
+			getHtml(_o);
 		}else{
 			if(_o.action_link === ""){
 				//_o.action_link = "users/attendees.json?eventid=f5n9o69lkl"
 				//Utility.loader({url: _o.action_link, cb:mDataLoaded.bind(this)});
-				alert("Link not available")
+				alert("Link not available: "+_o.popup_type)
 			}else{
 				modelFor_ = "others";
 				//_o.action_link = "resource.json?eventid=f5n9o69lkl"
@@ -75,7 +83,7 @@ var ModalComponent = function(){
 
 	var getHtml = function(_o){
 		var s, t = _o.template;
-		console.log(t)
+		//console.log(t)
 		switch(t){
 			case "poll":
 			polls()
@@ -116,17 +124,120 @@ var ModalComponent = function(){
 			break;
 
 
-			case "businesscard" :
+			case "myProfile" :
+			uiModTitle_.html("User Profile");
+			modalTab(["VIEW", "EDIT"], profileTab)
+			myProfile()
 			
+			
+			break;
+
+
+			case "leaderBoard":
+			//uiModTitle_.html("board");
+			modalTabLeaderBoard()
+			modalTab(["LEADER BOARD", "MY POINTS", "CRITERIA", "T & C"], leaderBoardTab)
+			leaderBoard("a0")
 			break;
 
 			case "chatbox" :
 			break;
 
+
+
 		}
 
 		
 	}
+
+	/* Leader Board*/
+	var leaderBoard = function(par){
+		mainModal_.html(lbTab(par));
+	}
+
+	var leaderBoardTab = function(type){
+		leaderBoard(type)
+
+
+	}
+
+	var modalTabLeaderBoard = function(){
+		var str = '<div class="searchBar">'
+		str += '<input type="text" id="attSearch" name="" placeholder="Search by Name">'
+		str += '<i class="material-icons">search</i>'		
+		str += '<div class="refreshIcon"><i class="material-icons">refresh</i></div>'
+		str += '</div>'
+
+		$( str ).insertAfter( "#exampleModalLabel" );
+
+		/*$("#exampleModal .searchBar i").off("click").on("click", function(){
+			var v = Utility.trim($("#attSearch").val()).toLowerCase();
+			var s = mData.body.filter(it => {
+				return it.firstname.toLowerCase().indexOf(v) !== -1 || it.lastname.toLowerCase().indexOf(v) !== -1 || it.companyname.indexOf(v) !== -1 || it.jobtitle.toLowerCase().indexOf(v) !== -1 
+			})
+
+			if(s.length){
+				attendees(s)
+			}else{
+				attendees([])
+			}
+
+			
+		})
+
+		$("#exampleModal .refreshIcon i").off("click").on("click", function(){
+			$("#attSearch").val("");
+			Utility.loader({url: objActModal_.action_link, cb:function(_o){
+				mData = _o.data;
+				//modalTabAttendees()
+				attendees([]);
+			}});
+		})*/
+	}
+
+	var lbTab = function(t){
+		var str = '<div class="leaderboard"><h5> To be added</h5></div>'
+		if(t === "a0"){
+			str = '<div class="leaderboard"> <div class="row listTable m0"> <div class="row-th"> <div class="th-col col-md-2 text-center">Rank</div><div class="th-col col-md-8">Attendee</div><div class="th-col col-md-2">Points</div></div><div class="row-td"> <div class="td-col col-md-2 text-center">2</div><div class="td-col col-md-8">Dhananjay Singh <br>The Times Of India - Tech Lead</div><div class="td-col col-md-2">555555</div></div><div class="row-td"> <div class="td-col col-md-2 text-center">3</div><div class="td-col col-md-8">Dhananjay Singh <br>The Times Of India - Tech Lead</div><div class="td-col col-md-2">555555</div></div><div class="row-td"> <div class="td-col col-md-2 text-center">4</div><div class="td-col col-md-8">Dhananjay Singh <br>The Times Of India - Tech Lead</div><div class="td-col col-md-2">555555</div></div><div class="row-td"> <div class="td-col col-md-2 text-center">5</div><div class="td-col col-md-8">Dhananjay Singh <br>The Times Of India - Tech Lead</div><div class="td-col col-md-2">555555</div></div></div></div>'
+		}else if(t === "a1"){
+			
+		}else if(t === "a2"){
+
+		}else if(t == "a3"){
+
+		}
+
+		return str
+
+	}
+
+
+
+	/* My Profile */
+	var myProfile = function(){
+
+		var user = EventStore.getUserProfile();
+		var dis = "disabled"
+
+		var str = '<div class="my-profile nonEdit" id="userprofile"> <div class="row m0"> <div class="user-profile"> <div class="user-image"> <img src="images/card-avatar.svg" alt=""> </div><div class="edit-image mt-3"> <button type="button" class="btn btn btn-outline-secondary btn-sm ">Edit Image</button> <input type="file"> </div></div><div class="profile-rhs"> <form class="darkForm"> <div class="form-group"> <label for="exampleInputEmail1" class="labelTxt pl-0" style="left: 0">First Name</label> <input type="text" class="form-control pl-0" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="'+user.firstname+'"> </div><div class="form-group"> <label for="" class="labelTxt">Last Name</label> <input type="text" class="form-control" id="" placeholder="'+user.lastname+'"> </div><div class="form-group"> <label for="" class="labelTxt">Designation</label> <input type="tex" class="form-control" id="" placeholder="'+user.jobtitle+'"> </div><div class="form-group"> <label for="" class="labelTxt">Company</label> <input type="text" class="form-control" id="" placeholder="'+user.companyname+'"> </div><div class="form-group"> <label for="" class="labelTxt">Email Address</label> <input type="text" class="form-control" id="" placeholder="'+user.email+'"> </div><div class="form-group"> <label for="" class="labelTxt">Phone Number</label> <input type="number" class="form-control" id="" placeholder="+91-9999999999"> </div><div class="form-group"> <button type="submit" class="btn btn-primary btn-sm">Submit</button> </form> </div></div></div>'
+
+			mainModal_.html(str);
+			$("#modalBodyP0 .my-profile input").prop("disabled", true)
+
+	}
+
+	var profileTab = function(type){
+		if(type === "a0"){
+			$("#modalBodyP0 .my-profile input").prop("disabled", true);
+			$("#modalBodyP0 .my-profile").addClass("nonEdit");
+		}else{
+			$("#modalBodyP0 .my-profile input").prop("disabled", false);
+			$("#modalBodyP0 .my-profile").removeClass("nonEdit");
+		}
+	}
+
+	
+
 
 	/*POLLS*/
 	var polls = function(){
@@ -180,7 +291,7 @@ var ModalComponent = function(){
 			str+='</li>'
 			chckd = "";
 		}
-		str += '</ul><button id="postData" class="btn login_btn float-right mt-3">Submit</button></div>'
+		str += '</ul><button id="postData" class="btn btn-primary float-right mt-3">Submit</button></div>'
 		mainModal_.html(str);
 		
 		if(txtval)
@@ -244,11 +355,11 @@ var ModalComponent = function(){
 			o.processData = false;
 			o.contentType = false;
 
-			
+
 			
 
 			o.success = function(_data){
-				console.log(_data)
+				console.log(_data)	
 				
 			}
 
@@ -271,7 +382,6 @@ var ModalComponent = function(){
 
 	
 	/* AGENDA */
-	
 	var agenda = function(par){
 		//var x = filterAgenda(par)
 		//var agen = mData.body[0].slot_data;
@@ -284,19 +394,19 @@ var ModalComponent = function(){
 			str += '<div class="row">'
 			if(agen[i].status == 0){
 				//live
-				str += '<div class="col-md-2">';
+				str += '<div class="col-md-2 alignText">';
 				str += '<button type="button" class="btn btn-primary btn-sm liveBtn">LIVE</button>';
 				str += '</div>'
 			}else if(agen[i].status == 1){
 				//upcm
 
-				str += '<div class="col-md-2">';
+				str += '<div class="col-md-2 alignText">';
 				str += '<button type="button" class="btn btn-primary btn-sm upcomingBtn" disabled>Upcoming</button>';
 				str += '</div>'
 			}else if(agen[i].status == 2){
 				//ended
 				dis = ""
-				str += '<div class="col-md-2">';
+				str += '<div class="col-md-2 alignText">';
 				str += '<button type="button" class="btn btn-primary btn-sm completeBtn">Completed</button>';
 				str += '</div>'
 			}	
@@ -320,7 +430,9 @@ var ModalComponent = function(){
 			str += '</div>'	
 
 			str += '<div class="col-md-4">';
-			str += '<b class="db">Time: '+agen[i].starttime+'</b>'		
+			//str += '<b class="db">Time: '+agen[i].starttime+'</b>'		
+			str += '<span>Time: '+agen[i].starttime+'</span>'
+			//str += '<span>Time: '+agen[i].starttime+'</span>'	
 			str += '</div>'	
 
 			//breiefcase
@@ -393,7 +505,6 @@ var ModalComponent = function(){
 
 
 	/* Resources */
-
 	var resources = function(){
 		var tm = mData.body;
 		var str = '<div class="resources"><ul class="list-group">'
@@ -401,7 +512,7 @@ var ModalComponent = function(){
 			str += '<li class="list-group-item">';
 			str += '<div class="row">'
 
-			if(tm[i].type === "live"){
+			if(tm[i].type === "live" || tm[i].type === "video"){
 				str += '<div class="col-md-1">'
 				str += '<div class="material-icons">videocam</div>';
 				str += '</div>';
@@ -412,10 +523,10 @@ var ModalComponent = function(){
 			}
 			
 			str += '<div class="col-md-2">'
-			str += '<button type="button" class="btn btn-secondary btn-sm" data-id="'+tm[i].uuid+'" >View</button>'
+			str += '<button type="button" class="btn btn-secondary btn-sm" data-id="'+i+'" >View</button>'
 			str += '</div>'
 
-			str += '<div class="col-md-8">power-your-business-transformation-with-edc</div>'
+			str += '<div class="col-md-8">'+tm[i].title+'</div>'
 
 			//briefcase
 			str += '<div class="col-md-1 alignText">'
@@ -435,7 +546,28 @@ var ModalComponent = function(){
 		// })
 
 		$("#modalBodyP0 li button").off("click").on("click", function(){
-			getComponentData($(this).attr("data-id"), tm);
+			var ot = tm[parseInt($(this).attr("data-id"))];
+			var oR = {};
+			oR.title = ot.title;
+
+			if(ot.type === "video" || ot.type === "live"){
+				oR.videoid = ot.resource;
+				renderVideoN(oR)
+			}else if(ot.type === "doc"){
+				oR.url = ot.resource
+				populatePDF(oR)
+			}else if(ot.type === "image"){
+				oR.url = ot.resource;
+				populateImage(oR)
+				
+			}
+
+
+
+			// console.log(tm[parseInt($(this).attr("data-id"))])
+			// debugger
+			
+			// getComponentData($(this).attr("data-id"), tm);
 		})
 	}
 
@@ -451,14 +583,14 @@ var ModalComponent = function(){
 			str += '<div class="col-md-1">'
 			str += '<div class="material-icons">videocam</div>'
 			str += '</div>'
-			str += '<div class="col-md-2">'
+			str += '<div class="col-md-2 alignText">'
 			str += '<button type="button" class="btn btn-secondary btn-sm upcomingBtn">PLAY</button>'
 			str += '</div><div class="col-md-8">'
 			str += '<b>'+tm[i].description+'</b>'
 			str += '</div>'
 			
 			str += '<div class="col-md-1 alignText">'
-			str += '<a href="#" data-id="'+i+'" class="iconSVG '+'dis'+'">'
+			str += '<a href="#" data-id="'+i+'" class="iconSVG">'
 			str += '<img src="images/briefcase.svg" alt="">'
 			str += '</a>'
 			str += '</div>'
@@ -472,6 +604,16 @@ var ModalComponent = function(){
 		// 	renderVideo($(this).parent().attr("data-id"), tm);
 		// })
 
+		$("#modalBodyP0 li a").off("click").on("click", function(){
+			$(this).addClass("disableIcon");
+			var fd = new FormData();
+			fd.append("resourceid", tm[parseInt($(this).attr("data-id"))].videoid) 
+			Utility.loader({url: "users/addtobriefcase.json", data : fd, type :"POST", cb:function(_d){
+				debugger
+			}});
+
+		})
+
 		$("#modalBodyP0 li button").off("click").on("click", function(){
 			var ind = parseInt($(this).parent().parent().attr("data-id"));
 			renderVideoN({videoid:tm[ind].videoid, title:tm[ind].name});
@@ -480,7 +622,6 @@ var ModalComponent = function(){
 	}
 
 	/*  Attendees */
-	
 	var modalTabAttendees = function(){
 		//add Search and Refresh
 
@@ -529,6 +670,7 @@ var ModalComponent = function(){
 	// 	}
 	// }
 
+	/* Attendees */
 	var attendees = function(arr){
 		var tm;
 		if(arr.length === 0){
@@ -558,9 +700,10 @@ var ModalComponent = function(){
 			if(tuuid !== tm[i].uuid){
 				str += '<div class="col-md-3">'
 				str += '<div class="actions">'
-				str += '<img src="images/chat.svg" alt="">'
+				str += '<img src="images/chat.svg" alt="" data-id="chat_'+i+'">'
 				//str += '<i class="material-icons">mail</i>'
-				str += '<img src="images/business-card.svg" alt="">'
+				str += '<img src="images/briefcase.svg" alt="" data-id="mail_'+i+'">'
+				str += '<img src="images/business-card.svg" alt=""  data-id="bcard_'+i+'">'
 				str += '</div>'
 				str += '</div>'
 			}
@@ -572,58 +715,29 @@ var ModalComponent = function(){
 		str += '</ul>'
 		str += '</div>'
 		
-		/*var str = '<div class="participants">'
-		str += '<ul class="list-group">'
-
-		for(var i=0; i<tm.length; i++){
-			str += '<li data-id='+tm[i].uuid+'>'
-			str += '<div class="row">'
-			str += '<div class="col-md-1">'
-			str += '<div class="partAvatar">'
-			str += '<i class="material-icons">account_circle</i>'                                
-			str += '</div>'
-			str += '</div>'
-			str += '<div class="col-md-8">'
-			str += tm[i].firstname+'  '+tm[i].lastname+' <br /> '+tm[i].companyname
-			str += '</div>'
-			//str += '<div class="col-md-3"></div>'
-			if(tuuid !== tm[i].uuid){
-				str += '<div class="col-md-3">'
-				str += '<div class="actions">'
-				str += '<i class="material-icons">chat</i>'
-				//str += '<i class="material-icons">mail</i>'
-				str += '<i class="material-icons">contacts</i>'
-				str += '</div>'
-				str += '</div>'
-			}
-
-			str += '</div>'
-			str += '</li>'
-
-		}
-		str += '</ul>'
-		str += '</div>'*/
+		
 
 
 		mainModal_.html(str);
 		//add click events
-		$("#modalBodyP0 .actions i").off("click").on("click", function(){
-			var l = $(this).text();
-			if(l === "chat"){
+		$("#modalBodyP0 .actions img").off("click").on("click", function(){
+			var l = $(this).attr("data-id").split("_");
+			var t = l[0];
+			var o = mData.body[parseInt(l[1])]
 
-			}else if(l === "mail"){
+			if(t === "chat"){
 
-			}else if(l === "contacts"){
+			}else if(t === "mail"){
+
+			}else if(t === "bcard"){
+				populateCard(o, true)
 
 			}
 		})
 
 	}
 
-	//---------------------------------
-
 	/* Briefcase */
-	
 	var briefcase = function(par){
 		var tm = mData.data.resources
 		//var tm = filterBriefcase(par)
@@ -736,24 +850,28 @@ var ModalComponent = function(){
 
 			//$(".modal-overlay-cont").removeClass("H");
 			var ind = parseInt($(this).attr("data-id"));
-			var ao = mData.data.resources;
+			var ao = mData.data.resources[ind];
+
+			var oR = {}
+			oR.title = ao.title;
 		
 			if($(this).text() === "VIEW"){
-				if(ao[ind].type === "business_card"){
-					//cardContainer_.renderCard()
-					populateCard($("#modalinsidebody"), {})
-				}else{
-
+				if(ao.type === "business_card"){
+					oR.url = ao.resource
+					populateCard(oR, false)
+				}else if(ao.type === "image"){
+					oR.url = ao.resource
+					populateImage(oR)
+				}else if(ao.type === "doc"){
+					oR.url = ao.resource
+					populatePDF(oR)
+				}else {
+					alert("No TYPE  "+ao[ind].type)
 				}
 				console.log("view")
 			}else if($(this).text() === "PLAY"){
-				
-				
-				var oT = {};
-				oT.videoid = ao[ind].resource;
-				oT.title =  ao[ind].title;
-
-				renderVideoN(oT)
+				oR.videoid = ao.resource;
+				renderVideoN(oR)
 
 				//videoComponent_.renderVideo($("#modalinsidebody")[0], {videoid:vid})
 				//console.log("play")
@@ -773,21 +891,32 @@ var ModalComponent = function(){
 			var t = [];
 			for(var i=0; i<chk.length; i++){
 				t.push($(chk[i]).attr("data-id"))
+				//t.push()
 			}
 
 			//SEND THE DATA TO DELETE t array
 
+
+
+			mData.data.resources = mData.data.resources.filter(function(val) {
+			  return t.indexOf(val.uuid) == -1;
+			});
+
+			briefcase();
+
 			Utility.loader({url: objActModal_.action_link, cb:function(_o){
-				mData = _o.data;
+				//Post data
+
+				//mData = _o.data;
+				
 				//modalTabAttendees()
-				briefcase();
+				//briefcase();
 			}});
 
 
 		})
 		
 	}
-
 	var singleFiledownload = function(obj){
 		// debugger
 		// var element = document.createElement('a');
@@ -798,9 +927,6 @@ var ModalComponent = function(){
 		// element.click();
 		// document.body.removeChild(element);
 	}
-
-	
-
 	var briefcaseTab = function(type){
 		$("#modalBodyP0 li").hide();
 		var t = "all"
@@ -816,21 +942,14 @@ var ModalComponent = function(){
 		
 		//briefcase(t)
 	}
-
 	var downloadFilterItems = function(){
 
 	}
-
 	var deleteFilterItem = function(){
 
 	}
 
-
-
-
-
-	//------------------------
-
+	/* Utility functions */
 	var getComponentData = function(id, arr){
 		var t = arr.filter(it => {
 			return it.uuid === id
@@ -857,16 +976,42 @@ var ModalComponent = function(){
 		}
 	}
 
+	var populatePDF = function(_o){
+
+		if((_o.url.split('.').pop().toLowerCase() === "pdf") && mimeCheck("application/pdf")){
+			$("#exampleModal2 #exampleModalLabel2").text(_o.title)
+			pdfContainer_.renderPDF(_o)
+			$("#exampleModal").modal("hide");
+			$("#exampleModal2").modal("show");
+		}else{
+			downloadfile(_o)
+		}
+		
+	}
 	
-	var populateCard = function(_div, _o){
-		$(".modal-overlay-cont").removeClass("H");
-		cardContainer_.renderCard(_div, _o)
+	var populateCard = function( _o, edit){
+
+		$(".modal-overlay-cont #modalinsidelable").text("Business Card");
+		//$(".modal-overlay-cont").removeClass("H");
+		$(".modal-overlay-cont").addClass("show");
+		cardContainer_.renderCard($("#modalinsidebody"), _o, edit);
 	}
 
 	var renderVideoN = function(_o){
-		$(".modal-overlay-cont").removeClass("H");
+		//$(".modal-overlay-cont").removeClass("H");
+		$(".modal-overlay-cont").addClass("show");
+
 		$(".modal-overlay-cont #modalinsidelable").text("Now player: "+_o.title);
 		videoComponent_.renderVideo($("#modalinsidebody")[0], _o)
+	}
+
+	var populateImage = function(_o){
+		//$(".modal-overlay-cont").removeClass("H");
+		$(".modal-overlay-cont").addClass("show");
+
+		$(".modal-overlay-cont #modalinsidelable").text(_o.title);
+		imageComponent_.renderImage($("#modalinsidebody")[0], _o)
+
 	}
 
 	var renderVideo = function(_id, arr){
@@ -902,11 +1047,13 @@ var ModalComponent = function(){
 
 		mainModal_ = $("#modalBodyP0");
 		$("#exampleModal2").on('hidden.bs.modal', function(){
+			console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQq")
 			$("#exampleModal2 .modal-body").html("")
 			$("#exampleModal").modal("show");
 		})
 
 		$("#exampleModal").on('hidden.bs.modal', function(){
+			console.log("PPPPPPPPPPPPPPPPPPPPPPPPP")
 			if(modelFor_ === "player"){
 				$("#exampleModal .modal-body").html("")
 			}
@@ -915,7 +1062,8 @@ var ModalComponent = function(){
 
 
 		$(".modal-overlay-cont #modalinsideclose").off("click").on("click", function(){
-			$("#exampleModal .modal-overlay-cont").addClass("H");
+			//$("#exampleModal .modal-overlay-cont").addClass("H");
+			$("#exampleModal .modal-overlay-cont").removeClass("show");
 			$(".modal-overlay-cont #modalinsidebody").html("");
 		})
 	}
@@ -951,7 +1099,23 @@ var ModalComponent = function(){
 
 	}
 
-	
+	var mimeCheck = function (type) {
+	    return Array.prototype.reduce.call(navigator.plugins, function (supported, plugin) {
+	        return supported || Array.prototype.reduce.call(plugin, function (supported, mime) {
+	            return supported || mime.type == type;
+	        }, supported);
+	    }, false);
+	};
+
+	var downloadfile = function(obj){
+		var element = document.createElement('a');
+		element.setAttribute('href', obj.url);
+		element.setAttribute('download', obj.title);
+		element.style.display = 'none';
+		document.body.appendChild(element);
+		element.click();
+		document.body.removeChild(element);
+	}
 
 
 

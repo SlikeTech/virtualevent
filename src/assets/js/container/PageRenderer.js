@@ -39,6 +39,7 @@ var PageRenderer = function(){
 		var strFloaterRight = "";
 		var l,t,h,g,c,tp;
 		strHotspot += '<img src="'+_o.image+'" alt="">';
+		var vcont = [];
 
 		
 		for(var i=0; i<_o.componants.length; i++){
@@ -53,6 +54,9 @@ var PageRenderer = function(){
 						_o.componants[i]['coor'] = {left:l, top: t, width: w, height: h};
 					}
 					strHotspot += '<div class="anchorUI" style="left: '+_o.componants[i].coor.left+'%; top: '+_o.componants[i].coor.top+'%; width: '+_o.componants[i].coor.width+'%; height: '+_o.componants[i].coor.height+'%;background:rgba(0, 0, 255, 0);" data-id='+i+'><div class="anchorWrapper"><span class="helpText">'+_o.componants[i].tooltip+'</span></div></div>'
+					if(_o.componants[i].type == "video"){
+						vcont.push(i)
+					}
 				}
 			}else{
 				tp = _o.componants[i].position.split("-")[0];
@@ -68,6 +72,10 @@ var PageRenderer = function(){
 		$(".bodyBg").html(strHotspot)
 		$("#floatLeft").html(strFloaterLeft)
 		$("#floatRight").html(strFloaterRight)
+		
+		console.log("vcont", vcont)
+		console.log(objActive)
+
 		bindEvents();
 	}
 
@@ -109,6 +117,18 @@ var PageRenderer = function(){
 			}
 		}
 
+		// objActive.componants.filter(it => {
+		// 	if(it.type === "video"){
+		// 		return {
+		// 			ind
+		// 		}
+		// 	}
+		// })
+
+     }
+
+     var addVideoToWall = function(){
+
      }
 
      var modalOnLoad = function(_o){
@@ -119,6 +139,7 @@ var PageRenderer = function(){
      
      
 
+     
      var animateVideo = function(_o){
     	animVideo.addEventListener("loadedmetadata", function metadata(){
      		//remove preloader

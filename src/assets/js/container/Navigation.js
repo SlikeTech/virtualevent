@@ -1,16 +1,19 @@
 var Navigation = function () {
-	var pRenderer_, store_;
+	var pRenderer_, pCallback_;
+	
 
-
-	var init = function(pgr, _data){
+	var init = function(pgr, cb){
 		pRenderer_ = pgr;
-		store_ = _data;
-		nav_ = store_.getNavigation();
+		pCallback_ = cb
+		
+		
+		nav_ = EventStore.getNavigation();
 
 		populateNav()
 	}
 
 	var populateNav = function(){
+
 		var it = nav_.item;
 		var str = "";
 		for(var i=0; i<it.length; i++){
@@ -28,11 +31,29 @@ var Navigation = function () {
 				if(t.action_type === "internal_popup"){
 					pRenderer_.modalOnLoad(t);
 				}else if(t.action_type === "internal_page"){
-					pRenderer_.renderPage(store_.getPageData(t.action_link));
+					pCallback_(t.action_link)
+					//pRenderer_.renderPage(EventStore.getPageData(t.action_link));
 				}
 			}
 
 		})
+
+		$("#topNavigation a").off("click").on("click", function(){
+			if(this.id === "nhome"){
+
+			}else if(this.id === "nlbrd"){
+				pRenderer_.modalOnLoad({
+					popup_type:"leaderBoard",
+					template:"leaderBoard",
+					action_link:""
+				})
+			}else if(this.id === "nguide"){
+				
+			}
+
+		})
+
+
 	}
 
 	return {

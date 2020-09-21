@@ -51,6 +51,7 @@ var Utility = (function () {
 			if(obj.type && obj.type === "POST"){
 				o.type = "POST";
 				o.data = obj.data;
+
 				//o.contentType = "application/json";
 				//o.datatype = "application/json"
 				o.processData = false;
