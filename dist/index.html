@@ -30,21 +30,18 @@
                         <h3>Sign In</h3>
                     </div>
                     <div class="card-body">
-                        <!-- <form> -->
                         <div class="input-group form-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="material-icons">person</i></span>
                             </div>
                             <input type="text" class="form-control" placeholder="username">
                         </div>
-
                         <div class="row align-items-center remember">
                             <input type="checkbox">Remember Me
                         </div>
                         <div class="form-group">
                             <button id="login" onclick="app.loginClicked()"  class="btn float-right login_btn">Sign In</button>
                         </div>
-                        <!-- </form> -->
                     </div>
                     <div class="card-footer">
                         <div class="d-flex justify-content-center links">
@@ -61,64 +58,61 @@
             </div>
 
             <div id="preloader" class="preloaderOverlay">
-              <div class="spinner-border positionCenter" role="status" style="width: 3rem; height: 3rem;">
-                <span class="sr-only">Loading...</span>
-              </div>
-          </div>
+                <div class="spinner-border positionCenter" role="status" style="width: 3rem; height: 3rem;">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
 
 
 
             <div class="header">
-            <div class="logo">
-              <img src="images/logo.svg" alt="">
-            </div>
-
-            <div class="navigation">
-              <a href="#">Home</a>
-              <a href="#">Information</a>
-              <a href="#">Guide</a>
-            </div>
-            <div class="brandLogo">
-              <img src="images/brand.png" alt="">
-            </div>
-
-            <div class="no-user">
-              Total No Users - <b>20</b> <br>
-              This Location - <b>5</b>
-            </div>
-
-            <div class="header-rhs">
-              <div class="dropdown">
-                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="user-login" data-display="static" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="material-icons">person</i>
-                </a>
-
-                <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="user-login">
-                  <a class="dropdown-item" href="#">Online</a>
-                  <a class="dropdown-item" href="#">Away</a>
-                  <a class="dropdown-item" href="#">Do not Distrub</a>
+                <div class="logo">
+                    <img src="images/logo.svg" alt="">
                 </div>
-              </div>
-              
-              <div class="dropdown">
-                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="settings" data-display="static" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="material-icons">settings</i>
-                </a>   
-                <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="settings">
-                  <a class="dropdown-item" href="#">My Appointments</a>
-                  <a class="dropdown-item" href="#">Logout</a>
-              </div>       
-            </div> 
+
+                <div class="navigation" id="topNavigation">
+                    <a href="#" id="nhome"><i class="material-icons">home</i> Home</a>
+                    <a href="#" id="nlbrd"><i class="material-icons">equalizer</i> Leaderboard</a>
+                    <a href="#" id="nguide"><i class="material-icons">person</i> Guide</a>
+                </div>
+            
+                <div class="brandLogo">
+                  <img src="images/brand.png" alt="">
+                </div>
+
+                <div class="no-user" id="audience"></div>
+
+                <div class="header-rhs">
+                    <div class="dropdown">
+                        <a class="dropdown-toggle" href="#" role="button" id="user-login" data-display="static" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="material-icons">account_circle</i>
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="user-login">
+                            <a class="dropdown-item" href="#" data-id="online">Online</a>
+                            <a class="dropdown-item" href="#" data-id="away">Away</a>
+                            <a class="dropdown-item" href="#" data-id="dnd">Do not Distrub</a>
+                        </div>
+                    </div>
+                  
+                    <div class="dropdown">
+                        <a class="dropdown-toggle" href="#" role="button" id="settings" data-display="static" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="material-icons">settings</i>
+                        </a>     
+                        <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="settings">
+                            <a class="dropdown-item" href="#" data-id="mapp">My Appointment</a>
+                            <a class="dropdown-item" href="#" data-id="mprof">My Profile</a>
+                            <a class="dropdown-item" href="#" data-id="logout">Logout</a>
+                        </div>       
+                    </div> 
 
 
-            </div>
+                </div>
             </div>
 
             <div class="bodyBg"></div>
 
-            <div class="footerNav">
-               
-            </div>
+            <div class="footerNav"></div>
 
             <div class="floater leftPosition" id="floatLeft"></div>
             <div class="floater rightPosition" id="floatRight"></div>
@@ -126,9 +120,6 @@
 
             <div class="modal fade" id="exampleModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
-                    
-
-
                     <div class="modal-content">
                         <div class="modal-header" id="mh0">
                             <h5 class="modal-title" id="exampleModalLabel"></h5>
@@ -139,18 +130,14 @@
                         <div id="modalBodyP0" class="modal-body p0"></div>
                     </div>
 
-                    <div class="modal-overlay-cont H">
+                    <div class="modal-overlay-cont">
                         <div class="modal-header">
                             <h5 class="modal-title" id="modalinsidelable"></h5>
                             <button  class="close" aria-label="Close" id="modalinsideclose">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div class="modal-body p0" id="modalinsidebody">
-                            <!-- <div class="businessCard">
-                                <img src="https://static.toiimg.com/thumb/imgsize-184843,msid-78129542,width-332,resizemode-4/78129542.jpg" />
-                            </div> -->
-                        </div>
+                        <div class="modal-body p0" id="modalinsidebody"></div>
                     </div>
                 
                 </div>
@@ -178,17 +165,19 @@
 
     <script type="text/javascript">
       $(".wrapper").hide();
-      var testUrl = "http://172.29.72.27:7015/polls.json?uuid=fr1voo9ogo";
+      var testUrl = "http://172.29.72.27:2015/polls.json?uuid=fr1voo9ogo";
       var baseUrl = "http://172.29.72.27:7015/"
       var eventUrl = "events.json?id=f5n9o69lkl"
       var app;
+
+      console.log("PAGE LOADED")
       $( document ).ready(function() {
           app = new Application();
           app.init();
 
-          setTimeout(function(){
-            $("#login").click()
-          }, 500)
+          // setTimeout(function(){
+          //   $("#login").click()
+          // }, 500)
           
       });
     </script>
