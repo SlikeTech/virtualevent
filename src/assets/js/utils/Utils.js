@@ -52,16 +52,16 @@ var Utility = (function () {
 				o.type = "POST";
 				o.data = obj.data;
 
-				//o.contentType = "application/json";
-				//o.datatype = "application/json"
 				o.processData = false;
 				o.contentType = false;
-				//o.crossDomain = true;
 			}else{
 				o.type = "GET";
 				o.datatype = "application/json"
 			}
 			
+			
+ 			o.headers = { 'eventid': eventId }
+
 			o.success = function(_data){
 				loadSuccess(_data);
 			}

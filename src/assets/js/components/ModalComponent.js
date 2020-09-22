@@ -25,14 +25,13 @@ var ModalComponent = function(){
 	}
 
 	var renderModal = function(_o){
-		console.log("calllllll  ", _o)
-		mainModal_.html("");
+
+		mainModal_.html('<div id="preloader" class="preloaderOverlay"><div class="spinner-border positionCenter" role="status" style="width: 3rem; height: 3rem;"><span class="sr-only">Loading...</span></div></div>');
 		$("#exampleModal .tabs").remove();
 		$("#exampleModal .searchBar").remove();
 		//$("#exampleModal .searchBar").remove();
 
 
-		
 		uiModTitle_.html("");
 		//$("#exampleModal .tabs").hide();
 
@@ -59,6 +58,7 @@ var ModalComponent = function(){
 				//_o.action_link = "users/attendees.json?eventid=f5n9o69lkl"
 				//_o.action_link = "users/ausers/mybriefcase.json"
 				//_o.action_link = "agenda.json?eventid=f5n9o69lkl"
+				//_o.action_link = "polls.json?uuid=fr1voo9ogo"
 				Utility.loader({url: _o.action_link, cb:mDataLoaded.bind(this)});
 			}
 
@@ -219,19 +219,59 @@ var ModalComponent = function(){
 		var user = EventStore.getUserProfile();
 		var dis = "disabled"
 
-		var str = '<div class="my-profile nonEdit" id="userprofile"> <div class="row m0"> <div class="user-profile"> <div class="user-image"> <img src="images/card-avatar.svg" alt=""> </div><div class="edit-image mt-3"> <button type="button" class="btn btn btn-outline-secondary btn-sm ">Edit Image</button> <input type="file"> </div></div><div class="profile-rhs"> <form class="darkForm"> <div class="form-group"> <label for="exampleInputEmail1" class="labelTxt pl-0" style="left: 0">First Name</label> <input type="text" class="form-control pl-0" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="'+user.firstname+'"> </div><div class="form-group"> <label for="" class="labelTxt">Last Name</label> <input type="text" class="form-control" id="" placeholder="'+user.lastname+'"> </div><div class="form-group"> <label for="" class="labelTxt">Designation</label> <input type="tex" class="form-control" id="" placeholder="'+user.jobtitle+'"> </div><div class="form-group"> <label for="" class="labelTxt">Company</label> <input type="text" class="form-control" id="" placeholder="'+user.companyname+'"> </div><div class="form-group"> <label for="" class="labelTxt">Email Address</label> <input type="text" class="form-control" id="" placeholder="'+user.email+'"> </div><div class="form-group"> <label for="" class="labelTxt">Phone Number</label> <input type="number" class="form-control" id="" placeholder="+91-9999999999"> </div><div class="form-group"> <button type="submit" class="btn btn-primary btn-sm">Submit</button> </form> </div></div></div>'
+		var str = '<div class="my-profile nonEdit" id="userprofile"> <div class="row m0"> <div class="user-profile"> <div class="user-image"> <img src="images/card-avatar.svg" alt=""> </div><div class="edit123456-image123456 mt-3" style="display:none;"> <button type="button" class="btn btn btn-outline-secondary btn-sm123456 ">Edit Image</button> <input type="file"> </div></div><div class="profile-rhs">'
+		str += '<form class="darkForm"> <div class="form-group"> <label for="exampleInputEmail1" class="labelTxt pl-0" style="left: 0">First Name</label>'
+		
+		str += ' <input type="text" class="form-control pl-0" data-edt="1" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="'+user.firstname+'" name="firstname"> </div><div class="form-group"> <label for="" class="labelTxt">Last Name</label>'
+		
+		str += ' <input type="text" class="form-control" id="" data-edt="1" placeholder="'+user.lastname+'" name="lastname"> </div><div class="form-group"> <label for="" class="labelTxt">Designation</label>'
+		
+		str += ' <input type="tex" class="form-control" id="" data-edt="1" placeholder="'+user.jobtitle+'" name="jobtitle"> </div><div class="form-group"> <label for="" class="labelTxt">Company</label>'
+		
+		str += ' <input type="text" class="form-control" id="" data-edt="1" placeholder="'+user.companyname+'" name="company"> </div><div class="form-group"> <label for="" class="labelTxt">Email Address</label>'
+		
+		str+= ' <input type="text" class="form-control" id="" placeholder="'+user.email+'" disabled> </div><div class="form-group"> <label for="" class="labelTxt">Phone Number</label>'
+
+		str += ' <input type="number" class="form-control" id="" placeholder="+91-9999999999" disabled> </div><div class="form-group"> <button type="button" id="btnProfile" class="btn btn-primary btn-sm">Submit</button> </form> </div></div></div>'
 
 			mainModal_.html(str);
-			$("#modalBodyP0 .my-profile input").prop("disabled", true)
+			$("#modalBodyP0 .my-profile [data-edt=1]").prop("disabled", true);
+
+			$("#modalBodyP0 .my-profile #btnProfile").off("click").on("click", function(){
+				var fn = $("#modalBodyP0 .my-profil [name=firstname]");
+                var ln = $("#modalBodyP0 .my-profil [name=lastname]");
+                var c = $("#modalBodyP0 .my-profil [name=company]");
+                var j = $("#modalBodyP0 .my-profil [name=jobtitle]")
+                debugger
+                
+                var fd = new FormData()
+                fd.append("firstname", fn.val() === "" ? fn.attr("placeholder") : fn.val())
+                fd.append("lastname", ln.val() === "" ? ln.attr("placeholder") : ln.val())
+                fd.append("jobtitle", j.val() === "" ? jn.attr("placeholder") : j.val())
+                fd.append("companyname", c.val() === "" ? c.attr("placeholder") : c.val())
+
+
+                Utility.loader({url: "users.json", data : fd, type :"POST", cb:function(_d){
+                    console.log("done", _d)
+                    profileTab("a0")
+                    //debugger
+                }});
+                $("#modalinsideclose").click();
+
+
+
+
+			})
+			
 
 	}
 
 	var profileTab = function(type){
 		if(type === "a0"){
-			$("#modalBodyP0 .my-profile input").prop("disabled", true);
+			$("#modalBodyP0 .my-profile [data-edt=1]").prop("disabled", true);
 			$("#modalBodyP0 .my-profile").addClass("nonEdit");
 		}else{
-			$("#modalBodyP0 .my-profile input").prop("disabled", false);
+			$("#modalBodyP0 .my-profile [data-edt=1]").prop("disabled", false);
 			$("#modalBodyP0 .my-profile").removeClass("nonEdit");
 		}
 	}
@@ -241,34 +281,63 @@ var ModalComponent = function(){
 
 	/*POLLS*/
 	var polls = function(){
-		mData.body[0].questions = JSON.parse(mData.body[0].questions);
+		/*mData.body[0].questions = JSON.parse(mData.body[0].questions);
 		var q = mData.body[0].questions;
+		debugger*/
+		
+		if(mData.body[0].submitted_answers){
+			q = mData.body[0].questions = JSON.parse(mData.body[0].submitted_answers)
+		}else{
+			q = mData.body[0].questions = JSON.parse(mData.body[0].questions);
+		}
+
+
 		var chckd = "", star, txtval;
 		var str = '<div class="feedback"><ul>'
 		for(var i=0; i<q.length; i++){
+			/*if(i == 0){
+				q[i].user_answer.push("Poor")
+			}else if(i == 3){
+				q[i].user_answer.push("Is fallen")
+			}else if(i == 5){
+				q[i].user_answer[0] = "2"
+			}else if(i == 6){
+				q[i].user_answer = "This is contest"
+			}*/
+
 			str += '<li>';
 			str += '<p>'+q[i].title+'</p>'
 			var qa = q[i].answers
 			for(var j=0; j<qa.length; j++){
 				str += '<div class="form-check">';
 				if(q[i].type === "radiobutton"){
-					if(q[i].user_answer){
-						if(q[i].user_answer === qa[j]){
+					if(q[i].user_answer && q[i].user_answer.length != 0){
+						if(q[i].user_answer[0] === qa[j]){
 							chckd = "checked"
 						}
 					}
-					str += '<input class="form-check-input" type="radio" name="qa'+i+'" value="'+qa[j]+'"  '+chckd+'>'
-					str += '<label class="form-check-label" for="exampleRadios1">'+qa[j]+'</label>'
+					//str += '<input class="form-check-input" type="radio" name="qa'+i+'" value="'+qa[j]+'"  '+chckd+'>'
+					//str += '<label class="form-check-label" for="exampleRadios1">'+qa[j]+'</label>'
+					
+					str += '<label class="form-check-label" for="exampleRadios1"><input class="form-check-input" type="radio" name="qa'+i+'" value="'+qa[j]+'"  '+chckd+'>'
+					str += '<span>'+qa[j]+'</span></label>'
+
 				}else if(q[i].type === "checkbox"){
-					if(q[i].user_answer){
+					if(q[i].user_answer && q[i].user_answer.length != 0){
 						if(q[i].user_answer.indexOf(qa[j]) !== -1){
 							chckd = "checked"
 						}
 					}
-					str += '<input type="checkbox" class="form-check-input" name="qa'+i+'" value="'+qa[j]+'" data-id=q_'+i+' '+chckd+'>'
-					str += '<label class="form-check-label" for="exampleCheck1">'+qa[j]+'</label>'
+					// str += '<input type="checkbox" class="form-check-input" name="qa'+i+'" value="'+qa[j]+'" data-id=q_'+i+' '+chckd+'>'
+					// str += '<label class="form-check-label" for="exampleCheck1">'+qa[j]+'</label>'
+
+					str += '<label class="form-check-label" for="exampleCheck1"><input type="checkbox" class="form-check-input" name="qa'+i+'" value="'+qa[j]+'" data-id=q_'+i+' '+chckd+'>'
+					str += '<span>'+qa[j]+'</span></label>'
+
+
 				}
 				str += '</div>'
+				chckd = "";
 			}
 			if(q[i].type === "star"){
 
@@ -281,8 +350,9 @@ var ModalComponent = function(){
 				}
 				str += '</div>'
 			}else if(q[i].type === "textarea"){
+				
 				if(q[i].user_answer){
-					txtval = q[i].user_answer[0];
+					txtval = q[i].user_answer;
 				}
 				str += '<div class="form-group">'
           		str += '<textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea></div>'
@@ -331,46 +401,18 @@ var ModalComponent = function(){
 				}
 			}
 			
-			console.log(mData)
-			// var objPost = {
-			// 	url 	:objActModal_.action_link,
-			// 	data 	:mData,
-			// 	type 	:"POST",
-			// 	cb 		:dataPosted.bind(this)
-			// }
-
-			//Utility.loader(mData);
-
 			var fd = new FormData();
-			fd.appned("data", JSON.stringify(mData)) 
-
-			//Utility.loader({url: _o.action_link, cb:mDataLoaded.bind(this)});
+			fd.append("data", JSON.stringify(mData)) 
 
 
-			var o = {};
-
-			o.url = testUrl
-			o.type = "POST";
-			o.data = fd;
-			o.processData = false;
-			o.contentType = false;
-
-
+			Utility.loader({url: objActModal_.action_link, data : fd, type :"POST", cb:function(_d){
+				if(_d.data){
+					$("#exampleModal").modal("hide");
+				}else{
+					alert("some issue in posting")
+				}
+			}});
 			
-
-			o.success = function(_data){
-				console.log(_data)	
-				
-			}
-
-			o.error = function(a,c, d){
-				
-			}
-			
-			$.ajax(o);
-
-
-
 		})
 	}
 
@@ -437,9 +479,9 @@ var ModalComponent = function(){
 
 			//breiefcase
 			//dis = ""
-			str += '<div class="col-md-1 alignText"><a href="#" data-id="'+i+'" class="iconSVG '+dis+'">';
+			str += '<div class="col-md-1 alignText"><div data-id="'+i+'" class="iconSVG '+dis+'">';
 			str += '<img src="images/briefcase.svg" alt="">';
-			str += '</a>';
+			str += '</div>';
 			str += '</div>'
 			str += '</div></li>'
 		}
@@ -449,12 +491,17 @@ var ModalComponent = function(){
 		str += '</ul></div>';
 		mainModal_.html(str);
 
-		$("#modalBodyP0 a").off("click").on("click", function(){
-			var asid = $(this).parent().parent().parent().attr("data-asset");
-			var arr = agen.filter(function(it) {
-				return(it.resource.uuid === asid)
-			})
+		$("#modalBodyP0 .iconSVG").off("click").on("click", function(){
+			// var asid = $(this).parent().parent().parent().attr("data-asset");
+			// var arr = agen.filter(function(it) {
+			// 	return(it.resource.uuid === asid)
+			// })
 
+			if($( this ).hasClass( "disableIcon" ))
+				return
+
+			$(this).addClass("disableIcon");
+			addedToBriefCase(agen[parseInt($(this).attr("data-id"))].asset_id);
 			
 			
 		})
@@ -507,10 +554,15 @@ var ModalComponent = function(){
 	/* Resources */
 	var resources = function(){
 		var tm = mData.body;
+		var dis = "";
 		var str = '<div class="resources"><ul class="list-group">'
 		for(var i=0; i<tm.length; i++){
 			str += '<li class="list-group-item">';
 			str += '<div class="row">'
+
+			if(tm[i].added){
+				dis = "disableIcon"
+			}
 
 			if(tm[i].type === "live" || tm[i].type === "video"){
 				str += '<div class="col-md-1">'
@@ -530,20 +582,27 @@ var ModalComponent = function(){
 
 			//briefcase
 			str += '<div class="col-md-1 alignText">'
-			str += '<a  data-id="'+i+'" class="iconSVG '+'dis'+'">'
+
+			str += '<div  data-id="'+i+'" class="iconSVG '+dis+'">'
 			str += '<img src="images/briefcase.svg" alt="">'
-			str += '</a>'
+			str += '</div>'
 			str += '</div></li>'
 			/*str += '<div class="col-md-2">'
             str += '<a href="#" class="material-icons">card_travel</a>'
           	str += '</div>'*/
+          	dis = ""
 		
 		}
 
 		mainModal_.html(str);
-		// $("#modalBodyP0 li a").off("click").on("click", function(){
-		// 	getComponentData($(this).parent().attr("data-id"), tm);
-		// })
+		$("#modalBodyP0 li .iconSVG").off("click").on("click", function(){
+			if($( this ).hasClass( "disableIcon" ))
+				return
+
+			$(this).addClass("disableIcon")
+			addedToBriefCase(tm[parseInt($(this).attr("data-id"))].uuid);
+			
+		})
 
 		$("#modalBodyP0 li button").off("click").on("click", function(){
 			var ot = tm[parseInt($(this).attr("data-id"))];
@@ -576,8 +635,11 @@ var ModalComponent = function(){
 		//var tm = mData.body;
 		var tm = JSON.parse(mData.body[0].playlistsource);
 		var str = '<ul class="list-group">'
+		var dis = ""
 		for(var i=0; i<tm.length; i++){
-			
+			if(tm[0].added){
+				dis = "disableIcon";
+			}
 			str += '<li class="list-group-item">'
 			str += '<div class="row"  data-id="'+i+'">'
 			str += '<div class="col-md-1">'
@@ -590,11 +652,15 @@ var ModalComponent = function(){
 			str += '</div>'
 			
 			str += '<div class="col-md-1 alignText">'
-			str += '<a href="#" data-id="'+i+'" class="iconSVG">'
+			
+			str += '<div data-id="'+i+'" class="iconSVG '+dis+'">'
+			
 			str += '<img src="images/briefcase.svg" alt="">'
-			str += '</a>'
+			str += '</div>'
+
 			str += '</div>'
 			str += '</li>'
+			dis = ""
 		}
 		str += '</ul>';
 		mainModal_.html(str);
@@ -604,13 +670,18 @@ var ModalComponent = function(){
 		// 	renderVideo($(this).parent().attr("data-id"), tm);
 		// })
 
-		$("#modalBodyP0 li a").off("click").on("click", function(){
+		$("#modalBodyP0 li .iconSVG").off("click").on("click", function(){
+			if($( this ).hasClass( "disableIcon" ))
+				return
+
 			$(this).addClass("disableIcon");
-			var fd = new FormData();
-			fd.append("resourceid", tm[parseInt($(this).attr("data-id"))].videoid) 
-			Utility.loader({url: "users/addtobriefcase.json", data : fd, type :"POST", cb:function(_d){
-				debugger
-			}});
+			addedToBriefCase(tm[parseInt($(this).attr("data-id"))].assetid);
+
+			// var fd = new FormData();
+			// fd.append("resourceid", tm[parseInt($(this).attr("data-id"))].videoid) 
+			// Utility.loader({url: "users/addtobriefcase.json", data : fd, type :"POST", cb:function(_d){
+			// 	debugger
+			// }});
 
 		})
 
@@ -682,10 +753,14 @@ var ModalComponent = function(){
 		var tuuid = "f5496ku9g6"
 		//fiterout the current user
 
+		var dis = ""
 		var str = '<div class="participants">'
 		str += '<ul class="list-group">'
 
 		for(var i=0; i<tm.length; i++){
+			if(tm[i].cardShared){
+				dis = "disableIcon"
+			}
 			str += '<li data-id='+tm[i].uuid+'>'
 			str += '<div class="row">'
 			str += '<div class="col-md-1 alignText">'
@@ -702,8 +777,12 @@ var ModalComponent = function(){
 				str += '<div class="actions">'
 				str += '<img src="images/chat.svg" alt="" data-id="chat_'+i+'">'
 				//str += '<i class="material-icons">mail</i>'
-				str += '<img src="images/briefcase.svg" alt="" data-id="mail_'+i+'">'
+				//str += '<img src="images/briefcase.svg" alt="" data-id="mail_'+i+'">'
+
+
+				
 				str += '<img src="images/business-card.svg" alt=""  data-id="bcard_'+i+'">'
+				
 				str += '</div>'
 				str += '</div>'
 			}
@@ -750,6 +829,7 @@ var ModalComponent = function(){
 		str += '<ul class="list-group">'
 
 		for(var i=0; i<tm.length; i++){
+			nm = "";
 			tp = tm[i].type;
 			if(tm[i].type === "doc" || tm[i].type === "image" || tm[i].type === "pdf"){
 				tp = "doc"
@@ -757,9 +837,22 @@ var ModalComponent = function(){
 			str += '<li data-id="'+tm[i].uuid+'" data-type="'+tm[i].type+'">'
 			str += '<div class="row">'
 			str += '<div class="col-md-1">'
-			str += '<div class="form-check">'
+			
+			/*str += '<div class="form-check">'
 			str += '<input type="checkbox" class="form-check-input">'
 			str += '</div>'
+			*/
+
+
+		str += '<label class="form-check-label" for="exampleCheck1">'
+		//str += '<input type="checkbox" class="form-check-input" name="qa'+i+'" value="'+qa[j]+'" data-id=q_'+i+' '+chckd+'>'
+		str += '<input type="checkbox" class="form-check-input">'
+		str += '<span></span>'
+		str += '</label>'
+
+
+
+			
 			str += '</div>'
 
 			str += '<div class="col-md-1">'
@@ -779,10 +872,11 @@ var ModalComponent = function(){
 					nam = tm[i].name;
 					str += '<img src="images/business-card.svg" alt="">'
 				}
+
 				str += '</div>' //md1
 				str += '<div class="col-md-8">'                                
 				str += '<img src="images/download.svg" alt="" class="mr-2" data-id="dwnld">'
-				str +=  nam
+				str +=  nam === undefined ? "" : nm
 				str += '</div>'
 
 			}
@@ -896,6 +990,14 @@ var ModalComponent = function(){
 
 			//SEND THE DATA TO DELETE t array
 
+			if(t.length != 0){
+				var fd = new FormData();
+				fd.append("resourceid", t.join(",")) 
+				Utility.loader({url: "users/removefrombriefcase.json", data : fd, type :"POST", cb:function(_d){
+					console.log("done")
+					//debugger
+				}});
+			}
 
 
 			mData.data.resources = mData.data.resources.filter(function(val) {
@@ -904,14 +1006,14 @@ var ModalComponent = function(){
 
 			briefcase();
 
-			Utility.loader({url: objActModal_.action_link, cb:function(_o){
-				//Post data
+			// Utility.loader({url: objActModal_.action_link, cb:function(_o){
+			// 	//Post data
 
-				//mData = _o.data;
+			// 	//mData = _o.data;
 				
-				//modalTabAttendees()
-				//briefcase();
-			}});
+			// 	//modalTabAttendees()
+			// 	//briefcase();
+			// }});
 
 
 		})
@@ -1116,6 +1218,19 @@ var ModalComponent = function(){
 		element.click();
 		document.body.removeChild(element);
 	}
+
+	var addedToBriefCase = function(rid){
+		///users/addtobriefcase.jso
+
+		
+
+		var fd = new FormData();
+		fd.append("resourceid", rid) 
+		Utility.loader({url: "users/addtobriefcase.json", data : fd, type :"POST", cb:function(_d){
+			console.log("done")
+			//debugger
+		}});
+}
 
 
 

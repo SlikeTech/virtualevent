@@ -41,7 +41,6 @@ var BusinessCard = function(){
                         $("#modalinsidebody [data-type=edt]").prop("disabled", true);
                     }
                 }else{
-                    debugger
                     var n = $("#modalinsidebody [name=name]");
                     var e = $("#modalinsidebody [name=email]");
                     var c = $("#modalinsidebody [name=company]");
@@ -56,6 +55,14 @@ var BusinessCard = function(){
                     o.phone = p.val() === "" ? p.attr("placeholder") : p.val();
 
                     //POST DATA
+                    //"f5i9uoz999"
+                    var fd = new FormData();
+                    fd.append("resourceid", data_.uuid) 
+                    Utility.loader({url: "businesscard/share.json", data : fd, type :"POST", cb:function(_d){
+                        console.log("done")
+                        //debugger
+                    }});
+                    $("#modalinsideclose").click();
                 }
 
             })
@@ -89,12 +96,12 @@ var BusinessCard = function(){
         str += '<div class="card-rhs">'
         str += '<div class="row mb-2"><i class="material-icons">phone</i>'
         str += '<div class="form-group m0">'
-        str += '<input type="number" class="form-control phoneNo" data-type="edt" name="phone" placeholder="'+ol.phone+'" '+dis+'>'
+        str += '<input type="tel" class="form-control phoneNo" data-type="edt" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3} placeholder="'+ol.phone+'" '+dis+'>'
         str += '</div>'
         str += '</div>'
         str += '<div class="row"><i class="material-icons">email</i>'
         str += '<div class="form-group m0">'
-        str += '<input type="email" class="form-control emailId" data-type="edt" name="email" placeholder="'+ol.email+'" '+dis+'>'
+        str += '<input type="email" class="form-control emailId" name="email" placeholder="'+ol.email+'" disabled>'
         str += '</div>'
         str += '</div>'
         str += '</div>'

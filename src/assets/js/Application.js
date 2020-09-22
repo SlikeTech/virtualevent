@@ -24,14 +24,38 @@
 
 
  	var loginClicked = function(_url){
+ 		$(this).prop("disabled", true)
     	var temail = $("#loginEl .form-control").val();     
+
          if(Login.validateEmail(temail)){
-         	var eid = getUrlParameter("id")
-         	var c = Login.init();
+         	//var eid = getUrlParameter("id")
+         	//var c = Login.init();
          	
          	var formData = new FormData();
 			formData.append("email", temail);
-			formData.append("eventid", eid);
+			formData.append("eventid", eventId);
+			//formData.append("uuid", c);
+
+         	
+			/*var h = new Headers();
+			h.append("uuid", "sdfjsdjfslkdfjksdl")
+
+			$.ajax({
+			  type: "POST",
+			  url: "http://172.29.72.27:9017/login.json",
+			  data: formData,
+			  headers: h,
+			  processData:false,
+			 contentType: false,
+			  success: function(d){
+			  	debugger
+			  },
+			  error:function(){
+			  	debugger
+			  }
+			});*/
+
+
 
          	var objPost = {
 				url : "login.json",
@@ -41,7 +65,9 @@
 			}
 
 			Utility.loader(objPost);
+
          }else{
+         	alert("fail")
          	console.log("incorrect login id")
          }
  		
@@ -49,19 +75,19 @@
 
  	
  	var loginSuccess = function(_d){
- 		EventStore.setUser(_d.data);
- 		Utility.loader({url: eventUrl, cb:mJsonLoaded.bind(this)});
+ 		//EventStore.setUser(_d.data);
+ 		//Utility.loader({url: "events.json?id="+eventId, cb:mJsonLoaded.bind(this)});
 		
-		/*if(_d.data){
+		if(_d.data){
 			if(_d.data.error){
 				alert(_d.data.msg)
 			}else{
 				EventStore.setUser(_d.data);
- 				Utility.loader({url: eventUrl, cb:mJsonLoaded.bind(this)});
+ 				Utility.loader({url: "events.json?eventid="+eventId, cb:mJsonLoaded.bind(this)});
 			}
 		}else{
 			alert("Invalid Login URL")
-		}*/
+		}
  	}
 
  	var mJsonLoaded = function(_d){

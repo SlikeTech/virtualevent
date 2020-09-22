@@ -21,11 +21,11 @@ var User = function () {
 			break;
 
 			case "mapp":
-			pRenderer_.modalOnLoad({
+			/*pRenderer_.modalOnLoad({
 				popup_type:"leaderBoard",
 				template:"leaderBoard",
 				action_link:""
-			})
+			})*/
 			break
 
 			case "mprof":

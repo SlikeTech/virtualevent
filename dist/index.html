@@ -40,7 +40,7 @@
                             <input type="checkbox">Remember Me
                         </div>
                         <div class="form-group">
-                            <button id="login" onclick="app.loginClicked()"  class="btn float-right login_btn">Sign In</button>
+                            <button id="login" onclick="app.loginClicked(this)"  class="btn float-right login_btn">Sign In</button>
                         </div>
                     </div>
                     <div class="card-footer">
@@ -124,7 +124,7 @@
                         <div class="modal-header" id="mh0">
                             <h5 class="modal-title" id="exampleModalLabel"></h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11.002" viewBox="0 0 11 11.002"><path d="M18.089,16.79l3.929-3.931a.921.921,0,1,0-1.3-1.3l-3.929,3.931-3.929-3.931a.921.921,0,1,0-1.3,1.3l3.929,3.931L11.556,20.72a.921.921,0,0,0,1.3,1.3l3.929-3.931,3.929,3.931a.921.921,0,1,0,1.3-1.3Z" transform="translate(-11.285 -11.289)"/></svg>
                             </button>
                         </div>
                         <div id="modalBodyP0" class="modal-body p0"></div>
@@ -134,7 +134,7 @@
                         <div class="modal-header">
                             <h5 class="modal-title" id="modalinsidelable"></h5>
                             <button  class="close" aria-label="Close" id="modalinsideclose">
-                                <span aria-hidden="true">&times;</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11.002" viewBox="0 0 11 11.002"><path d="M18.089,16.79l3.929-3.931a.921.921,0,1,0-1.3-1.3l-3.929,3.931-3.929-3.931a.921.921,0,1,0-1.3,1.3l3.929,3.931L11.556,20.72a.921.921,0,0,0,1.3,1.3l3.929-3.931,3.929,3.931a.921.921,0,1,0,1.3-1.3Z" transform="translate(-11.285 -11.289)"/></svg>
                             </button>
                         </div>
                         <div class="modal-body p0" id="modalinsidebody"></div>
@@ -151,7 +151,7 @@
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel2"></h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11.002" viewBox="0 0 11 11.002"><path d="M18.089,16.79l3.929-3.931a.921.921,0,1,0-1.3-1.3l-3.929,3.931-3.929-3.931a.921.921,0,1,0-1.3,1.3l3.929,3.931L11.556,20.72a.921.921,0,0,0,1.3,1.3l3.929-3.931,3.929,3.931a.921.921,0,1,0,1.3-1.3Z" transform="translate(-11.285 -11.289)"/></svg>
                             </button>
                         </div>
                         <div class="modal-body p1"></div>
@@ -165,20 +165,14 @@
 
     <script type="text/javascript">
       $(".wrapper").hide();
-      var testUrl = "http://172.29.72.27:2015/polls.json?uuid=fr1voo9ogo";
-      var baseUrl = "http://172.29.72.27:7015/"
-      var eventUrl = "events.json?id=f5n9o69lkl"
+      var baseUrl = ""
+      var eventId = "f5n9o69lkl"
       var app;
 
       console.log("PAGE LOADED")
       $( document ).ready(function() {
           app = new Application();
           app.init();
-
-          // setTimeout(function(){
-          //   $("#login").click()
-          // }, 500)
-          
       });
     </script>
   </body>
