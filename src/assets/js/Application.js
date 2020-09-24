@@ -25,7 +25,7 @@
 
  	var loginClicked = function(_url){
  		$(this).prop("disabled", true)
-    	var temail = $("#loginEl .form-control").val();     
+    	var temail = "anuj@gmail.com"//$("#loginEl .form-control").val();     
 
          if(Login.validateEmail(temail)){
          	//var eid = getUrlParameter("id")
@@ -67,7 +67,7 @@
 			Utility.loader(objPost);
 
          }else{
-         	alert("fail")
+         	//alert("fail")
          	console.log("incorrect login id")
          }
  		

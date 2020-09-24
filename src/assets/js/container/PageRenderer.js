@@ -44,6 +44,7 @@ var PageRenderer = function(){
 		
 		for(var i=0; i<_o.componants.length; i++){
 			if(_o.componants[i].type == "hotspot" || _o.componants[i].type == "video" || _o.componants[i].type === "help_box" || _o.componants[i].type === "text" ||  _o.componants[i].type === "banner"){
+				console.log("_o.componants[i].type::", _o.componants[i].type)
 				if(_o.componants[i].shape_type === "rect"){		
 					if(!_o.componants[i].coor){
 						c = _o.componants[i].coordinate.split(",");
@@ -55,6 +56,7 @@ var PageRenderer = function(){
 					}
 					strHotspot += '<div class="anchorUI" style="left: '+_o.componants[i].coor.left+'%; top: '+_o.componants[i].coor.top+'%; width: '+_o.componants[i].coor.width+'%; height: '+_o.componants[i].coor.height+'%;background:rgba(0, 0, 255, 0.5);" data-id='+i+'><div class="anchorWrapper"><span class="helpText">'+_o.componants[i].tooltip+'</span></div></div>'
 					if(_o.componants[i].type == "video"){
+						console.log("hereeeeee")
 						vcont.push(i)
 					}
 				}
@@ -73,10 +75,21 @@ var PageRenderer = function(){
 		$("#floatLeft").html(strFloaterLeft)
 		$("#floatRight").html(strFloaterRight)
 		
-		console.log("vcont", vcont)
+		console.log("vcont  ", vcont.length)
 		console.log(objActive)
 
 		bindEvents();
+
+		
+		for(var k=0; k<vcont.length; k++){
+			console.log("action   ", objActive.componants[vcont[k]].action_link)
+			$($(".bodyBg .anchorUI")[vcont[k]]).unbind();
+
+			videoComponent_.renderVideo($(".bodyBg .anchorUI")[vcont[k]], {videoid:objActive.componants[vcont[k]].action_link, autoplay:false, muted:false, pos:"wall"})
+
+
+		}
+		
 	}
 
 	var bindEvents = function (){
@@ -97,10 +110,14 @@ var PageRenderer = function(){
 				}else{
 					alert("No Action Type")
 				}
-			}else if(oType.type === "video"){
+			}
+			
+			/*else if(oType.type === "video"){
 				$(this).unbind();
 				videoComponent_.renderVideo(this, {videoid:oType.action_link})
-			}else{
+			}*/
+
+			else{
 				alert("No Type")
 			}
 		})

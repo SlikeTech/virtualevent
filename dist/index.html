@@ -23,7 +23,14 @@
     </head>
 
     <body>
-        <div class="login" id="loginEl">
+         <!--  <div id="preloader" class="preloaderOverlay H">
+            <div class="spinner-border positionCenter" role="status" style="width: 3rem; height: 3rem;z-index: 9999">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div> -->
+
+
+        <!-- <div class="login" id="loginEl">
             <div class="d-flex justify-content-center h-100 z2 R">
                 <div class="card">
                     <div class="card-header">
@@ -50,9 +57,75 @@
                     </div>
                 </div>
             </div>
+        </div> -->
+
+        <div class="login" id="loginEl">
+            <h4>DATACON VIRTUAL SUBMIT</h4>
+                <div class="login-outer">
+                <div class="login-lhs">
+                    <img src="images/loginBg.jpg" alt="">
+                </div>
+                <div class="login-rhs">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>REGISTERED EMAIL ADDRESS *</h3>
+                            <span>Not Registered? Sign Up</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="input-group form-group">
+                                <input type="text" class="form-control" placeholder="username">
+                            </div>
+                            <!-- <div class="row align-items-center remember">
+                                <input type="checkbox">Remember Me
+                            </div> -->
+                            <div class="form-group m0">
+                                <button id="login" onclick="app.loginClicked(this)"  class="btn login_btn">LOGIN</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="count-down">
+                        <h2>THE EVENT WILL START IN</h2>
+                        <div class="row mb-0 mt-3">
+                        <div class="duration">
+                            <h3>25</h3>
+                            <span>HOURS</span>
+                        </div>
+                        <div class="divider">:</div>
+                        <div class="duration">
+                            <h3>45</h3>
+                            <span>MINUTES</span>
+                        </div>
+                        <div class="divider">:</div>
+                        <div class="duration">
+                            <h3>45</h3>
+                            <span>SECONDS</span>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
         </div>
+        <!--- Alert Message -->
+        <!-- <div class="alert-msg alert-msg-info H" role="alert">
+            <i class="material-icons">info</i>
+            <b>INFORMATION</b>
+            This is a success alert—check it out!
+          </div>
+          <div class="alert-msg alert-msg-success H" role="alert">
+            <i class="material-icons">check_circle</i>
+            <b>INFORMATION</b>
+            This is a success alert—check it out!
+          </div>
+          <div class="alert-msg alert-msg-warning H" role="alert">
+            <i class="material-icons">error</i>
+            <b>INFORMATION</b>
+            This is a success alert—check it out!
+          </div> -->
     
-        <div class="wrapper" >
+        
+
+
+        <div class="wrapper virtualwrapper" >
             <div  id="vidContainer" style="position:absolute; top:0;left:0;width:100%;height:100%;z-index: 9999;display:none;background-color: #000;" >
                 <video id="vidAnimation" style="width:100%;height:100%;" autoplay muted></video>
             </div>
@@ -154,7 +227,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11.002" viewBox="0 0 11 11.002"><path d="M18.089,16.79l3.929-3.931a.921.921,0,1,0-1.3-1.3l-3.929,3.931-3.929-3.931a.921.921,0,1,0-1.3,1.3l3.929,3.931L11.556,20.72a.921.921,0,0,0,1.3,1.3l3.929-3.931,3.929,3.931a.921.921,0,1,0,1.3-1.3Z" transform="translate(-11.285 -11.289)"/></svg>
                             </button>
                         </div>
-                        <div class="modal-body p1"></div>
+                        <div class="modal-body p1" id="modalBodyP1"></div>
                     </div>
                 </div>
             </div>

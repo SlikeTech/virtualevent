@@ -26,7 +26,7 @@ var ModalComponent = function(){
 
 	var renderModal = function(_o){
 
-		mainModal_.html('<div id="preloader" class="preloaderOverlay"><div class="spinner-border positionCenter" role="status" style="width: 3rem; height: 3rem;"><span class="sr-only">Loading...</span></div></div>');
+		mainModal_.html('');
 		$("#exampleModal .tabs").remove();
 		$("#exampleModal .searchBar").remove();
 		//$("#exampleModal .searchBar").remove();
@@ -136,7 +136,7 @@ var ModalComponent = function(){
 			case "leaderBoard":
 			//uiModTitle_.html("board");
 			modalTabLeaderBoard()
-			modalTab(["LEADER BOARD", "MY POINTS", "CRITERIA", "T & C"], leaderBoardTab)
+			//modalTab(["LEADER BOARD", "MY POINTS", "CRITERIA", "T & C"], leaderBoardTab)
 			leaderBoard("a0")
 			break;
 
@@ -152,89 +152,93 @@ var ModalComponent = function(){
 
 	/* Leader Board*/
 	var leaderBoard = function(par){
-		mainModal_.html(lbTab(par));
+		//mainModal_.html(lbTab(par));
 	}
 
 	var leaderBoardTab = function(type){
-		leaderBoard(type)
+	//	leaderBoard(type)
 
 
 	}
 
 	var modalTabLeaderBoard = function(){
-		var str = '<div class="searchBar">'
-		str += '<input type="text" id="attSearch" name="" placeholder="Search by Name">'
-		str += '<i class="material-icons">search</i>'		
-		str += '<div class="refreshIcon"><i class="material-icons">refresh</i></div>'
-		str += '</div>'
 
-		$( str ).insertAfter( "#exampleModalLabel" );
+		// var str = '<div class="leaderHeader"> '
+		// str +=  '<h5 class="modal-title" id="exampleModalLabel"></h5>'
+		// str +=  '<div class="tabsBlock">'
+		// str +=  '<ul class="nav nav-tabs">'
+		// str +=  '<li class="nav-item active">LEADER BOARD</li>'
+		// str +=  '<li class="nav-item">MY POINTS</li><li class="nav-item">CRITERIA</li>'
+		// str +=  '<li class="nav-item">T &amp; C</li>'
+		// str +=  '</ul>'
+		// str +=  '</div><div class="searchBar">'
+		// str +=  '<input type="text" id="attSearch" name="" placeholder="Search by Name"><i class="material-icons">search</i>'
+		// str +=  '<div class="refreshIcon">'
+		// str +=  '<i class="material-icons">refresh</i></div></div>'
 
-		/*$("#exampleModal .searchBar i").off("click").on("click", function(){
-			var v = Utility.trim($("#attSearch").val()).toLowerCase();
-			var s = mData.body.filter(it => {
-				return it.firstname.toLowerCase().indexOf(v) !== -1 || it.lastname.toLowerCase().indexOf(v) !== -1 || it.companyname.indexOf(v) !== -1 || it.jobtitle.toLowerCase().indexOf(v) !== -1 
-			})
 
-			if(s.length){
-				attendees(s)
-			}else{
-				attendees([])
-			}
+       // str +=  '<button type="button" class="close" data-dismiss="modal" aria-label="Close">'
+        
+      //  str +=    '<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11.002" viewBox="0 0 11 11.002"><path d="M18.089,16.79l3.929-3.931a.921.921,0,1,0-1.3-1.3l-3.929,3.931-3.929-3.931a.921.921,0,1,0-1.3,1.3l3.929,3.931L11.556,20.72a.921.921,0,0,0,1.3,1.3l3.929-3.931,3.929,3.931a.921.921,0,1,0,1.3-1.3Z" transform="translate(-11.285 -11.289)"></path></svg>'
+      //   str +=    '</button></div>'
 
-			
-		})
+		//$( str ).insertAfter( "#exampleModalLabel" );
 
-		$("#exampleModal .refreshIcon i").off("click").on("click", function(){
-			$("#attSearch").val("");
-			Utility.loader({url: objActModal_.action_link, cb:function(_o){
-				mData = _o.data;
-				//modalTabAttendees()
-				attendees([]);
-			}});
-		})*/
+
+		// var str = '<div class="searchBar">'
+		// str += '<input type="text" id="attSearch" name="" placeholder="Search by Name">'
+		// str += '<i class="material-icons">search</i>'		
+		// str += '<div class="refreshIcon"><i class="material-icons">refresh</i></div>'
+		// str += '</div>'
+
+		// $( str ).insertAfter( "#exampleModalLabel" );
+
+		
 	}
 
 	var lbTab = function(t){
-		var str = '<div class="leaderboard"><h5> To be added</h5></div>'
-		if(t === "a0"){
-			str = '<div class="leaderboard"> <div class="row listTable m0"> <div class="row-th"> <div class="th-col col-md-2 text-center">Rank</div><div class="th-col col-md-8">Attendee</div><div class="th-col col-md-2">Points</div></div><div class="row-td"> <div class="td-col col-md-2 text-center">2</div><div class="td-col col-md-8">Dhananjay Singh <br>The Times Of India - Tech Lead</div><div class="td-col col-md-2">555555</div></div><div class="row-td"> <div class="td-col col-md-2 text-center">3</div><div class="td-col col-md-8">Dhananjay Singh <br>The Times Of India - Tech Lead</div><div class="td-col col-md-2">555555</div></div><div class="row-td"> <div class="td-col col-md-2 text-center">4</div><div class="td-col col-md-8">Dhananjay Singh <br>The Times Of India - Tech Lead</div><div class="td-col col-md-2">555555</div></div><div class="row-td"> <div class="td-col col-md-2 text-center">5</div><div class="td-col col-md-8">Dhananjay Singh <br>The Times Of India - Tech Lead</div><div class="td-col col-md-2">555555</div></div></div></div>'
-		}else if(t === "a1"){
+
+
+
+
+		// var str = '<div class="leaderboard"><h5> To be added</h5></div>'
+		// if(t === "a0"){
+		// 	str = '<div class="leaderboard"> <div class="row listTable m0"> <div class="row-th"> <div class="th-col col-md-2 text-center">Rank</div><div class="th-col col-md-8">Attendee</div><div class="th-col col-md-2">Points</div></div><div class="row-td"> <div class="td-col col-md-2 text-center">2</div><div class="td-col col-md-8">Dhananjay Singh <br>The Times Of India - Tech Lead</div><div class="td-col col-md-2">555555</div></div><div class="row-td"> <div class="td-col col-md-2 text-center">3</div><div class="td-col col-md-8">Dhananjay Singh <br>The Times Of India - Tech Lead</div><div class="td-col col-md-2">555555</div></div><div class="row-td"> <div class="td-col col-md-2 text-center">4</div><div class="td-col col-md-8">Dhananjay Singh <br>The Times Of India - Tech Lead</div><div class="td-col col-md-2">555555</div></div><div class="row-td"> <div class="td-col col-md-2 text-center">5</div><div class="td-col col-md-8">Dhananjay Singh <br>The Times Of India - Tech Lead</div><div class="td-col col-md-2">555555</div></div></div></div>'
+		// }else if(t === "a1"){
 			
-		}else if(t === "a2"){
+		// }else if(t === "a2"){
 
-		}else if(t == "a3"){
+		// }else if(t == "a3"){
 
-		}
+		// }
 
-		return str
+		// return str
 
 	}
 
 
 
 	/* My Profile */
-	var myProfile = function(){
-
+	var myProfileHTML = function(){
 		var user = EventStore.getUserProfile();
 		var dis = "disabled"
-
 		var str = '<div class="my-profile nonEdit" id="userprofile"> <div class="row m0"> <div class="user-profile"> <div class="user-image"> <img src="images/card-avatar.svg" alt=""> </div><div class="edit123456-image123456 mt-3" style="display:none;"> <button type="button" class="btn btn btn-outline-secondary btn-sm123456 ">Edit Image</button> <input type="file"> </div></div><div class="profile-rhs">'
 		str += '<form class="darkForm"> <div class="form-group"> <label for="exampleInputEmail1" class="labelTxt pl-0" style="left: 0">First Name</label>'
-		
-		str += ' <input type="text" class="form-control pl-0" data-edt="1" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="'+user.firstname+'" name="firstname"> </div><div class="form-group"> <label for="" class="labelTxt">Last Name</label>'
-		
-		str += ' <input type="text" class="form-control" id="" data-edt="1" placeholder="'+user.lastname+'" name="lastname"> </div><div class="form-group"> <label for="" class="labelTxt">Designation</label>'
-		
-		str += ' <input type="tex" class="form-control" id="" data-edt="1" placeholder="'+user.jobtitle+'" name="jobtitle"> </div><div class="form-group"> <label for="" class="labelTxt">Company</label>'
-		
-		str += ' <input type="text" class="form-control" id="" data-edt="1" placeholder="'+user.companyname+'" name="company"> </div><div class="form-group"> <label for="" class="labelTxt">Email Address</label>'
-		
-		str+= ' <input type="text" class="form-control" id="" placeholder="'+user.email+'" disabled> </div><div class="form-group"> <label for="" class="labelTxt">Phone Number</label>'
+		str += ' <input type="text" class="form-control pl-0" data-edt="1" aria-describedby="emailHelp" placeholder="'+user.firstname+'" name="firstname"> </div><div class="form-group"> <label for="" class="labelTxt">Last Name</label>'
+		str += ' <input type="text" class="form-control"" data-edt="1" placeholder="'+user.lastname+'" name="lastname"> </div><div class="form-group"> <label for="" class="labelTxt">Designation</label>'
+		str += ' <input type="tex" class="form-control" data-edt="1" placeholder="'+user.jobtitle+'" name="jobtitle"> </div><div class="form-group"> <label for="" class="labelTxt">Company</label>'
+		str += ' <input type="text" class="form-control" data-edt="1" placeholder="'+user.companyname+'" name="company"> </div><div class="form-group"> <label for="" class="labelTxt">Email Address</label>'
+		str+= ' <input type="text" class="form-control" placeholder="'+user.email+'" name="email" disabled> </div><div class="form-group"> <label for="" class="labelTxt">Phone Number</label>'
+		str += ' <input type="number" class="form-control"  data-edt="1" placeholder="+91-9999999999" name="phone" disabled> </div><div class="form-group"> <button type="button" id="btnProfile" class="btn btn-primary btn-sm">Submit</button> </form> </div></div></div>'
 
-		str += ' <input type="number" class="form-control" id="" placeholder="+91-9999999999" disabled> </div><div class="form-group"> <button type="button" id="btnProfile" class="btn btn-primary btn-sm">Submit</button> </form> </div></div></div>'
+		return str;
 
-			mainModal_.html(str);
+	}
+
+
+	var myProfile = function(){
+
+			mainModal_.html(myProfileHTML());
 			$("#modalBodyP0 .my-profile [data-edt=1]").prop("disabled", true);
 
 			$("#modalBodyP0 .my-profile #btnProfile").off("click").on("click", function(){
@@ -257,9 +261,6 @@ var ModalComponent = function(){
                     //debugger
                 }});
                 $("#modalinsideclose").click();
-
-
-
 
 			})
 			
@@ -454,7 +455,7 @@ var ModalComponent = function(){
 			}	
 
 			var tm = agen[i].speakers;
-			str += '<div class="col-md-5">';
+			str += '<div class="col-md-5 alignText">';
 			str += '<b class="db">Welcome Address</b>'
 			
 			
@@ -648,7 +649,7 @@ var ModalComponent = function(){
 			str += '<div class="col-md-2 alignText">'
 			str += '<button type="button" class="btn btn-secondary btn-sm upcomingBtn">PLAY</button>'
 			str += '</div><div class="col-md-8">'
-			str += '<b>'+tm[i].description+'</b>'
+			str += '<b>'+tm[i].name+'</b>'
 			str += '</div>'
 			
 			str += '<div class="col-md-1 alignText">'
@@ -800,16 +801,23 @@ var ModalComponent = function(){
 		mainModal_.html(str);
 		//add click events
 		$("#modalBodyP0 .actions img").off("click").on("click", function(){
+
+			if($( this ).hasClass( "disableIcon" ))
+				return
+
+
 			var l = $(this).attr("data-id").split("_");
 			var t = l[0];
 			var o = mData.body[parseInt(l[1])]
+
+
 
 			if(t === "chat"){
 
 			}else if(t === "mail"){
 
 			}else if(t === "bcard"){
-				populateCard(o, true)
+				populateCard(o, true, this)
 
 			}
 		})
@@ -823,6 +831,7 @@ var ModalComponent = function(){
 		var str = "";
 		var ac = "";
 		var nam, tp;
+		
 
 		str += '<div class="modal-body p0">'
 		str += '<div class="briefcase">'
@@ -846,7 +855,14 @@ var ModalComponent = function(){
 
 		str += '<label class="form-check-label" for="exampleCheck1">'
 		//str += '<input type="checkbox" class="form-check-input" name="qa'+i+'" value="'+qa[j]+'" data-id=q_'+i+' '+chckd+'>'
-		str += '<input type="checkbox" class="form-check-input">'
+		
+		if(tp === "video"){
+			str += '<input type="checkbox" class="form-check-input" disabled data-ind='+i+'>'
+		}else{
+			str += '<input type="checkbox" class="form-check-input"  data-ind='+i+'>'	
+		}
+		
+		
 		str += '<span></span>'
 		str += '</label>'
 
@@ -952,7 +968,7 @@ var ModalComponent = function(){
 			if($(this).text() === "VIEW"){
 				if(ao.type === "business_card"){
 					oR.url = ao.resource
-					populateCard(oR, false)
+					populateCard(oR, false, this)
 				}else if(ao.type === "image"){
 					oR.url = ao.resource
 					populateImage(oR)
@@ -976,6 +992,21 @@ var ModalComponent = function(){
 
 		$('#modalBodyP0 #btndownloads').off("click").on("click", function(e){
 			e.stopPropagation();
+			var tstr = [];
+			$('#modalBodyP0  [type=checkbox]:checked').each(function( index ) {
+			  	tstr.push(mData.data.resources[parseInt($(this).attr("data-ind"))].uuid);
+			  	console.log(tstr)
+			});
+
+			if(tstr.length !== 0){
+				downloadfile({title:"test", url:baseUrl+"resource/download.json?resourceid="+tstr.join(",")})
+				/*Utility.loader({url: "resource/download.json?resourceid="+tstr.join(","), cb:function(_d){
+					console.log("done")
+					downloadfile({title:"test", url:"http://localhost/rnd/vievent.zip"})
+					//debugger
+				}});*/
+				 
+			}
 			//debugger
 		})
 		
@@ -1091,12 +1122,11 @@ var ModalComponent = function(){
 		
 	}
 	
-	var populateCard = function( _o, edit){
+	var populateCard = function( _o, edit, _ref){
 
-		$(".modal-overlay-cont #modalinsidelable").text("Business Card");
-		//$(".modal-overlay-cont").removeClass("H");
+		$(".modal-overlay-cont #modalinsidelable").text("Your Business Card ");
 		$(".modal-overlay-cont").addClass("show");
-		cardContainer_.renderCard($("#modalinsidebody"), _o, edit);
+		cardContainer_.renderCard($("#modalinsidebody"), _o, edit, cardEditAction.bind(this), _ref);
 	}
 
 	var renderVideoN = function(_o){
@@ -1149,13 +1179,13 @@ var ModalComponent = function(){
 
 		mainModal_ = $("#modalBodyP0");
 		$("#exampleModal2").on('hidden.bs.modal', function(){
-			console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQq")
+			
 			$("#exampleModal2 .modal-body").html("")
 			$("#exampleModal").modal("show");
 		})
 
 		$("#exampleModal").on('hidden.bs.modal', function(){
-			console.log("PPPPPPPPPPPPPPPPPPPPPPPPP")
+
 			if(modelFor_ === "player"){
 				$("#exampleModal .modal-body").html("")
 			}
@@ -1172,17 +1202,14 @@ var ModalComponent = function(){
 
 	/* Modal Tabs */
 	var modalTab = function(arr, cb){
-		
 		//var str = '<h5 class="modal-title" id="exampleModalLabel">'+objActModal_.popup_type+'</h5>'
 		var str = '<div class="tabs">'
 		str += '<ul class="nav nav-tabs">'
-
 		for(var i=0; i<arr.length; i++){
 			str += '<li class="nav-item">';
 			str += '<a class="nav-link active" id="a'+i+'">'+arr[i]+'</a>'
 			str += '</li>'
 		}
-
 		str += '</ul></div>'
 
 		//$("#exampleModal .tabs").html(str);
@@ -1210,6 +1237,7 @@ var ModalComponent = function(){
 	};
 
 	var downloadfile = function(obj){
+		console.log(obj.url)
 		var element = document.createElement('a');
 		element.setAttribute('href', obj.url);
 		element.setAttribute('download', obj.title);
@@ -1230,7 +1258,78 @@ var ModalComponent = function(){
 			console.log("done")
 			//debugger
 		}});
-}
+	}
+
+	var cardEditAction = function(){
+		
+		$("#exampleModal2").modal("show");
+		$("#exampleModal2 .tabs").remove();
+		modalTabModal2(["VIEW", "EDIT"], profileTab2)
+	}
+
+	var modalTabModal2 = function(arr, cb){
+		//var str = '<h5 class="modal-title" id="exampleModalLabel">'+objActModal_.popup_type+'</h5>'
+		var str = '<div class="tabs">'
+		str += '<ul class="nav nav-tabs">'
+		for(var i=0; i<arr.length; i++){
+			str += '<li class="nav-item">';
+			str += '<a class="nav-link active" id="a'+i+'">'+arr[i]+'</a>'
+			str += '</li>'
+		}
+		str += '</ul></div>'
+		//$("#exampleModal .tabs").html(str);
+		$( str ).insertAfter( "#exampleModalLabel2" );
+		$("#exampleModal2 .tabs a").removeClass("active");
+		$("#exampleModal2 "+"#a1").addClass("active");
+		$("#exampleModal2 .tabs a").on("click", function(){
+
+			var id = this.id;
+			$("#exampleModal2 .tabs a").removeClass("active");
+			$("#exampleModal2 "+"#"+id).addClass("active");
+			cb(id);
+		})
+		$(".modal-body.p1").html(myProfileHTML())
+		//$("#exampleModal2 #a1").click();
+		profileTab2("a1")
+
+
+
+		$("#modalBodyP1 .my-profile #btnProfile").off("click").on("click", function(){
+			var fn = $("#modalBodyP1 .my-profile [name=firstname]");
+            var ln = $("#modalBodyP1 .my-profile [name=lastname]");
+            var c = $("#modalBodyP1 .my-profile [name=company]");
+            var j = $("#modalBodyP1 .my-profile [name=jobtitle]")
+            var p = $("#modalBodyP1 .my-profile [name=phone]")
+            var e = $("#modalBodyP1 .my-profile [name=email]")
+            
+            var fd = {}
+            var f = fn.val() === "" ? fn.attr("placeholder") : fn.val()
+            var l = ln.val() === "" ? ln.attr("placeholder") : ln.val()
+            fd["jobtitle"] = j.val() === "" ? j.attr("placeholder") : j.val()
+            fd["companyname"] =  c.val() === "" ? c.attr("placeholder") : c.val()
+            fd["phone"] =  p.val() === "" ? p.attr("placeholder") : p.val()
+            fd["email"] =  e.val() === "" ? e.attr("placeholder") : e.val()
+
+            fd["name"] = f + " "+ l 
+            cardContainer_.updateCard(fd);
+
+            $("#exampleModal2").modal("hide");
+			$("#exampleModal2 .tabs").remove();
+		})
+	}
+
+	
+
+
+	var profileTab2 = function(type){
+		if(type === "a0"){
+			$("#modalBodyP1 .my-profile [data-edt=1]").prop("disabled", true);
+			$("#modalBodyP1 .my-profile").addClass("nonEdit");
+		}else{
+			$("#modalBodyP1 .my-profile [data-edt=1]").prop("disabled", false);
+			$("#modalBodyP1 .my-profile").removeClass("nonEdit");
+		}
+	}
 
 
 

@@ -37,7 +37,8 @@ module.exports = function (grunt) {
                 files: {
                     'temp/styles.css': [
                         'src/assets/css/scss_style.css',
-                        'src/assets/css/main.css'
+                        'src/assets/css/main.css',
+                        'src/assets/css/media.css'
                     ],
                 },
             },

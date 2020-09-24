@@ -1,0 +1,19 @@
+/*** Media Query ***/
+@media screen and (max-width: 999px) {
+    .login-lhs {
+        display: none;
+    }
+    .login-lhs, .login-rhs {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    .login-lhs {
+        margin: 20px 0;
+    }
+    .login-outer {
+        flex-wrap: wrap;
+    }
+    .login h4 {
+        width: 100%;
+    }
+}
