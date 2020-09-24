@@ -60,7 +60,7 @@ var Utility = (function () {
 			}
 			
 			
- 			//o.headers = { 'eventid': eventId }
+ 			o.headers = { 'eventid': eventId }
 
 			o.success = function(_data){
 				loadSuccess(_data);

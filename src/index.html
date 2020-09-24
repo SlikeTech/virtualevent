@@ -36,11 +36,11 @@
     </head>
 
     <body>
-       <!--  <div id="preloader" class="preloaderOverlay H">
+         <div id="preloaderstop" class="preloaderOverlay">
             <div class="spinner-border positionCenter" role="status" style="width: 3rem; height: 3rem;z-index: 9999">
                 <span class="sr-only">Loading...</span>
             </div>
-        </div> -->
+        </div> 
 
 
         <!-- <div class="login" id="loginEl">
@@ -72,7 +72,7 @@
             </div>
         </div> -->
 
-        <div class="login" id="loginEl">
+        <div class="login H" id="loginEl">
             <h4>DATACON VIRTUAL SUBMIT</h4>
                 <div class="login-outer">
                 <div class="login-lhs">
@@ -119,21 +119,23 @@
                 </div>
         </div>
         <!--- Alert Message -->
-        <!-- <div class="alert-msg alert-msg-info H" role="alert">
-            <i class="material-icons">info</i>
+        <div class="alert-msg alert-msg-info H" role="alert" id="infoAlert">
+            <i class="material-icons ">info</i>
             <b>INFORMATION</b>
             This is a success alert—check it out!
-          </div>
-          <div class="alert-msg alert-msg-success H" role="alert">
+        </div>
+          
+        <div class="alert-msg alert-msg-success H" role="alert" id="successAlert">
             <i class="material-icons">check_circle</i>
             <b>INFORMATION</b>
             This is a success alert—check it out!
-          </div>
-          <div class="alert-msg alert-msg-warning H" role="alert">
+        </div>
+        
+        <div class="alert-msg alert-msg-warning H" role="alert" id="failAlert">
             <i class="material-icons">error</i>
             <b>INFORMATION</b>
             This is a success alert—check it out!
-          </div> -->
+        </div>
     
         
 
@@ -203,8 +205,8 @@
             <div class="floater leftPosition" id="floatLeft"></div>
             <div class="floater rightPosition" id="floatRight"></div>
 
-
-            <div class="modal fade" id="exampleModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- data-backdrop="static" data-keyboard="false"  -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header" id="mh0">

@@ -1,5 +1,4 @@
 @import url(https://fonts.googleapis.com/css?family=Numans);
-
 .preloaderOverlay {
     position: absolute;
     top: 0;
@@ -45,8 +44,7 @@ div:hover, button:hover, svg:hover {
     font-size: 35px;
     text-transform: uppercase;
     color: #00D3FF;
-    width: 1160px;
-    margin: 0 auto 5px auto;
+    margin: 0 0 5px 0;
     z-index: 2;
 }
 .login-lhs img {
@@ -59,6 +57,7 @@ div:hover, button:hover, svg:hover {
     max-width: 492px;
     display: flex;
     flex-direction: column;
+    padding-top: 52px;
 }
 .login .card, .count-down {
     background: rgba(0,0,0,.7);
@@ -76,9 +75,12 @@ div:hover, button:hover, svg:hover {
 }
 .count-down h2 {
     font-size: 14px;
+    color: #FFFFFF99;
 }
-.count-down h3, .divider {
-    font-size: 52px;
+.linkTxt {
+    text-decoration: underline;
+    font-style: normal;
+    cursor: pointer;
 }
 .divider {
     color: #808080DD;
@@ -94,6 +96,28 @@ div:hover, button:hover, svg:hover {
     font-size: 52px;
     margin: 0;
 }
+.loginLogo {
+    z-index: 2;
+    height: 40px;
+    position: absolute;
+    top: 40px;
+    /* left: 50%;
+    min-width: 1164px;
+    max-width: 100%;
+    transform: translateX(-50%); */
+}
+.loginLogo img {
+    width: auto;
+    height: 40px;
+    min-height: 40px;
+    max-height: 40px;
+}
+.row .duration:not(:last-child) h3 {    
+    font-weight: bold;
+}
+.row .duration:last-child h3 {
+    color: #AAAAAADD;
+}
 .count-down span {
     display: block;
     color: #FFFFFF99;
@@ -103,7 +127,7 @@ div:hover, button:hover, svg:hover {
 }
 .login:after {
     content: "";
-    background: rgba(0,0,0,0.85);
+    background: rgba(0,0,0,0.6);
     width: 100%;
     height: 100%;
     position: absolute;
@@ -200,6 +224,9 @@ input:focus {
 .links a {
     margin-left: 4px
 }
+.f12 {
+    font-size: 12px!important;
+}
 .f14 {
     font-size: 14px!important;
 }
@@ -249,7 +276,10 @@ input:focus {
 
 .feedback .form-check {
     display: inline-block;
-    margin-left: 30px;
+    padding: 0 1.25rem 0 0
+}
+.virtualWrapper .__btm, .virtualWrapper .__center, .virtualWrapper .__top {
+    box-sizing: content-box;
 }
 .virtualWrapper [type="checkbox"]:not(:checked), [type="checkbox"]:checked, .virtualWrapper [type="radio"]:not(:checked), .virtualWrapper [type="radio"]:checked  {
     position: absolute;
@@ -300,7 +330,7 @@ input:focus {
     margin-top: 3px;
     -webkit-transition: .2s;
     transition: .2s;
-    background: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.8);
 }
 .virtualWrapper [type="checkbox"]+span:after, .virtualWrapper [type="radio"]+span:after {
     border: 0;
@@ -429,7 +459,7 @@ a,a:hover {
 }
 .disableIcon {
     opacity: .3;
-    cursor: auto;
+    cursor: auto!important;
 }
 
 .disableIcon:hover {
@@ -674,14 +704,14 @@ a,a:hover {
     top: 50%;
     transform: translateY(-50%);
     display: flex;
-    flex-direction: column
+    flex-direction: column;
 }
 
 .floater .btn {
     margin-bottom: 10px;
-    min-width: 150px;
+    /* min-width: 150px; */
     max-width: 200px;
-    width: 100%;
+    width: 125px;
     font-size: 14px;
     /* font-weight: 600; */
     text-transform: uppercase;
@@ -689,40 +719,78 @@ a,a:hover {
     background: #AC2727!important;
     border: none!important;
     color: #C9C9C9!important;
+    transition: all .3s ease-in;
     padding: 0 20px;
 }
 
 .floater .btn:last-of-type {
     margin-bottom: 0
 }
-
+.floater svg {
+    vertical-align: middle;
+    height: 18px;
+    width: auto;
+    fill: #acacac;
+}
 .leftPosition {
     left: 0;
 }
+.leftPosition svg {
+    margin-left: 5px;
+}
 .leftPosition button {
-    transform: translateX(-35px);
+    /* transform: translateX(-35px); */
     border-radius: 0 100px 100px 0;
-    text-align: right;
+    text-align: left;
 }
 .rightPosition {
     right: 0;
+    flex-wrap: wrap-reverse;
+}
+.rightPosition svg {
+    margin-right: 5px;
 }
 .rightPosition button {
-    transform: translateX(35px);
+    /* transform: translateX(35px); */
     border-radius: 100px 0 0 100px;
     text-align: left;
 }
 .leftPosition button:hover, .rightPosition button:hover, .leftPosition button.active, .rightPosition button.active {
     transform: translateX(0px);
     transition: all .5s ease-out;
+    width: 149px!important;
 }
 .modal-body {
     min-height: 400px;
     max-height: 500px;
     overflow: auto;
-    background: #222;
+    background: #292929;
     color: #b2b2b2;
     z-index: 1;
+}
+.close-ico {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 10px;
+    height: 10px;
+    cursor: pointer;
+}
+.close-ico svg {
+    width: 100%;
+    height: 100%;
+    fill: #434343;
+}
+.close-ico:hover svg {
+    fill: #000;
+}
+.no-data {
+    font-size: 22px;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 .modal-header .nav {
     font-size: 12px;
@@ -739,6 +807,8 @@ a,a:hover {
     border-bottom: 2px solid transparent;
     position: relative;
     cursor: pointer;
+    font-size: 14px;
+    font-weight: 400;
 }
 .modal-header .nav-tabs .nav-link:after {
     content: "";
@@ -751,10 +821,15 @@ a,a:hover {
 .modal-header li:last-of-type .nav-link:after, .modal-header li:hover:last-of-type .nav-link:after, .modal-header li:last-of-type .nav-link.active:after {
     border-right: 0;
 }
-.modal-header .nav-item:hover .nav-link, .modal-header .nav-item .nav-link.active  {
+.modal-header .nav-item .nav-link.active, .modal-header .nav-item:hover .nav-link  {
     color: #b4b4b4;
-    border-bottom: 2px solid #AC2727;
     height: 38px;
+}
+.modal-header .nav-item .nav-link.active  {
+    border-bottom: 2px solid #AC2727;
+}
+.modal-header .nav-item:hover .nav-link {
+    border-bottom: 2px solid #D6780E;
 }
 .modal-header .nav-item:hover .nav-link:after, .modal-header .nav-item .nav-link.active:after  {
     border-right: 1px solid #b2b2b2;
@@ -766,7 +841,7 @@ a,a:hover {
     background: #2F2F2F;
     border-radius: 0;
     font-size: 14px;
-    padding: 14px 10px 15px 10px;
+    padding: 9px 10px 10px 10px;
     margin: 0 0 1px 0;
     color: #FFFFFF99;
     border: none;
@@ -916,6 +991,15 @@ a,a:hover {
     opacity: 1;
     z-index: 2;
 }
+.modal-overlay-cont .modal-body {
+    /* min-height: 500px; */
+    background: #292929;
+}
+.modal-overlay-cont .modal-body img {
+    padding: 10px;
+    width: 100%;
+    height: auto;
+}
 .modal-header h5 {
     line-height: 39px;
     font-size: 16px!important;
@@ -949,15 +1033,23 @@ a,a:hover {
     display: flex!important;
     padding: 0 20px!important;
     border-top: none!important;
-    height: 40px;
+    min-height: 10px;
+    max-height: 50px;
     background: #1c1717;
 }
+
 .modal-footer p {
     margin: 0 auto 0 0!important;
+    padding: 15px 0;
 }
 .modal-footer p i {
     font-size: 13px;
     vertical-align: middle;
+}
+.modal-footer svg {
+    width: 14px;
+    vertical-align: middle;
+    margin-left: 4px;
 }
 .modal-footer i {
     margin-left: 5px;
@@ -1121,7 +1213,7 @@ a,a:hover {
 }
 .participants .actions:after {
     content: "";
-    background: #5C5C5C;
+    background: #4a4a4a;
     position: absolute;
     top: -19px;
     left: -3px;
@@ -1211,15 +1303,18 @@ a,a:hover {
     font-size: 20px;
     line-height: 18px;
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: bold;
     border: none!important;
 }
 .form-group input:disabled.userName { 
-    color: #D6780E!important; 
+    color: #D6780E!important;
+    padding-bottom: 1px;
+    padding: 1px 0;
 }
 .form-group input:disabled.compnay, .form-group input:disabled.designation {
     color: #5F5F5F;
     border: none!important;
+    padding: 0 0 1px 0;
 }
 .imageUpload {
     display: none!important;
@@ -1252,7 +1347,7 @@ a,a:hover {
     cursor: default;
 }
 .card-lhs {
-    margin: 30px 0 30px 30px;
+    margin: 30px 0 30px 60px;
     width: 235px;
 }
 .card-lhs:after {
@@ -1301,33 +1396,40 @@ a,a:hover {
     margin-right: 10px;
     margin-top: 5px;
     position: absolute;
+    left: 28px;
 }
 .card-rhs .form-group {
     width: 80%;
-    margin-left: 36px!important;
+    margin-left: 46px!important;
 }
 
 /*** My Profile ***/
 .my-profile {
     padding: 30px;
 }
+.user-profile {
+    width: 138px;
+    margin-right: 25px;
+}
 .user-image {
-    max-width: 90px;
-    flex: 0 0 90px;
-    height: 90px;
+    width: 100%;
+    height: 122px;
     text-align-last: center;
     color: #fff;
     margin-right: 30px;
     border: 1px solid rgba(255,255,255,0.2);
     border-radius: 5px;
-    background: rgba(255,255,255,0.5);
+    background: #A6A6A6;
 }
 .user-image img {
     width: 100%;
     height: 100%;
 }
 .profile-rhs {
-    width: calc(100% - 125px)
+    width: calc(100% - 170px);
+    background: rgba(0,0,0,0.2);
+    padding: 30px;
+    border-radius: 10px;
 }
 .edit-image {
     position: relative;
@@ -1338,11 +1440,15 @@ a,a:hover {
     padding: 0;
 }
 .edit-image button {
-    width: 100%;
     height: 100%;
-    font-size: 10px;
+    font-size: 12px;
     text-transform: uppercase;
     padding: 0;
+    background: #bebebe;
+    width: 138px;
+    color: #000000;
+    min-height: 39px;
+    font-weight: 600;
 }
 .edit-image input:hover {
     background: rgba(255,255,255,.1);
@@ -1367,22 +1473,38 @@ a,a:hover {
     margin: 1% 5px 20px 5px;
 }
 .darkForm .labelTxt {
-    position: absolute;
-    top: -9px;
-    left: 9px;
-    background: #222222;
-    padding: 0 10px;
-    font-size: 11px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #FFFFFF;
+    text-transform: uppercase;
 }
 .darkForm .form-group input {
-    padding: 12px 10px;
+    padding: 3px 10px;
     font-size: 12px;
-    color: #e1e1e1;
-    background: rgb(34 34 34);
-    border-color: rgba(255,255,255,.15);
+    color: #00000099;
+    background: rgba(255,255,255,0.6);
+    border-color: #707070;
 }
 .darkForm .form-group input:disabled {
     border: none;
+}
+.user-footer {
+    display: flex;
+    max-width: calc(100% + 60px);
+    flex: 0 0 calc(100% + 60px);
+    border-top: 1px solid #000;
+    padding: 20px 30px 0 30px;
+    margin: 20px 0 0 -30px;
+}
+.user-footer b {
+    color: #FFFFFF99;
+    display: block;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+.user-footer span {
+    font-size: 11px;
+    color: #838383;
 }
 .nonEdit .labelTxt {
     left: 0;
@@ -1397,7 +1519,14 @@ a,a:hover {
 }
 .darkForm .btn {
     height: 44px;
-    margin-top: 4px;
+    margin-left: auto;
+    background: #bebebe!important;
+    color: #000000!important;
+    text-transform: uppercase;
+    border: none;
+    min-width: 70px;
+    font-size: 12px;
+    font-weight: 600;
 }
 
 /*** Leaderboard ***/
@@ -1481,9 +1610,9 @@ a,a:hover {
 /*** Alert ***/
 .alert-msg {
     position: absolute;
-    top: 30%;
+    top: 0;
     left: 50%;
-    transform: translate(-50%, -250%);
+    transform: translate(-50%, -60px);
     z-index: 9999;
     transition: all .3s ease-out;
     width: 450px;
@@ -1522,5 +1651,5 @@ a,a:hover {
     color: #D5A50A!important;
 }
 .alert-msg.show {
-    transform: translate(-50%, -40%);
+    transform: translate(-50%, 60%);
 }

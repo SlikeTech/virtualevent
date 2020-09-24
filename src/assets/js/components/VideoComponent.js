@@ -1,5 +1,6 @@
 var VideoComponent = function(){
-	var pRenderer_, callback_, playerLoad_, player_ = false, containerId_;
+	var pRenderer_, callback_, playerLoad_ = false, player_, containerId_;
+  var tObj = {};
 	
 	
     
@@ -13,24 +14,47 @@ var VideoComponent = function(){
 	var renderVideo = function(cont, obj){
 		//$(cont).html(getHtml());3
 
-        containerId_ = "playerContainer_"+obj.videoid
+        containerId_ = "playerContainer_"+makeid(10) //obj.videoid
         var vcon = {}
         vcon.videoid = obj.videoid;
         vcon.autoplay = obj.autoplay
         vcon.muted = obj.muted
 
-        
+        console.log("joooo  ", obj.pos)
 
-        var h = obj.pos && obj.pos === "wall" ? "100%" : "400px;"
-		
+        var h = obj.pos && obj.pos === "wall" ? "100%" : "486px"
+        
         $(cont).html('');
+
+        if(obj.pos && obj.pos === "wall"){
+            setDimension("100%", vcon, cont )
+        }else{
+            setTimeout(function(){
+              var t = $("#modalBodyP0").width();
+              setDimension(t*9/16+"px", vcon,  cont)
+            },500)
+        }
+
+      
+
+		
+        /*$(cont).html('');
         setTimeout(function(){
+          console.log("============", $("#modalBodyP0").width())
+            if(obj.pos && obj.pos === "wall"){
+
+            }
             $(cont).html('<div id="'+containerId_+'" style="width:100%;height:'+h+'"></div>');  
             addVideo(vcon)
-        }, 100)
+        }, 300)*/
 	
 		
 	}
+
+  var setDimension = function(h, o, c){
+    $(c).html('<div id="'+containerId_+'" style="width:100%;height:'+h+'"></div>');  
+    addVideo(o)
+  }
 
 	var addVideo = function(_v){
         var slikeConfig = {
@@ -55,7 +79,7 @@ var VideoComponent = function(){
 
         if(playerLoad_){
            // debugger
-           console.log("exis")
+           console.log("exit")
             player_.destroy()
             player_ = new SlikePlayer(slikeConfig);
             player_.on(SlikePlayer.Events.PLAYER_ERROR, function (eventName, data) {
@@ -66,42 +90,7 @@ var VideoComponent = function(){
             
         }
     
-    /*spl.load(slikeConfig, function (sdkLoadStatus, config) {
-        if (sdkLoadStatus) {
-
-          console.log(config, "------------------------")
-          
-          // var tmp = new SlikePlayer(config);
-          // tmp.on(SlikePlayer.Events.PLAYER_ERROR, function (eventName, data) {
-          //   console.log('player error', data);
-          // });
-
-          player_ = true;
-
-          window.player = new SlikePlayer(config);
-          window.player.on(SlikePlayer.Events.PLAYER_ERROR, function (eventName, data) {
-            console.log('player error', data);
-          });
-          
-
-          //SlikePlayer
-
-
-          // window.player.on(SlikePlayer.Events.STREAM_STATUS, function (eventName, data) {
-          //   console.log("PLAYR")
-          //   if (data.evtStatus == -1) {
-          //     var output = "NOT_STARTED";
-          //     console.log('stream status', output);
-          //   } else if (data.evtStatus == 0) {
-          //     var output = "ENDED";
-          //     console.log('stream status', output);
-          //   } else if (data.evtStatus == 2) {
-          //     var output = "PAUSED";
-          //     console.log('stream status', output);
-          //   }
-          // });
-        }
-      });*/
+    
   }
 
 
@@ -132,6 +121,17 @@ var VideoComponent = function(){
             console.log('player ready', data);
         });
     }
+
+
+  var makeid = function(length) {
+   var result           = '';
+   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+   var charactersLength = characters.length;
+   for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}
 
   var getHtml = function(_o){}
 	var initUI = function(){}

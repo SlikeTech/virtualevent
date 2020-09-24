@@ -1,97 +1,75 @@
  var Application = function(){
  	var util_, pRenderer_, router_, nav_;
- 	var login_, preloader, user_;
+ 	var login_, preloader, user_, tmail_;
  
 
 
  	var init = function(){
  		uiELements();
-
  		pRenderer_ = new PageRenderer();
  		pRenderer_.init(this, pRenderCallback.bind(this));
  		router_ = new Router();
-
  		nav_ = new Navigation();
-
  		user_ = new User();
 
+ 		tmail_ = Login.getCookie();
+ 		if(tmail_ !== ""){
+ 			startApp();
+ 		}else{
+ 			$("#preloaderstop").addClass("H")
+ 			$("#loginEl").removeClass("H")
+ 		}
+ 	}
 
-
- 		
+ 	var loginClicked = function(_id){
+ 		tmail_ = $("#loginEl .form-control").val();
+ 		if(Login.validateEmail(tmail_)){
+ 			startApp()
+ 		}else{
+ 			alert("Incorrect Id")
+ 			$("#preloaderstop").addClass("H")
+ 			$("#loginEl").removeClass("H")
+ 		}
 
  	}
 
-
-
- 	var loginClicked = function(_url){
- 		$(this).prop("disabled", true)
-    	var temail = "anuj@gmail.com"//$("#loginEl .form-control").val();     
-
-         if(Login.validateEmail(temail)){
-         	//var eid = getUrlParameter("id")
-         	//var c = Login.init();
-         	
-         	var formData = new FormData();
-			formData.append("email", temail);
+ 	var startApp = function(_url){
+ 		 	var formData = new FormData();
+			formData.append("email", tmail_);
 			formData.append("eventid", eventId);
-			//formData.append("uuid", c);
-
-         	
-			/*var h = new Headers();
-			h.append("uuid", "sdfjsdjfslkdfjksdl")
-
-			$.ajax({
-			  type: "POST",
-			  url: "http://172.29.72.27:9017/login.json",
-			  data: formData,
-			  headers: h,
-			  processData:false,
-			 contentType: false,
-			  success: function(d){
-			  	debugger
-			  },
-			  error:function(){
-			  	debugger
-			  }
-			});*/
-
-
-
-         	var objPost = {
+			var objPost = {
 				url : "login.json",
 				data : formData,
 				type :"POST",
 				cb :loginSuccess.bind(this)
 			}
-
 			Utility.loader(objPost);
-
-         }else{
-         	//alert("fail")
-         	console.log("incorrect login id")
-         }
- 		
  	}
 
  	
  	var loginSuccess = function(_d){
- 		//EventStore.setUser(_d.data);
- 		//Utility.loader({url: "events.json?id="+eventId, cb:mJsonLoaded.bind(this)});
-		
 		if(_d.data){
 			if(_d.data.error){
+				$("#preloaderstop").addClass("H")
+ 				$("#loginEl").removeClass("H")
 				alert(_d.data.msg)
+
 			}else{
 				EventStore.setUser(_d.data);
  				Utility.loader({url: "events.json?eventid="+eventId, cb:mJsonLoaded.bind(this)});
+ 				if(Login.getCookie() === "")
+ 					Login.createCookie("usermailid", tmail_)
 			}
 		}else{
+			$("#preloaderstop").addClass("H")
+ 			$("#loginEl").removeClass("H")
 			alert("Invalid Login URL")
 		}
  	}
 
  	var mJsonLoaded = function(_d){
-		$("#loginEl").hide();
+ 		$("#preloaderstop").addClass("H")
+		$("#loginEl").addClass("H")
          $(".wrapper").show();
 
  		if(_d.data){

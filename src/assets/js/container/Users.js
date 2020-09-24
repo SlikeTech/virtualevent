@@ -13,11 +13,25 @@ var User = function () {
 	}
 
 	var clickEvent = function(type){
+		var u;
 		switch(type){
+			
+			case "online" :
+			u = EventStore.getUserProfile();
+			if(u.status !== 1)
+				senData(1)
+			break;			
+
 			case "away":
+			u = EventStore.getUserProfile();
+			if(u.status !== -1)
+				senData(-1)
 			break;
 
 			case "dnd":
+			u = EventStore.getUserProfile();
+			if(u.status !== -2)
+				senData(-2)
 			break;
 
 			case "mapp":
@@ -40,6 +54,26 @@ var User = function () {
 			case "logout":
 			break;
 		}
+	}
+
+
+	var senData = function(st){
+		var user = EventStore.getUserProfile();
+
+		var fd = new FormData()
+        fd.append("firstname", user.firstname)
+        fd.append("lastname", user.lastname)
+        fd.append("jobtitle", user.jobtitle)
+        fd.append("companyname", user.companyname)
+        fd.append("phone", user.phone)
+        fd.append("status", status)
+
+        user.status = st;
+
+        Utility.loader({url: "users/update.json", data : fd, type :"POST", cb:function(_d){
+            var u = EventStore.getUserProfile();
+            u.status = st;
+        }});
 	}
 
 	var audinces = function(){

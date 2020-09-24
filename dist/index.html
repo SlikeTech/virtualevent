@@ -23,43 +23,14 @@
     </head>
 
     <body>
-         <!--  <div id="preloader" class="preloaderOverlay H">
+                 <div id="preloaderstop" class="preloaderOverlay">
             <div class="spinner-border positionCenter" role="status" style="width: 3rem; height: 3rem;z-index: 9999">
                 <span class="sr-only">Loading...</span>
             </div>
-        </div> -->
+        </div> 
 
 
-        <!-- <div class="login" id="loginEl">
-            <div class="d-flex justify-content-center h-100 z2 R">
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Sign In</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="input-group form-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="material-icons">person</i></span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="username">
-                        </div>
-                        <div class="row align-items-center remember">
-                            <input type="checkbox">Remember Me
-                        </div>
-                        <div class="form-group">
-                            <button id="login" onclick="app.loginClicked(this)"  class="btn float-right login_btn">Sign In</button>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="d-flex justify-content-center links">
-                            Don't have an account? &nbsp;<a href="#">Sign Up</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-
-        <div class="login" id="loginEl">
+        <div class="login H" id="loginEl">
             <h4>DATACON VIRTUAL SUBMIT</h4>
                 <div class="login-outer">
                 <div class="login-lhs">
@@ -75,9 +46,6 @@
                             <div class="input-group form-group">
                                 <input type="text" class="form-control" placeholder="username">
                             </div>
-                            <!-- <div class="row align-items-center remember">
-                                <input type="checkbox">Remember Me
-                            </div> -->
                             <div class="form-group m0">
                                 <button id="login" onclick="app.loginClicked(this)"  class="btn login_btn">LOGIN</button>
                             </div>
@@ -106,21 +74,23 @@
                 </div>
         </div>
         <!--- Alert Message -->
-        <!-- <div class="alert-msg alert-msg-info H" role="alert">
-            <i class="material-icons">info</i>
+        <div class="alert-msg alert-msg-info H" role="alert" id="infoAlert">
+            <i class="material-icons ">info</i>
             <b>INFORMATION</b>
             This is a success alert—check it out!
-          </div>
-          <div class="alert-msg alert-msg-success H" role="alert">
+        </div>
+          
+        <div class="alert-msg alert-msg-success H" role="alert" id="successAlert">
             <i class="material-icons">check_circle</i>
             <b>INFORMATION</b>
             This is a success alert—check it out!
-          </div>
-          <div class="alert-msg alert-msg-warning H" role="alert">
+        </div>
+        
+        <div class="alert-msg alert-msg-warning H" role="alert" id="failAlert">
             <i class="material-icons">error</i>
             <b>INFORMATION</b>
             This is a success alert—check it out!
-          </div> -->
+        </div>
     
         
 
@@ -190,8 +160,8 @@
             <div class="floater leftPosition" id="floatLeft"></div>
             <div class="floater rightPosition" id="floatRight"></div>
 
-
-            <div class="modal fade" id="exampleModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- data-backdrop="static" data-keyboard="false"  -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header" id="mh0">
@@ -235,6 +205,7 @@
 
 
         </div>
+
 
     <script type="text/javascript">
       $(".wrapper").hide();

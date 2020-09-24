@@ -39,7 +39,8 @@ var ModalComponent = function(){
 		//
 		if(_o.popup_type === "player"){
 			modelFor_ = "player";
-			videoComponent_.renderVideo(mainModal_[0], {videoid:_o.action_link})
+
+			videoComponent_.renderVideo(mainModal_[0], {videoid:_o.action_link, autoplay:true, muted:false, pos:"modal"})
 		}else if(_o.popup_type === "user"){
 			mData = _o;
 			getHtml(_o);
@@ -86,10 +87,12 @@ var ModalComponent = function(){
 		//console.log(t)
 		switch(t){
 			case "poll":
+			uiModTitle_.html(objActModal_.popup_type);
 			polls()
 			break;
 
 			case "staticpage":
+			uiModTitle_.html(objActModal_.popup_type);
 			qna();
 			
 			break;
@@ -101,31 +104,33 @@ var ModalComponent = function(){
 			break;
 
 			case "playlist":
-			uiModTitle_.html("playlist");
+			uiModTitle_.html(objActModal_.popup_type);
 			playlist()
 			break;
 
 			case "resource":
-			uiModTitle_.html("resources");
+			uiModTitle_.html(objActModal_.popup_type);
 			resources();
 			break;
 
 
 			case "attendees":
-			uiModTitle_.html("attendees");
+			uiModTitle_.html(objActModal_.popup_type);
 			modalTabAttendees()
 			attendees([]);
 			break;
 
 			case "briefcase":
-			uiModTitle_.html("briefcase");
+			//uiModTitle_.html("briefcase");
+			uiModTitle_.html(objActModal_.popup_type);
 			modalTab(["All", "Videos", "Business Card", "Document"], briefcaseTab)
 			briefcase("all");
 			break;
 
 
 			case "myProfile" :
-			uiModTitle_.html("User Profile");
+			//uiModTitle_.html("User Profile");
+			uiModTitle_.html(objActModal_.popup_type);
 			modalTab(["VIEW", "EDIT"], profileTab)
 			myProfile()
 			
@@ -222,7 +227,21 @@ var ModalComponent = function(){
 	var myProfileHTML = function(){
 		var user = EventStore.getUserProfile();
 		var dis = "disabled"
-		var str = '<div class="my-profile nonEdit" id="userprofile"> <div class="row m0"> <div class="user-profile"> <div class="user-image"> <img src="images/card-avatar.svg" alt=""> </div><div class="edit123456-image123456 mt-3" style="display:none;"> <button type="button" class="btn btn btn-outline-secondary btn-sm123456 ">Edit Image</button> <input type="file"> </div></div><div class="profile-rhs">'
+
+		var str = '<div class="my-profile nonEdit" id="userprofile"> <div class="row m0"> <div class="user-profile"> <div class="user-image"> <img src="images/user-thumb.jpg" alt=""> </div><div class="edit-image edit123456-image123456 mt-3"> <button type="button" class="btn btn btn-outline-secondary btn-sm123456 ">UPLOAD PHOTO</button> <input type="file"> </div></div><div class="profile-rhs">'
+		str += '<form class="darkForm"> <div class="form-group"> <label for="exampleInputEmail1" class="labelTxt">Name</label>'
+		str += ' <input type="text" class="form-control" data-edt="1" aria-describedby="emailHelp" placeholder="'+user.firstname+'" name="firstname"> </div><div class="form-group"> <label for="exampleInputEmail1" class="labelTxt">&nbsp;</label>'
+		str += ' <input type="text" class="form-control"" data-edt="1" placeholder="'+user.lastname+'" name="lastname"> </div><div class="form-group"> <label for="" class="labelTxt">Designation</label>'
+		str += ' <input type="tex" class="form-control" data-edt="1" placeholder="'+user.jobtitle+'" name="jobtitle"> </div><div class="form-group"> <label for="" class="labelTxt">Company</label>'
+		str += ' <input type="text" class="form-control" data-edt="1" placeholder="'+user.companyname+'" name="company"> </div><div class="form-group"> <label for="" class="labelTxt">Email Address</label>'
+		str+= ' <input type="text" class="form-control" placeholder="'+user.email+'" name="email" disabled> </div><div class="form-group"> <label for="" class="labelTxt">Phone Number</label>'
+		str += ' <input type="number" class="form-control"  data-edt="1" placeholder="+91-9999999999" name="phone" disabled> </div>'
+		str += '<div class="user-footer"><p><b>OFFICIAL EMAIL ADDRESS</b> <span>+user.email+</span></p> <button type="button" id="btnProfile" class="btn btn-primary btn-sm">Save</button></div></form></div>'
+		str += '</div></div>'
+		return str;
+
+
+		/*var str = '<div class="my-profile nonEdit" id="userprofile"> <div class="row m0"> <div class="user-profile"> <div class="user-image"> <img src="images/card-avatar.svg" alt=""> </div><div class="edit123456-image123456 mt-3" style="display:none;"> <button type="button" class="btn btn btn-outline-secondary btn-sm123456 ">Edit Image</button> <input type="file"> </div></div><div class="profile-rhs">'
 		str += '<form class="darkForm"> <div class="form-group"> <label for="exampleInputEmail1" class="labelTxt pl-0" style="left: 0">First Name</label>'
 		str += ' <input type="text" class="form-control pl-0" data-edt="1" aria-describedby="emailHelp" placeholder="'+user.firstname+'" name="firstname"> </div><div class="form-group"> <label for="" class="labelTxt">Last Name</label>'
 		str += ' <input type="text" class="form-control"" data-edt="1" placeholder="'+user.lastname+'" name="lastname"> </div><div class="form-group"> <label for="" class="labelTxt">Designation</label>'
@@ -231,7 +250,7 @@ var ModalComponent = function(){
 		str+= ' <input type="text" class="form-control" placeholder="'+user.email+'" name="email" disabled> </div><div class="form-group"> <label for="" class="labelTxt">Phone Number</label>'
 		str += ' <input type="number" class="form-control"  data-edt="1" placeholder="+91-9999999999" name="phone" disabled> </div><div class="form-group"> <button type="button" id="btnProfile" class="btn btn-primary btn-sm">Submit</button> </form> </div></div></div>'
 
-		return str;
+		return str;*/
 
 	}
 
@@ -242,22 +261,34 @@ var ModalComponent = function(){
 			$("#modalBodyP0 .my-profile [data-edt=1]").prop("disabled", true);
 
 			$("#modalBodyP0 .my-profile #btnProfile").off("click").on("click", function(){
-				var fn = $("#modalBodyP0 .my-profil [name=firstname]");
-                var ln = $("#modalBodyP0 .my-profil [name=lastname]");
-                var c = $("#modalBodyP0 .my-profil [name=company]");
-                var j = $("#modalBodyP0 .my-profil [name=jobtitle]")
-                debugger
+				var fn = $("#modalBodyP0 .my-profile [name=firstname]");
+                var ln = $("#modalBodyP0 .my-profile [name=lastname]");
+                var c = $("#modalBodyP0 .my-profile [name=company]");
+                var j = $("#modalBodyP0 .my-profile [name=jobtitle]")
+                var p = $("#modalBodyP0 .my-profile [name=phone]")
                 
+                
+                var d = {}
+                d["firstname"] = fn.val() === "" ? fn.attr("placeholder") : fn.val()
+                d["lastname"] = ln.val() === "" ? ln.attr("placeholder") : ln.val()
+                d["jobtitle"] = j.val() === "" ? j.attr("placeholder") : j.val()
+                d["companyname"] = c.val() === "" ? c.attr("placeholder") : c.val()
+                d["phone"] = p.val()
+
+
                 var fd = new FormData()
-                fd.append("firstname", fn.val() === "" ? fn.attr("placeholder") : fn.val())
-                fd.append("lastname", ln.val() === "" ? ln.attr("placeholder") : ln.val())
-                fd.append("jobtitle", j.val() === "" ? jn.attr("placeholder") : j.val())
-                fd.append("companyname", c.val() === "" ? c.attr("placeholder") : c.val())
+                fd.append("firstname", d["firstname"])
+                fd.append("lastname", d["lastname"])
+                fd.append("jobtitle", d["jobtitle"])
+                fd.append("companyname", d["companyname"])
+                fd.append("phone", d["phone"])
 
-
-                Utility.loader({url: "users.json", data : fd, type :"POST", cb:function(_d){
+               
+                Utility.loader({url: "users/update.json", data : fd, type :"POST", cb:function(_d){
                     console.log("done", _d)
                     profileTab("a0")
+                    EventStore.updateUserProfile(d)
+                    showAlert("success", "Your profile is updated")
                     //debugger
                 }});
                 $("#modalinsideclose").click();
@@ -412,6 +443,7 @@ var ModalComponent = function(){
 				}else{
 					alert("some issue in posting")
 				}
+				showAlert("success", "Thank you for your feedback.")
 			}});
 			
 		})
@@ -450,13 +482,16 @@ var ModalComponent = function(){
 				//ended
 				dis = ""
 				str += '<div class="col-md-2 alignText">';
+				//str += '<button type="button" class="btn btn-primary btn-sm completeBtn">View Completed</button>';
 				str += '<button type="button" class="btn btn-primary btn-sm completeBtn">Completed</button>';
 				str += '</div>'
 			}	
 
 			var tm = agen[i].speakers;
-			str += '<div class="col-md-5 alignText">';
-			str += '<b class="db">Welcome Address</b>'
+			// str += '<div class="col-md-5 alignText">';
+			// str += '<b class="db">Welcome Address</b>'
+			str += '<div class="col-md-5 f12">';
+			str += '<b class="db f14">Welcome Address</b>'
 			
 			
 			
@@ -472,7 +507,8 @@ var ModalComponent = function(){
 			}
 			str += '</div>'	
 
-			str += '<div class="col-md-4">';
+			str += '<div class="col-md-4 alignText">';
+			//str += '<div class="col-md-4">';
 			//str += '<b class="db">Time: '+agen[i].starttime+'</b>'		
 			str += '<span>Time: '+agen[i].starttime+'</span>'
 			//str += '<span>Time: '+agen[i].starttime+'</span>'	
@@ -480,6 +516,11 @@ var ModalComponent = function(){
 
 			//breiefcase
 			//dis = ""
+			if(agen[i].status === 2){
+				dis = "disableIcon"
+			}else{
+				dis = ""
+			}
 			str += '<div class="col-md-1 alignText"><div data-id="'+i+'" class="iconSVG '+dis+'">';
 			str += '<img src="images/briefcase.svg" alt="">';
 			str += '</div>';
@@ -561,11 +602,19 @@ var ModalComponent = function(){
 			str += '<li class="list-group-item">';
 			str += '<div class="row">'
 
+			//added
+			// str += '<div class="col-md-2 pr-0">'
+			// str += '<button type="button" class="btn btn-secondary btn-sm" data-id="'+i+'" >View</button>'
+			// str += '</div>'
+
+
+
 			if(tm[i].added){
 				dis = "disableIcon"
 			}
 
 			if(tm[i].type === "live" || tm[i].type === "video"){
+				//added
 				str += '<div class="col-md-1">'
 				str += '<div class="material-icons">videocam</div>';
 				str += '</div>';
@@ -578,7 +627,6 @@ var ModalComponent = function(){
 			str += '<div class="col-md-2">'
 			str += '<button type="button" class="btn btn-secondary btn-sm" data-id="'+i+'" >View</button>'
 			str += '</div>'
-
 			str += '<div class="col-md-8">'+tm[i].title+'</div>'
 
 			//briefcase
@@ -646,19 +694,19 @@ var ModalComponent = function(){
 			str += '<div class="col-md-1">'
 			str += '<div class="material-icons">videocam</div>'
 			str += '</div>'
-			str += '<div class="col-md-2 alignText">'
-			str += '<button type="button" class="btn btn-secondary btn-sm upcomingBtn">PLAY</button>'
-			str += '</div><div class="col-md-8">'
+			
+			str += '<div class="col-md-8">'
 			str += '<b>'+tm[i].name+'</b>'
 			str += '</div>'
-			
+			str += '<div class="col-md-2 alignText">'
+			str += '<button type="button" class="btn btn-secondary btn-sm">PLAY</button>'
+			str += '</div>'
 			str += '<div class="col-md-1 alignText">'
 			
 			str += '<div data-id="'+i+'" class="iconSVG '+dis+'">'
 			
 			str += '<img src="images/briefcase.svg" alt="">'
 			str += '</div>'
-
 			str += '</div>'
 			str += '</li>'
 			dis = ""
@@ -857,7 +905,7 @@ var ModalComponent = function(){
 		//str += '<input type="checkbox" class="form-check-input" name="qa'+i+'" value="'+qa[j]+'" data-id=q_'+i+' '+chckd+'>'
 		
 		if(tp === "video"){
-			str += '<input type="checkbox" class="form-check-input" disabled data-ind='+i+'>'
+			str += '<input type="checkbox" class="form-check-input" data-ind='+i+'>'
 		}else{
 			str += '<input type="checkbox" class="form-check-input"  data-ind='+i+'>'	
 		}
@@ -968,7 +1016,7 @@ var ModalComponent = function(){
 			if($(this).text() === "VIEW"){
 				if(ao.type === "business_card"){
 					oR.url = ao.resource
-					populateCard(oR, false, this)
+					populateCard(ao, false, this)
 				}else if(ao.type === "image"){
 					oR.url = ao.resource
 					populateImage(oR)
@@ -1026,6 +1074,7 @@ var ModalComponent = function(){
 				fd.append("resourceid", t.join(",")) 
 				Utility.loader({url: "users/removefrombriefcase.json", data : fd, type :"POST", cb:function(_d){
 					console.log("done")
+					showAlert("success", "Selected items deleted.")
 					//debugger
 				}});
 			}
@@ -1123,7 +1172,6 @@ var ModalComponent = function(){
 	}
 	
 	var populateCard = function( _o, edit, _ref){
-
 		$(".modal-overlay-cont #modalinsidelable").text("Your Business Card ");
 		$(".modal-overlay-cont").addClass("show");
 		cardContainer_.renderCard($("#modalinsidebody"), _o, edit, cardEditAction.bind(this), _ref);
@@ -1133,7 +1181,10 @@ var ModalComponent = function(){
 		//$(".modal-overlay-cont").removeClass("H");
 		$(".modal-overlay-cont").addClass("show");
 
-		$(".modal-overlay-cont #modalinsidelable").text("Now player: "+_o.title);
+		$(".modal-overlay-cont #modalinsidelable").text("Now playing: "+_o.title);
+		_o.pos = "wall";
+		_o.autoplay = true;
+		_o.muted = false
 		videoComponent_.renderVideo($("#modalinsidebody")[0], _o)
 	}
 
@@ -1178,26 +1229,25 @@ var ModalComponent = function(){
 		uiModTitle_ = $("#exampleModalLabel");
 
 		mainModal_ = $("#modalBodyP0");
+		
 		$("#exampleModal2").on('hidden.bs.modal', function(){
-			
 			$("#exampleModal2 .modal-body").html("")
 			$("#exampleModal").modal("show");
 		})
 
 		$("#exampleModal").on('hidden.bs.modal', function(){
-
-			if(modelFor_ === "player"){
+			//if(modelFor_ === "player"){
 				$("#exampleModal .modal-body").html("")
-			}
-			
+				$(".modal-overlay-cont #modalinsideclose").click();
+			//}
 		  });
 
 
 		$(".modal-overlay-cont #modalinsideclose").off("click").on("click", function(){
-			//$("#exampleModal .modal-overlay-cont").addClass("H");
 			$("#exampleModal .modal-overlay-cont").removeClass("show");
 			$(".modal-overlay-cont #modalinsidebody").html("");
 		})
+
 	}
 
 	/* Modal Tabs */
@@ -1256,6 +1306,7 @@ var ModalComponent = function(){
 		fd.append("resourceid", rid) 
 		Utility.loader({url: "users/addtobriefcase.json", data : fd, type :"POST", cb:function(_d){
 			console.log("done")
+			showAlert("success", "Added to your briefcase")
 			//debugger
 		}});
 	}
@@ -1332,6 +1383,20 @@ var ModalComponent = function(){
 	}
 
 
+	var showAlert = function(ty, txt){
+		$(".alert-msg[role=alert]").addClass("H")
+		var str = ""
+		if(ty === "info"){
+			$(".alert-msg#infoAlert").html('<i class="material-icons">info</i><b>INFORMATION</b>'+txt)
+			$(".alert-msg#infoAlert").removeClass("H")
+		}else if(ty === "success"){
+			$(".alert-msg#infoAlert").html('<i class="material-icons">info</i><b>SUCCESS</b>'+txt)
+			$(".alert-msg#infoAlert").removeClass("H")
+		}else if(ty === "fail"){
+			$(".alert-msg#failAlert").html('<i class="material-icons">info</i><b>FAIL</b>'+txt)
+			$(".alert-msg#failAlert").removeClass("H")
+		}
+	}
 
 	return {
 		init: init,

@@ -40,6 +40,17 @@ var EventStore = (function(){
 	var getUserProfile = function(){
 		return store_.userProfile;
 	}
+
+	var updateUserProfile = function(_o){
+
+		var d = store_.userProfile
+		d.firstname = _o.firstname
+		d.lastname = _o.lastname
+		d.jobtitle = _o.jobtitle
+		d.companyname = _o.companyname
+		d.phone = _o.phone
+
+	}
 	
 	var setStore = function(payload){
 		switch(playload.type){
@@ -96,6 +107,7 @@ var EventStore = (function(){
 		setUserProfile:setUserProfile,
 		getUserProfile:getUserProfile,
 		setActivePage:setActivePage,
-		getActivePage:getActivePage
+		getActivePage:getActivePage,
+		updateUserProfile:updateUserProfile
 	}
 })();

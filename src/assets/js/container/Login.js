@@ -1,5 +1,5 @@
 var Login = (function () {
-	var c_name = "uuid";
+	var c_name = "usermailid";
 	var init = function(){
 			createCookie(c_name, createUUID())
 			return getCookie()
@@ -52,7 +52,8 @@ var Login = (function () {
 	return {
 		init:init,
 		getCookie:getCookie,
-		validateEmail:validateEmail
+		validateEmail:validateEmail,
+		createCookie:createCookie
 	}
 })();
  
