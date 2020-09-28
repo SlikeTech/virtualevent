@@ -6,7 +6,7 @@ var PDFComponent = function(){
 	var renderPDF = function(_o){
 		$(".modal-body.p1").html("");
 		setTimeout(function(){
-			$(".modal-body.p1").html(getHtml(_o.url, $(".modal-body.p1").height()));	
+			$(".modal-body.p1").html(getHtml(_o.resource, $(".modal-body.p1").height()));	
 		}, 300)
 		
 	}

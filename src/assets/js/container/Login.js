@@ -22,6 +22,8 @@ var Login = (function () {
 	        var date = new Date();
 	        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
 	        expires = "; expires=" + date.toGMTString();
+
+	        console.log(expires)
 	    }
 	    else {
 	        expires = "";
@@ -31,16 +33,21 @@ var Login = (function () {
 
 	var getCookie = function() {
 	    if (document.cookie.length > 0) {
+	    	
 	        c_start = document.cookie.indexOf(c_name + "=");
+
 	        if (c_start != -1) {
 	            c_start = c_start + c_name.length + 1;
 	            c_end = document.cookie.indexOf(";", c_start);
+	           
 	            if (c_end == -1) {
 	                c_end = document.cookie.length;
 	            }
+	          
 	            return unescape(document.cookie.substring(c_start, c_end));
 	        }
 	    }
+
 	    return "";
 	}
 
@@ -49,11 +56,20 @@ var Login = (function () {
 		return re.test(String(email).toLowerCase());
 	}
 
+	var deleteCookie = function(cname){
+	    var d = new Date(); //Create an date object
+	    d.setTime(d.getTime() - (1000*60*60*24)); //Set the time to the past. 1000 milliseonds = 1 second
+	    var expires = "expires=" + d.toGMTString(); //Compose the expirartion date
+	    window.document.cookie = c_name+"="+"; "+expires;//Set the cookie with name and the expiration date
+	 
+	}
+
 	return {
 		init:init,
 		getCookie:getCookie,
 		validateEmail:validateEmail,
-		createCookie:createCookie
+		createCookie:createCookie,
+		deleteCookie:deleteCookie
 	}
 })();
  

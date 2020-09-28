@@ -2,8 +2,6 @@
  	var util_, pRenderer_, router_, nav_;
  	var login_, preloader, user_, tmail_;
  
-
-
  	var init = function(){
  		uiELements();
  		pRenderer_ = new PageRenderer();
@@ -58,7 +56,7 @@
 				EventStore.setUser(_d.data);
  				Utility.loader({url: "events.json?eventid="+eventId, cb:mJsonLoaded.bind(this)});
  				if(Login.getCookie() === "")
- 					Login.createCookie("usermailid", tmail_)
+ 					Login.createCookie("usermailid", tmail_, 1)
 			}
 		}else{
 			$("#preloaderstop").addClass("H")
@@ -84,6 +82,7 @@
 	 			
 	 			Utility.loader({url: "users/myprofile.json", cb:function(_d){
 	 				EventStore.setUserProfile(_d.data);
+	 				user_.userStatusUpdate()
 	 			}});
 	 			
 	 			user_.init(pRenderer_, pRenderCallback.bind(this));

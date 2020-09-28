@@ -15,29 +15,20 @@ var BusinessCard = function(){
         
         if(edit_){
 
-//             $("#modalinsidelable").html('<h5 class="modal-title" id="modalinsidelable">Business Card </h5>')
-// <div class="modal-header">
-// <h5 class="modal-title" id="modalinsidelable">Your Business Card </h5>
-// <div class="titleHdng">SHARE YOUR BUSINESS CARD TO NILAY PRAN (THE TIMES OF INDIA - BUSINESS HEAD)</div>
-// <button class="close" aria-label="Close" id="modalinsideclose">
-// <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11.002" viewBox="0 0 11 11.002">
-// <path d="M18.089,16.79l3.929-3.931a.921.921,0,1,0-1.3-1.3l-3.929,3.931-3.929-3.931a.921.921,0,1,0-1.3,1.3l3.929,3.931L11.556,20.72a.921.921,0,0,0,1.3,1.3l3.929-3.931,3.929,3.931a.921.921,0,1,0,1.3-1.3Z" transform="translate(-11.285 -11.289)"></path></svg>
-// </button>
-// </div>
-
-
             var user = EventStore.getUserProfile();
-            ol.name = user.firstname + " " + user.lastname
-            ol.email = user.email
-            ol.phone = user.phone === "" ? "+91-9999999999" : user.phone
-            ol.jobtitle = user.jobtitle
-            ol.companyname = user.companyname
+            ol = syncUser()
+            // ol.name = user.firstname + " " + user.lastname
+            // ol.email = user.email
+            // ol.phone = user.phone === "" ? "+91-9999999999" : user.phone
+            // ol.jobtitle = user.jobtitle
+            // ol.companyname = user.companyname
         }else{
             ol.name = data_.name
             ol.email = data_.email
             ol.phone = data_.phone === "" ? "+91-9999999999" : data_.phone
             ol.jobtitle = data_.jobtitle
             ol.companyname = data_.companyname
+            ol.image = data_.image
         }
 
 
@@ -69,7 +60,8 @@ var BusinessCard = function(){
                 //POST DATA
                 //"f5i9uoz999"
                 var fd = new FormData();
-                fd.append("resourceid", data_.uuid) 
+                fd.append("otherUserId", data_.uuid) 
+
                 Utility.loader({url: "businesscard/share.json", data : fd, type :"POST", cb:function(_d){
                     console.log("done")
                       $(oRef).addClass("disableIcon")
@@ -90,6 +82,8 @@ var BusinessCard = function(){
         str += '<div class="card-image">'
         //data_.image !== "" ? str += '<img src="'+data_.image+'">' : 
         str += '<img src="images/card-avatar.svg">'
+         //str += '<img src="'+_o.image+'">'
+       
        // edit_ ? str += '<div class="imageUpload btn btn-primary btn-sm"><i class="material-icons f16">edit</i><input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg"></div>' : ""
         
         str += '</div>'
@@ -134,10 +128,20 @@ var BusinessCard = function(){
     }
 
     var updateCard = function(_d){
-        elt.html(cartUI(_d));
-        //cartUI(_d);
+        elt.html(cartUI(syncUser()));
         bindEvent();
-       // debugger
+    }
+
+    var syncUser = function(){
+        var o = {};
+        var user = EventStore.getUserProfile();
+        o.name = user.firstname + " " + user.lastname
+        o.email = user.email
+        o.phone = user.phone === "" ? "+91-9999999999" : user.phone
+        o.jobtitle = user.jobtitle
+        o.companyname = user.companyname
+        o.image = user.image
+        return o
     }
 
     return {

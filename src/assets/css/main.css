@@ -434,7 +434,7 @@ a,a:hover {
 }
 .bodyBg {
     position: relative;
-    overflow: hidden
+    overflow: hidden;
 }
 
 .bodyBg img {
@@ -493,8 +493,7 @@ a,a:hover {
     padding: 14px 0;
     line-height: 18px;
     text-align: left;
-    color: #666;
-    font-weight: 600;    
+    color: #f4f4f4;
     margin-left: auto;
 }
 
@@ -506,7 +505,8 @@ a,a:hover {
 
 .no-user b {
     text-align: right;
-    float: right
+    float: right;
+    margin-left: 4px;
 }
 
 .helpText {
@@ -540,17 +540,41 @@ a,a:hover {
     position: relative;
     z-index: 2;
     padding: 0 20px;
-    height: 60px;
+    height: 58px;
     width: 100%;
     color: #d3d3d3;
     max-width: 100%;
     margin: 0 auto;
-    background: #fff;
+    background: rgba(0,0,0,0.85);
+    box-shadow: 0 -2px 8px 1px rgba(255,255,255,1);
     display: flex;
-    box-shadow: 0 -2px 8px 1px rgba(0,0,0,.35);
-    display: flex
+    position: fixed;
+    top: 0;
 }
-
+.header-tag {
+    font-size: 25px;
+    font-weight: bold;
+    line-height: 58px;
+    text-transform: uppercase;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #e4e4e4;
+}
+.status {
+    position: absolute;
+    right: 0;
+    bottom: 2px;
+}
+.online svg {
+    fill: #1e8e3e;
+}
+.notdistrub svg {
+    fill:#ac2727;
+}
+.away svg {
+    fill:orange;
+}
 .navigation {
     margin: auto;
     display: flex;
@@ -563,17 +587,21 @@ a,a:hover {
 }
 
 .navigation a {
-    color: rgba(0,0,0,.8);
+    color: rgba(255,255,255,0.9);
     font-size: 12px;
     margin: 0 15px;
     text-transform: uppercase;
-    font-weight: 600;
+    /* font-weight: 600; */
     display: flex;
     flex-direction: column;
     align-items: center;
 }
+.navigation a:hover {
+    color: rgba(255,255,255,0.7);
+}
 .navigation i {
     font-size: 25px;
+    cursor: pointer;
 }
 
 .header-rhs {
@@ -593,7 +621,7 @@ a,a:hover {
     height: 30px;
     border-radius: 30px;
     margin-left: 10px;
-    color: #8D8787;
+    color: #B7B7B7;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -610,7 +638,7 @@ a,a:hover {
 }
 .header-rhs .dropdown.show a.dropdown-toggle, .header-rhs .dropdown a.dropdown-toggle:hover {
     /* background: rgba(0,0,0,.1); */
-    color: rgba(0,0,0,1);
+    color: rgba(255, 255, 255,0.8);
     cursor: pointer;
 }
 .header-rhs .dropdown-menu.show {
@@ -632,14 +660,27 @@ a,a:hover {
 }
 
 .header-rhs .dropdown-item {
+    padding-left: 30px;
     width: auto;
     border-radius: 0;
     background: 0 0;
     margin: 0;
     font-size: 12px;
-    justify-content: left
+    justify-content: left;
+    color: #666;
 }
-
+.header-rhs .dropdown-item.current:after {
+    content: "";
+    display: inline-block;
+    transform: rotate(45deg);
+    height: 10px;
+    width: 7px;
+    border-bottom: 2px solid #007bff;
+    border-right: 2px solid #007bff;
+    position: absolute;
+    top: 16px;
+    left: 14px;
+}
 .brandLogo {
     width: 100px;
     height: 100%;
@@ -690,7 +731,8 @@ a,a:hover {
 }
 
 .footerNav i {
-    margin-bottom: 2px
+    margin-bottom: 2px;
+    cursor: pointer;
 }
 
 .divider {
@@ -711,16 +753,15 @@ a,a:hover {
     margin-bottom: 10px;
     /* min-width: 150px; */
     max-width: 200px;
-    width: 125px;
+    width: 132px;
     font-size: 14px;
     /* font-weight: 600; */
     text-transform: uppercase;
     height: 37px;
     background: #AC2727!important;
     border: none!important;
-    color: #C9C9C9!important;
-    transition: all .3s ease-in;
-    padding: 0 20px;
+    color: #e4e4e4!important;
+    transition: width .3s ease-in;
 }
 
 .floater .btn:last-of-type {
@@ -728,41 +769,43 @@ a,a:hover {
 }
 .floater svg {
     vertical-align: middle;
-    height: 18px;
+    height: 16px;
     width: auto;
-    fill: #acacac;
+    fill: #e4e4e4;
 }
 .leftPosition {
     left: 0;
 }
 .leftPosition svg {
-    margin-left: 5px;
+    margin-left: 8px;
 }
 .leftPosition button {
     /* transform: translateX(-35px); */
     border-radius: 0 100px 100px 0;
-    text-align: left;
+    text-align: right;
+    padding-right: 18px;
 }
 .rightPosition {
     right: 0;
     flex-wrap: wrap-reverse;
 }
 .rightPosition svg {
-    margin-right: 5px;
+    margin-right: 8px;
 }
 .rightPosition button {
     /* transform: translateX(35px); */
     border-radius: 100px 0 0 100px;
     text-align: left;
+    padding-left: 18px;
 }
 .leftPosition button:hover, .rightPosition button:hover, .leftPosition button.active, .rightPosition button.active {
     transform: translateX(0px);
-    transition: all .5s ease-out;
+    transition: width .5s ease-out;
     width: 149px!important;
 }
 .modal-body {
-    min-height: 400px;
-    max-height: 500px;
+    /* min-height: 400px; */
+    height: 486px;
     overflow: auto;
     background: #292929;
     color: #b2b2b2;
@@ -1041,6 +1084,9 @@ a,a:hover {
 .modal-footer p {
     margin: 0 auto 0 0!important;
     padding: 15px 0;
+}
+.modal-footer button {
+    margin: 15px 0;
 }
 .modal-footer p i {
     font-size: 13px;
@@ -1612,7 +1658,7 @@ a,a:hover {
     position: absolute;
     top: 0;
     left: 50%;
-    transform: translate(-50%, -60px);
+    transform: translate(-50%, -65px);
     z-index: 9999;
     transition: all .3s ease-out;
     width: 450px;
@@ -1620,6 +1666,9 @@ a,a:hover {
     background: #E0E0E0!important;
     color: #434343;
     font-size: 11px;
+}
+.alert-msg p {
+    margin: 0;
 }
 .alert-msg i {
     position: absolute;
@@ -1652,4 +1701,28 @@ a,a:hover {
 }
 .alert-msg.show {
     transform: translate(-50%, 60%);
+}
+
+/*** FAQ ***/
+.faq {
+    padding: 20px;
+    font-size: 12px;
+}
+.faq ul {
+    margin: 0 0 0 20px;
+    padding: 0;
+}
+.faq li {
+    list-style-type: decimal;
+    margin-bottom: 20px;
+    padding-left: 10px
+}
+.faq b {
+    font-size: 14px;
+    margin-bottom: 6px;
+    display: block;
+}
+.faq p {
+    margin: 0;
+    padding: 0;
 }

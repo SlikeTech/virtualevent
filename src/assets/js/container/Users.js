@@ -6,10 +6,12 @@ var User = function () {
 		aud_ = $(".wrapper #audience");
 
 		$(".header-rhs [data-id]").on("click", function(){
+			
 			clickEvent($(this).attr("data-id"));
 		})
 
-		audinces()
+		audinces();
+		
 	}
 
 	var clickEvent = function(type){
@@ -25,13 +27,13 @@ var User = function () {
 			case "away":
 			u = EventStore.getUserProfile();
 			if(u.status !== -1)
-				senData(-1)
+				senData(2)
 			break;
 
 			case "dnd":
 			u = EventStore.getUserProfile();
 			if(u.status !== -2)
-				senData(-2)
+				senData(3)
 			break;
 
 			case "mapp":
@@ -67,13 +69,32 @@ var User = function () {
         fd.append("companyname", user.companyname)
         fd.append("phone", user.phone)
         fd.append("status", status)
-
         user.status = st;
 
         Utility.loader({url: "users/update.json", data : fd, type :"POST", cb:function(_d){
             var u = EventStore.getUserProfile();
             u.status = st;
+            userStatusUpdate(st)
         }});
+	}
+
+	var userStatusUpdate = function(){
+		var u = EventStore.getUserProfile();
+		var s = $("#userStatus #status")
+		s.removeClass();
+		$("#userStatus 	.dropdown-item").removeClass("current");
+
+
+		if(u.status == 1){
+			s.addClass("status online")
+			$("#userStatus 	[data-id=online]").addClass("current");
+		}else if(u.status == 2){
+			s.addClass("status away")
+			$("#userStatus 	[data-id=away]").addClass("current");
+		}else if(u.status === 3){
+			s.addClass("status notdistrub")
+			$("#userStatus 	[data-id=dnd]").addClass("current");
+		}
 	}
 
 	var audinces = function(){
@@ -87,7 +108,8 @@ var User = function () {
 
 	return {
 		init:init,
-		audinces:audinces
+		audinces:audinces,
+		userStatusUpdate:userStatusUpdate
 	}
 };
  

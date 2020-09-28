@@ -43,54 +43,25 @@
         </div> 
 
 
-        <!-- <div class="login" id="loginEl">
-            <div class="d-flex justify-content-center h-100 z2 R">
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Sign In</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="input-group form-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="material-icons">person</i></span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="username">
-                        </div>
-                        <div class="row align-items-center remember">
-                            <input type="checkbox">Remember Me
-                        </div>
-                        <div class="form-group">
-                            <button id="login" onclick="app.loginClicked(this)"  class="btn float-right login_btn">Sign In</button>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="d-flex justify-content-center links">
-                            Don't have an account? &nbsp;<a href="#">Sign Up</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-
         <div class="login H" id="loginEl">
-            <h4>DATACON VIRTUAL SUBMIT</h4>
                 <div class="login-outer">
                 <div class="login-lhs">
+                    <div class="loginLogo">
+                        <img src="../dist/images/logo-white.svg" alt="">
+                    </div>
+                    <h4>DATACON VIRTUAL SUBMIT</h4>
                     <img src="../dist/images/loginBg.jpg" alt="">
                 </div>
                 <div class="login-rhs">
                     <div class="card">
                         <div class="card-header">
                             <h3>REGISTERED EMAIL ADDRESS *</h3>
-                            <span>Not Registered? Sign Up</span>
+                            <span>Not Registered? <i class="linkTxt">Sign Up</i></span>
                         </div>
                         <div class="card-body">
                             <div class="input-group form-group">
                                 <input type="text" class="form-control" placeholder="username">
                             </div>
-                            <!-- <div class="row align-items-center remember">
-                                <input type="checkbox">Remember Me
-                            </div> -->
                             <div class="form-group m0">
                                 <button id="login" onclick="app.loginClicked(this)"  class="btn login_btn">LOGIN</button>
                             </div>
@@ -119,26 +90,8 @@
                 </div>
         </div>
         <!--- Alert Message -->
-        <div class="alert-msg alert-msg-info H" role="alert" id="infoAlert">
-            <i class="material-icons ">info</i>
-            <b>INFORMATION</b>
-            This is a success alert—check it out!
-        </div>
-          
-        <div class="alert-msg alert-msg-success H" role="alert" id="successAlert">
-            <i class="material-icons">check_circle</i>
-            <b>INFORMATION</b>
-            This is a success alert—check it out!
-        </div>
-        
-        <div class="alert-msg alert-msg-warning H" role="alert" id="failAlert">
-            <i class="material-icons">error</i>
-            <b>INFORMATION</b>
-            This is a success alert—check it out!
-        </div>
-    
-        
 
+        <div class="alert-msg alert-msg-info" role="alert" id="alertBox"></div>
 
         <div class="wrapper virtualwrapper" >
             <div  id="vidContainer" style="position:absolute; top:0;left:0;width:100%;height:100%;z-index: 9999;display:none;background-color: #000;" >
@@ -151,17 +104,12 @@
                 </div>
             </div>
 
-
-
             <div class="header">
                 <div class="logo">
-                    <img src="images/logo.svg" alt="">
+                    <img src="images/logo-white.svg" alt="">
                 </div>
-
-                <div class="navigation" id="topNavigation">
-                    <a href="#" id="nhome"><i class="material-icons">home</i> Home</a>
-                    <a href="#" id="nlbrd"><i class="material-icons">equalizer</i> Leaderboard</a>
-                    <a href="#" id="nguide"><i class="material-icons">person</i> Guide</a>
+                <div class="header-tag">
+                    DEMO VIRTUAL SUBMIT 2020
                 </div>
             
                 <div class="brandLogo">
@@ -171,14 +119,17 @@
                 <div class="no-user" id="audience"></div>
 
                 <div class="header-rhs">
-                    <div class="dropdown">
+                    <div class="dropdown" id="userStatus">
                         <a class="dropdown-toggle" href="#" role="button" id="user-login" data-display="static" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="material-icons">account_circle</i>
+                            <span class="status away" id="status">                                
+                                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 11 11"><defs><style>.b,.c{stroke:none;}</style></defs><g><path class="b" d="M 5.5 10.5 C 2.742990016937256 10.5 0.5 8.257010459899902 0.5 5.5 C 0.5 2.742990016937256 2.742990016937256 0.5 5.5 0.5 C 8.257010459899902 0.5 10.5 2.742990016937256 10.5 5.5 C 10.5 8.257010459899902 8.257010459899902 10.5 5.5 10.5 Z"/><path class="c" d="M 5.5 1 C 3.01869010925293 1 1 3.01869010925293 1 5.5 C 1 7.98130989074707 3.01869010925293 10 5.5 10 C 7.98130989074707 10 10 7.98130989074707 10 5.5 C 10 3.01869010925293 7.98130989074707 1 5.5 1 M 5.5 0 C 8.537569999694824 0 11 2.462430000305176 11 5.5 C 11 8.537569999694824 8.537569999694824 11 5.5 11 C 2.462430000305176 11 0 8.537569999694824 0 5.5 C 0 2.462430000305176 2.462430000305176 0 5.5 0 Z"/></g></svg>
+                            </span>
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="user-login">
                             <a class="dropdown-item" href="#" data-id="online">Online</a>
-                            <a class="dropdown-item" href="#" data-id="away">Away</a>
+                            <a class="dropdown-item current" href="#" data-id="away">Away</a>
                             <a class="dropdown-item" href="#" data-id="dnd">Do not Distrub</a>
                         </div>
                     </div>
@@ -197,35 +148,31 @@
 
                 </div>
             </div>
-
             <div class="bodyBg"></div>
-
             <div class="footerNav"></div>
 
             <div class="floater leftPosition" id="floatLeft"></div>
             <div class="floater rightPosition" id="floatRight"></div>
 
-<!-- data-backdrop="static" data-keyboard="false"  -->
+            <!-- data-backdrop="static" data-keyboard="false"  -->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header" id="mh0">
-                            <h5 class="modal-title" id="exampleModalLabel"></h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11.002" viewBox="0 0 11 11.002"><path d="M18.089,16.79l3.929-3.931a.921.921,0,1,0-1.3-1.3l-3.929,3.931-3.929-3.931a.921.921,0,1,0-1.3,1.3l3.929,3.931L11.556,20.72a.921.921,0,0,0,1.3,1.3l3.929-3.931,3.929,3.931a.921.921,0,1,0,1.3-1.3Z" transform="translate(-11.285 -11.289)"/></svg>
-                            </button>
                         </div>
                         <div id="modalBodyP0" class="modal-body p0"></div>
                     </div>
 
                     <div class="modal-overlay-cont">
-                        <div class="modal-header">
+                        <div class="modal-header" id="mh0_1">
                             <h5 class="modal-title" id="modalinsidelable"></h5>
+                            <div class="titleHdng"></div>
                             <button  class="close" aria-label="Close" id="modalinsideclose">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11.002" viewBox="0 0 11 11.002"><path d="M18.089,16.79l3.929-3.931a.921.921,0,1,0-1.3-1.3l-3.929,3.931-3.929-3.931a.921.921,0,1,0-1.3,1.3l3.929,3.931L11.556,20.72a.921.921,0,0,0,1.3,1.3l3.929-3.931,3.929,3.931a.921.921,0,1,0,1.3-1.3Z" transform="translate(-11.285 -11.289)"/></svg>
                             </button>
                         </div>
                         <div class="modal-body p0" id="modalinsidebody"></div>
+                        <div class="modal-footer"></div>
                     </div>
                 
                 </div>

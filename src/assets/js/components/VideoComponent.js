@@ -20,7 +20,7 @@ var VideoComponent = function(){
         vcon.autoplay = obj.autoplay
         vcon.muted = obj.muted
 
-        console.log("joooo  ", obj.pos)
+        
 
         var h = obj.pos && obj.pos === "wall" ? "100%" : "486px"
         
@@ -114,11 +114,11 @@ var VideoComponent = function(){
 
     var videoEvents = function(){
         player_.on(SlikePlayer.Events.INIT, function (eventName, data) {
-            console.log('player init`', data);
+          //  console.log('player init`', data);
         });
 
         player_.on(SlikePlayer.Events.VIDEO_TIMEUPDATE, function (eventName, data) {
-            console.log('player ready', data);
+          //  console.log('player ready', data);
         });
     }
 

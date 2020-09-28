@@ -5,7 +5,7 @@ var ImageContainer = function(){
 
 	var renderImage = function(cont, obj){
 		$(cont).html('');
-	      $(cont).html(getHtml(obj.url));  
+	      $(cont).html(getHtml(obj.resource));  
 	}
 
 	var getHtml = function(url){
