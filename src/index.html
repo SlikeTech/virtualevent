@@ -26,7 +26,54 @@
         <script type="text/javascript" src="assets/js/utils/Router.js"></script>
         <script type="text/javascript" src="assets/js/container/Navigation.js"></script>
         <script type="text/javascript" src="assets/js/container/Users.js"></script>
-         <script type="text/javascript" src="assets/js/components/ImageContainer.js"></script>        
+        <script type="text/javascript" src="assets/js/components/ImageContainer.js"></script>        
+        <script type="text/javascript" src="assets/js/components/WallVideo.js"></script>
+        <script type="text/javascript" src="assets/js/components/Notification.js"></script>
+        <script type="text/javascript" src="assets/js/components/Chat.js"></script>  
+
+        
+
+        <style>
+            @font-face {
+            font-family: 'fontello';
+            src: url('https://slike-v.akamaized.net//vevents/dev/f5wg9k9uzu/fontello-339bef62/font/fontello.eot?75002412');
+            src: url('https://slike-v.akamaized.net//vevents/dev/f5wg9k9uzu/fontello-339bef62/font/fontello.eot?75002412#iefix') format('embedded-opentype'),
+            url('https://slike-v.akamaized.net//vevents/dev/f5wg9k9uzu/fontello-339bef62/font/fontello.woff?75002412') format('woff'),
+            url('https://slike-v.akamaized.net//vevents/dev/f5wg9k9uzu/fontello-339bef62/font/fontello.ttf?75002412') format('truetype'),
+            url('https://slike-v.akamaized.net//vevents/dev/f5wg9k9uzu/fontello-339bef62/font/fontello.svg?75002412#fontello') format('svg');
+            font-weight: normal;
+            font-style: normal;
+            }
+            .demo-icon
+            {
+            font-family: "fontello";
+            font-style: normal;
+            font-weight: normal;
+            speak: never;
+            display: inline-block;
+            text-decoration: inherit;
+            width: 1em;
+            margin-right: .2em;
+            text-align: center;
+            /* opacity: .8; */
+            /* For safety - reset parent styles, that can break glyph codes*/
+            font-variant: normal;
+            text-transform: none;
+            /* fix buttons height, for twitter bootstrap */
+            line-height: 1em;
+            /* Animation center compensation - margins should be symmetric */
+            /* remove if not needed */
+            margin-left: .2em;
+            /* You can be more comfortable with increased icons size */
+            /* font-size: 120%; */
+            /* Font smoothing. That was taken from TWBS */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            /* Uncomment for 3D effect */
+            /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+            }
+            </style>
+
 
         <script type="text/javascript">
             function SlikeLoader(){this.BASE_SDK_URL="//tvid.in/sdk",this.BEACON_BASE_URL="//slike.indiatimes.com/pixel?",this.PLAYBACK_CAPABILITIES={MSE:window.MediaSource&&window.MediaSource.isTypeSupported('video/mp4; codecs="avc1.42E01E,mp4a.40.2"'),HLS:document.createElement("video").canPlayType("application/vnd.apple.mpegURL")},this.es6Support=this.isES6()}SlikeLoader.prototype.isES6=function(){try{return Function("() => {};"),!0}catch(e){return!1}},SlikeLoader.prototype.loadJs=function(e,o){var i=document.createElement("script"),n=document.getElementsByTagName("head")[0];i.src=e,i.onload=function(){o(!0)},i.onerror=function(){o(!1)},n.appendChild(i)},SlikeLoader.prototype.polyFillNeeded=function(){var e="function"==typeof window.Promise||!1,o="function"==typeof Object.assign||!1,i="function"==typeof window.URL||!1;return!(e&&o&&i)},SlikeLoader.prototype.load=function(e,o){var i=this;i.loadTimeStamp=Date.now(),i.config=e,i.config.noBeacon=!(i.config.video.id||!i.config.video.url),i.callback=o,i.env=e.env?e.env:"prod",i.version=e.version?e.version:"",i.isES5=!!e.isES5&&e.isES5,i.debug=!!e.debug&&e.debug,i.sendBeacon("vj=100&apikey="+i.config.apiKey+"&k="+i.config.video.id);var n=i.getSDKPath();if(i.polyFillNeeded()){var t=i.BASE_SDK_URL+"/lib/polyfills.js";i.loadJs(t,function(e){e?i.loadSDK(n):i.callback(!1,i.config)})}else i.loadSDK(n)},SlikeLoader.prototype.loadSDK=function(e){var i=this;i.loadJs(e,function(e){if(e){var o=Date.now()-i.loadTimeStamp;i.sendBeacon("vj=200&pfs="+o+"&apikey="+i.config.apiKey+"&k="+i.config.video.id),i.callback(!0,i.config)}else i.callback(!1,i.config),i.sendBeacon("vj=151&apikey="+i.config.apiKey+"&k="+i.config.video.id)})},SlikeLoader.prototype.sendBeacon=function(e){var o=this;if(!(o.config.noBeacon||o.config.GDPR_MODE||o.config.player.skipAnalytics)){var i=o.BEACON_BASE_URL+"lts="+o.loadTimeStamp+"&"+e;setTimeout(function(){var e=document.createElement("img");e.src=i,e.onload=function(){e=null}},500)}},SlikeLoader.prototype.getSDKPath=function(){var e=this,o=!1,i=!1,n="",t=e.BASE_SDK_URL;return"stg"==e.env&&(t+="/stg"),e.version&&(t=t+"/"+e.version),parseInt(e.config.player.slikeAdPercent)&&(o=!0),e.PLAYBACK_CAPABILITIES.MSE&&(i=!0),n+=o?"slikeima.":"",n+=i?"hls.":"",e.es6Support&&!e.isES5&&!e.isUnsupportedBrowser()||(n+="es5."),(e.debug||e.getDebugFlagFromLocalStorage())&&(n+="debug."),n+="spl.js",e.config.sdkBase="local"==e.env?"":t,"local"==e.env?"/"+n:t+"/"+(e.version?"":e.config.apiKey+".")+n},SlikeLoader.prototype.getDebugFlagFromLocalStorage=function(){try{return!!localStorage.getItem("__SPL__DEBUG__")}catch(e){return!1}},SlikeLoader.prototype.isUnsupportedBrowser=function(){var e=window.navigator.userAgent,o=e.indexOf("MSIE ");if(0<o)return parseInt(e.substring(o+5,e.indexOf(".",o)),10);if(0<e.indexOf("Trident/")){var i=e.indexOf("rv:");return parseInt(e.substring(i+3,e.indexOf(".",i)),10)}var n=e.indexOf("Edge/");return 0<n?parseInt(e.substring(n+5,e.indexOf(".",n)),10):-1!==e.indexOf("UCBrowser")||-1!==e.indexOf("UBrowser")},window.spl=new SlikeLoader;
@@ -36,7 +83,7 @@
     </head>
 
     <body>
-         <div id="preloaderstop" class="preloaderOverlay">
+        <div id="preloaderstop" class="preloaderOverlay">
             <div class="spinner-border positionCenter" role="status" style="width: 3rem; height: 3rem;z-index: 9999">
                 <span class="sr-only">Loading...</span>
             </div>
@@ -70,21 +117,21 @@
                     <div class="count-down">
                         <h2>THE EVENT WILL START IN</h2>
                         <div class="row mb-0 mt-3">
-                        <div class="duration">
-                            <h3>25</h3>
-                            <span>HOURS</span>
+                            <div class="duration">
+                                <h3>25</h3>
+                                <span>HOURS</span>
+                            </div>
+                            <div class="divider">:</div>
+                            <div class="duration">
+                                <h3>45</h3>
+                                <span>MINUTES</span>
+                            </div>
+                            <div class="divider">:</div>
+                            <div class="duration">
+                                <h3>45</h3>
+                                <span>SECONDS</span>
+                            </div>
                         </div>
-                        <div class="divider">:</div>
-                        <div class="duration">
-                            <h3>45</h3>
-                            <span>MINUTES</span>
-                        </div>
-                        <div class="divider">:</div>
-                        <div class="duration">
-                            <h3>45</h3>
-                            <span>SECONDS</span>
-                        </div>
-                    </div>
                     </div>
                 </div>
                 </div>
@@ -151,8 +198,22 @@
             <div class="bodyBg"></div>
             <div class="footerNav"></div>
 
+            
+
+
             <div class="floater leftPosition" id="floatLeft"></div>
             <div class="floater rightPosition" id="floatRight"></div>
+
+            
+            <div class="chat-floater">
+                <i class="chat-icon"></i>
+                CHAT                
+                <i class="minimise-icon"></i>                
+                <i class="maximize-icon"></i>
+            </div>
+
+            <div id="singleChat" class="chat-col"></div>
+
 
             <!-- data-backdrop="static" data-keyboard="false"  -->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -190,6 +251,17 @@
                             </button>
                         </div>
                         <div class="modal-body p1" id="modalBodyP1"></div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <!-- <div class="modal-header" id="mh3"></div> -->
+                        <div id="modalBodyP3" class="modal-body p0"></div>
+
                     </div>
                 </div>
             </div>

@@ -9,6 +9,7 @@
  		router_ = new Router();
  		nav_ = new Navigation();
  		user_ = new User();
+ 		
 
  		tmail_ = Login.getCookie();
  		if(tmail_ !== ""){
@@ -19,12 +20,20 @@
  		}
  	}
 
+ 	$("#loginEl .form-control").off("keypress").on('keypress',function(e) {
+	    if(e.which == 13) {
+	        loginClicked()
+	    }
+	});
+
  	var loginClicked = function(_id){
  		tmail_ = $("#loginEl .form-control").val();
  		if(Login.validateEmail(tmail_)){
  			startApp()
  		}else{
- 			alert("Incorrect Id")
+ 			//alert("Incorrect Id")
+
+ 			Notification.notify("fail", "Invalid user. Please enter valid email")
  			$("#preloaderstop").addClass("H")
  			$("#loginEl").removeClass("H")
  		}
@@ -50,7 +59,8 @@
 			if(_d.data.error){
 				$("#preloaderstop").addClass("H")
  				$("#loginEl").removeClass("H")
-				alert(_d.data.msg)
+				//alert(_d.data.msg)
+				Notification.notify("fail", _d.data.msg)
 
 			}else{
 				EventStore.setUser(_d.data);
@@ -61,7 +71,8 @@
 		}else{
 			$("#preloaderstop").addClass("H")
  			$("#loginEl").removeClass("H")
-			alert("Invalid Login URL")
+ 			Notification.notify("fail", "Server Connection Issue")
+			//alert("Invalid Login URL")
 		}
  	}
 
@@ -86,11 +97,18 @@
 	 			}});
 	 			
 	 			user_.init(pRenderer_, pRenderCallback.bind(this));
+
+	 			Chat.init();
+
+
+
 	 		}else{
-	 			alert("Error")
+	 			//alert("Error")
+	 			Notification.notify("fail", "Master JSON Error")
 	 		}
  		}else{
- 			alert("Master JSON Not Loaded");
+ 			//alert("Master JSON Not Loaded");
+ 			Notification.notify("fail", "Master JSON load issue")
  		}
  	}
 
@@ -106,8 +124,8 @@
 
  	var browserCallback = function(_key){
  		console.log("BROWSEE BUTTON::", _key)
- 		if(_key != ""){
- 			//pRenderCallback(_key.substr(1), true)
+ 		if(_key != "" && EventStore.getActivePage() !== _key){
+ 			pRenderCallback(_key.substr(1), true)
  		}
  	}
 

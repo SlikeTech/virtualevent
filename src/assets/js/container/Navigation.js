@@ -18,7 +18,8 @@ var Navigation = function () {
 		var str = "";
 		for(var i=0; i<it.length; i++){
 			str += '<a  data-id='+i+'>'
-			str += '<i class="material-icons">'+it[i].icon+'</i>'
+			//str += '<i class="material-icons">'+it[i].icon+'</i>'
+			str += '<i class="demo-icon">'+it[i].icon+'</i>'
 			str += it[i].label
 			str += '</a>'
 		}

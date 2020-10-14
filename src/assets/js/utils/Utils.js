@@ -10,9 +10,15 @@ var Utility = (function () {
 
 		var initiateLoad = function(){
 			//console.log("Load Class")
-			$("#preloader").removeClass("H");
+			
 		  if (arrLoadQueue[0].url == null){
 		  }else{
+
+		  		console.log(!!arrLoadQueue[0].prldr,  "prl")
+		  		//if(!!arrLoadQueue[0].hasOwnProperty("prldr")){}
+		  		!!arrLoadQueue[0].prldr ? "" : $("#preloader").removeClass("H")
+		  		
+
 		      loadExternalData(arrLoadQueue[0]);
 		  }
 		}
@@ -60,7 +66,7 @@ var Utility = (function () {
 			}
 			
 			
- 			o.headers = { 'eventid': eventId }
+ 			//o.headers = { 'eventid': eventId }
 
 			o.success = function(_data){
 				loadSuccess(_data);

@@ -7,7 +7,7 @@ var ModalComponent = function(){
 	var cardContainer_;
 	var imageComponent_;
 	var agendaTimer;
-	var timeout = 120000
+	var timeout = 12000
 
 	
 	var init = function(_ref, _cb){
@@ -39,7 +39,7 @@ var ModalComponent = function(){
 		objActModal_ = _o;
 		if(_o.popup_type === "player"){
 			modelFor_ = "player";
-
+			$("#mh0").html(modalHeader("Now playing: "+_o.title, ""))
 			videoComponent_.renderVideo(mainModal_[0], {videoid:_o.action_link, autoplay:true, muted:false, pos:"modal"})
 		}else if(_o.popup_type === "user"){
 			mData = _o;
@@ -105,6 +105,7 @@ var ModalComponent = function(){
 
 			case "resource":
 			resources();
+			//boothAttendies()
 			break;
 
 
@@ -384,10 +385,11 @@ var ModalComponent = function(){
 	
 	/* AGENDA */
 	var agenda = function(par){
-		// mData.body[0].slot_data[3].status = 0
-		// mData.body[0].slot_data[5].status = 0
-		// mData.body[0].slot_data[2].status = 1
-		// mData.body[0].slot_data[6].status = 1
+
+		//mData.body[0].slot_data[3].status = 0
+		//mData.body[0].slot_data[5].status = 0
+		//mData.body[0].slot_data[2].status = 1
+		//mData.body[0].slot_data[6].status = 1
 		
 		var agen = filterAgenda(par)
 
@@ -409,7 +411,8 @@ var ModalComponent = function(){
 				disbtn = "disabled"
 			}else if(agen[i].status == 2){
 				clss = "completeBtn";
-				label = "completed";
+				//label = "completed";
+				label = '<b>View</b> <span>completed</span></button>'
 			}
 			
 			var tm = agen[i].speakers;
@@ -426,7 +429,11 @@ var ModalComponent = function(){
 				if(agen[i].added === 1)
 					dis = "disableIcon"	
 			}
-			str += '<li class="list-group-item" data-type="'+label+'"><div class="row"><div class="col-md-2 alignText"><button type="button" class="btn btn-primary btn-sm '+clss+'" '+disbtn+' data-ind="'+i+'">'+label+'</button></div><div class="col-md-5 f12"><b class="db f14">'+agen[i].title+'</b>'+nameField+'</div><div class="col-md-4 alignText"><span>'+agen[i].starttime+' PM</span></div><div class="col-md-1 alignText"><div data-id="'+i+'" class="iconSVG '+dis+'"><img src="images/briefcase.svg" alt=""></div></div></div></li>';
+
+
+			
+			
+			str += '<li class="list-group-item" data-type="'+label+'"><div class="row"><div class="col-md-2 alignText"><button type="button" class="btn btn-primary btn-sm '+clss+'" '+disbtn+' data-ind="'+i+'">'+label+'</button></div><div class="col-md-5 f12"><b class="db f14">'+agen[i].title+'</b>'+nameField+'</div><div class="col-md-4 alignText"><span class="f12">'+agen[i].starttime+'</span></div><div class="col-md-1 alignText"><div data-id="'+i+'" class="iconSVG '+dis+'"><img src="images/briefcase.svg" alt=""></div></div></div></li>';
 		}
 		mainModal_.html('<div class="agenda"><ul class="list-group">'+str+'</ul></div><div class="modal-footer"></div>')
 
@@ -440,13 +447,13 @@ var ModalComponent = function(){
 
 		$("#modalBodyP0 button").off("click").on("click", function(){
 			var _o = agen[parseInt($(this).attr("data-ind"))];
-			renderVideoN({videoid:_o.resource.resource, title:_o.title});
+			renderVideoN({videoid:_o.resource.resource, title:_o.title, mainObj:_o});
 
 		})	
 
 		agendaTimer = setTimeout(function(){
 			agendaTimer = null;
-			Utility.loader({url: objActModal_.action_link, cb:mDataLoaded.bind(this)});
+			Utility.loader({url: objActModal_.action_link, prldr:"H", cb:mDataLoaded.bind(this)});
 		}, timeout)
 	}
 
@@ -559,7 +566,6 @@ var ModalComponent = function(){
 
 
 			// console.log(tm[parseInt($(this).attr("data-id"))])
-			// debugger
 			
 			// getComponentData($(this).attr("data-id"), tm);
 		})
@@ -589,7 +595,7 @@ var ModalComponent = function(){
 		})
 		$("#modalBodyP0 li button").off("click").on("click", function(){
 			var ind = parseInt($(this).parent().parent().attr("data-id"));
-			renderVideoN({videoid:tm[ind].videoid, title:tm[ind].name});
+			renderVideoN({videoid:tm[ind].videoid, title:tm[ind].name, mainObj:tm[ind]});
 		})
 
 
@@ -611,7 +617,7 @@ var ModalComponent = function(){
 		$("#mh0").html(modalHeader(objActModal_.popup_type, str))
 
 		$("#exampleModal .searchBar i").off("click").on("click", function(){
-			var v = Utility.trim($("#attSearch").val()).toLowerCase();
+			/*var v = Utility.trim($("#attSearch").val()).toLowerCase();
 			var s = mData.body.filter(it => {
 				return it.firstname.toLowerCase().indexOf(v) !== -1 || it.lastname.toLowerCase().indexOf(v) !== -1 || it.companyname.indexOf(v) !== -1 || it.jobtitle.toLowerCase().indexOf(v) !== -1 
 			})
@@ -620,10 +626,16 @@ var ModalComponent = function(){
 				attendees(s)
 			}else{
 				attendees([])
-			}
-
+			}*/
+			keyEnter()
 			
 		})
+
+		$("#exampleModal .searchBar").off("keypress").on('keypress',function(e) {
+		    if(e.which == 13) {
+		        keyEnter()
+		    }
+		});
 
 		$("#exampleModal .refreshIcon i").off("click").on("click", function(){
 			$("#attSearch").val("");
@@ -633,6 +645,19 @@ var ModalComponent = function(){
 				attendees([]);
 			}});
 		})
+	}
+
+	var keyEnter = function(){
+		var v = Utility.trim($("#attSearch").val()).toLowerCase();
+		var s = mData.body.filter(it => {
+			return it.firstname.toLowerCase().indexOf(v) !== -1 || it.lastname.toLowerCase().indexOf(v) !== -1 || it.companyname.indexOf(v) !== -1 || it.jobtitle.toLowerCase().indexOf(v) !== -1 
+		})
+
+		if(s.length){
+			attendees(s)
+		}else{
+			attendees([])
+		}
 	}
 
 
@@ -654,8 +679,10 @@ var ModalComponent = function(){
 		var dis = ""
 		var str = '<div class="participants">'
 		str += '<ul class="list-group">'
+		console.log(tm)
 
 		for(var i=0; i<tm.length; i++){
+			//console.log(tuuid, " !== ", tm[i].uuid)
 			if(tuuid !== tm[i].uuid){
 				if(tm[i].cardShared){
 					dis = "disableIcon"
@@ -676,7 +703,7 @@ var ModalComponent = function(){
 					str += '<div class="actions">'
 					str += '<img src="images/chat.svg" alt="" data-id="chat_'+i+'">'
 					//str += '<i class="material-icons">mail</i>'
-					//str += '<img src="images/briefcase.svg" alt="" data-id="mail_'+i+'">'
+					str += '<img src="images/briefcase.svg" alt="" data-id="mail_'+i+'">'
 
 
 					
@@ -712,9 +739,10 @@ var ModalComponent = function(){
 
 
 			if(t === "chat"){
-
+				$("#exampleModal").modal("hide");
+				Chat.openSingleWindow(o);
 			}else if(t === "mail"){
-
+				populateMail(o, true, this)
 			}else if(t === "bcard"){
 				populateCard(o, true, this)
 
@@ -869,6 +897,55 @@ var ModalComponent = function(){
 
 	
 
+	var boothAttendies = function(){
+
+		var arr = [10]
+		var str = '<div class="booth row m0">'
+
+		for(var i=0; i<10; i++){
+
+			str += '<div class="col-sm-4">'
+			str += '<div class="card">'
+			str += '<div class="booth-lhs">'
+			str += '<div class="booth-avatar">'
+			str += '<i class="material-icons">account_circle</i>'
+			str += '</div>'
+			str += '<b class="db">Available</b>'
+			str += '</div>'
+			str += '<div class="booth-rhs">'
+			str += '<b>Pallav Samaddar</b>'
+			str += '<div class="booth-actions available">'
+			str += '<p class="video-call" data-id=vid_'+i+'>'+vidCallout()
+			str += '</p>'
+			str += '<p class="chat-call"  data-id=chat_'+i+'>'+chatCallout()
+			str += '</p>'
+			str += '</div>'
+			str += '</div>'
+			str += '</div>'
+			str += '</div>'
+
+
+		}
+
+		str += '</div>'
+		str += '<div class="modal-footer"></div>'
+		mainModal_.html(str);
+
+		$("#modalBodyP0 .booth [data-id]").off("click").on("click", function(){
+			var t = $(this).attr("data-id").split("_");
+			if(t[0] === "vid"){
+				alert("video")
+			}else{
+				alert("chat")
+			}
+		})
+
+
+	}
+
+
+	
+
 	/* Utility functions */
 	var getComponentData = function(id, arr){
 		var t = arr.filter(it => {
@@ -908,7 +985,9 @@ var ModalComponent = function(){
 		
 	}
 	
-	
+	var populateMail = function(_o){
+		emailCOntainer.renderEmail($("#modalinsidebody"), _o)
+	}
 
 	var populateCard = function( _o, _editable, _ref){
 		$(".modal-overlay-cont #modalinsidelable").text("Business Card ");
@@ -925,6 +1004,8 @@ var ModalComponent = function(){
 		_o.autoplay = true;
 		_o.muted = false
 		videoComponent_.renderVideo($("#modalinsidebody")[0], _o)
+
+
 	}
 
 	var populateImage = function(_o){
@@ -939,8 +1020,7 @@ var ModalComponent = function(){
 		// 	return it.videoid === _id
 		// });
 
-		//debugger
-
+		
 		videoComponent_.renderVideo($(".modal-body.p1")[0], {videoid:_id})
 		$("#exampleModal").modal("hide");
 		$("#exampleModal2").modal("show");
@@ -973,6 +1053,7 @@ var ModalComponent = function(){
 		})
 
 		$("#exampleModal").on('hidden.bs.modal', function(){
+			//console.log("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTt")
 			//if(modelFor_ === "player"){
 				$("#exampleModal .modal-body").html("")
 				$(".modal-overlay-cont #modalinsideclose").click();
@@ -980,14 +1061,18 @@ var ModalComponent = function(){
 				if(objActModal_.popup_type === "agenda" && agendaTimer){
 					clearInterval(agendaTimer);
 				}
+
+
 			//}
 		  });
 
 
 		$(".modal-overlay-cont #modalinsideclose").off("click").on("click", function(){
+			//console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaa")
 			$("#exampleModal .modal-overlay-cont").removeClass("show");
 			$(".modal-overlay-cont #modalinsidebody").html("");
 			$(".modal-overlay-cont .titleHdng").html("")
+			videoComponent_.destroyPlayer()
 		})
 
 	}
@@ -1052,7 +1137,7 @@ var ModalComponent = function(){
 		Utility.loader({url: "users/addtobriefcase.json", data : fd, type :"POST", cb:function(_d){
 			console.log("done")
 			showAlert("success", "Added to your briefcase")
-			//debugger
+			
 		}});
 	}
 
@@ -1083,39 +1168,20 @@ var ModalComponent = function(){
 
 
 	var showAlert = function(ty, txt){
-		$(".alert-msg[role=alert]").addClass("H")
-		var str = ""
-		if(ty === "info"){
-			alertContent("INFROMATION", ty, txt)
-		}else if(ty === "success"){
-			alertContent("SUCCESS", ty, txt)
-		}else if(ty === "fail"){
-			alertContent("FAIL", "warning", txt)
-		}
+		Notification.notify(ty, txt);
 	}
 
 	var modalHeader = function(_header, _tabs){
 		return '<h5 class="modal-title" id="exampleModalLabel">'+_header+'</h5>'+_tabs+'<button type="button" class="close" data-dismiss="modal" aria-label="Close"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11.002" viewBox="0 0 11 11.002"><path d="M18.089,16.79l3.929-3.931a.921.921,0,1,0-1.3-1.3l-3.929,3.931-3.929-3.931a.921.921,0,1,0-1.3,1.3l3.929,3.931L11.556,20.72a.921.921,0,0,0,1.3,1.3l3.929-3.931,3.929,3.931a.921.921,0,1,0,1.3-1.3Z" transform="translate(-11.285 -11.289)"/></svg></button>';
 	}
 
+	var vidCallout = function(){
+		return '<svg xmlns="http://www.w3.org/2000/svg" width="46.484" height="42" viewBox="0 0 46.484 42"><defs><style>.b{fill:#ccc;}</style></defs><g transform="translate(-93 -81)"><circle cx="21" cy="21" r="21" transform="translate(93 81)"/><path class="b" d="M19.6,13.852V10.078A1.081,1.081,0,0,0,18.518,9H5.578A1.081,1.081,0,0,0,4.5,10.078V20.861a1.081,1.081,0,0,0,1.078,1.078H18.518A1.081,1.081,0,0,0,19.6,20.861V17.087L23.909,21.4V9.539Zm-3.235,2.7H13.126v3.235H10.97V16.548H7.735V14.391H10.97V11.157h2.157v3.235h3.235Z" transform="translate(101.2 86.561)"/><path d="M2.064-2.874,9.484,10.15-3.354,6.39V7.72Z" transform="translate(130 109)"/></g></svg>'
+	}
 
-	var alertContent = function(type, at, text){
-	var str = '<div class="close-ico" id="clsbtn"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11.002" viewBox="0 0 11 11.002"><path class="a" d="M18.089,16.79l3.929-3.931a.921.921,0,1,0-1.3-1.3l-3.929,3.931-3.929-3.931a.921.921,0,1,0-1.3,1.3l3.929,3.931L11.556,20.72a.921.921,0,0,0,1.3,1.3l3.929-3.931,3.929,3.931a.921.921,0,1,0,1.3-1.3Z" transform="translate(-11.285 -11.289)"/></svg></div><i class="material-icons">info</i><b>'+type+'</b>'+text
 
-		$("#alertBox").removeClass();
-		$("#alertBox").addClass("alert-msg alert-msg-"+at+" show");
-
-		var inter = setTimeout(function(){
-			$("#alertBox").removeClass("show");
-		}, 3000)
-
-		$("#alertBox").html(str);
-		$("#alertBox").addClass("show");
-
-		$("#alertBox #clsbtn").off("click").on("click", function(){
-			clearInterval(inter);
-			$("#alertBox").removeClass("show");
-		})
+	var chatCallout = function(){
+		return '<svg xmlns="http://www.w3.org/2000/svg" width="47.484" height="42" viewBox="0 0 47.484 42"><defs><style>.b{fill:#ccc;}</style></defs><g transform="translate(-202 -81)"><circle cx="21" cy="21" r="21" transform="translate(202 81)"/><path class="b" d="M19.514,3H4.835A1.832,1.832,0,0,0,3.009,4.835L3,21.349l3.67-3.67H19.514a1.84,1.84,0,0,0,1.835-1.835V4.835A1.84,1.84,0,0,0,19.514,3ZM17.679,14.009H6.67V12.174H17.679Zm0-2.752H6.67V9.422H17.679Zm0-2.752H6.67V6.67H17.679Z" transform="translate(211.2 90)"/><path d="M2.064-2.874,9.484,10.15-3.354,6.39V7.72Z" transform="translate(240 109)"/></g></svg>'
 	}
 
 	return {

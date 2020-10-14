@@ -10,10 +10,15 @@ var EventStore = (function(){
 		}else{
 			var _t = _o.events;
 			//store_['user'] = "";
+			store_['eventData'] = _t;
 			store_['pages'] = _t.pages;
 			store_['actPage'] = _t.homepage;
 			store_['navigation'] = _t.navigation;
 			store_["userProfile"] = "";
+			store_["chats"] = {};
+			store_["attendies"] = [];
+
+			store_.chats.rooms = _t.chats;
 
 			return {suc:true, msg:"Success", actPage: _t.homepage};
 		}
@@ -94,6 +99,24 @@ var EventStore = (function(){
 	}
 
 
+	var setChatData = function(){
+
+	}
+
+	var getChatData = function(){
+		
+	}
+
+	var setAttendies = function(_att){
+		store_.chats.users = _att
+		//store_["attendies"] = _att
+	}
+
+	var getAttendies = function(){
+		return store_.attendies;	
+	}
+
+
 
 
 	return {
@@ -108,6 +131,8 @@ var EventStore = (function(){
 		getUserProfile:getUserProfile,
 		setActivePage:setActivePage,
 		getActivePage:getActivePage,
-		updateUserProfile:updateUserProfile
+		updateUserProfile:updateUserProfile,
+		setAttendies:setAttendies,
+		getAttendies:getAttendies
 	}
 })();

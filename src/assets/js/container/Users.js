@@ -54,6 +54,15 @@ var User = function () {
 			break;
 
 			case "logout":
+
+			Utility.loader({url: "login/logout.json", data : {}, type :"POST", cb:function(_d){
+	            console.log("logout ", _d)
+	            if(_d.data){
+	            	Login.deleteCookie()
+	            	document.location.reload()
+	            	//document.location.href="/";
+	            }
+	        }});
 			break;
 		}
 	}

@@ -17,3 +17,11 @@
         width: 100%;
     }
 }
+@media (max-width: 767px) {
+
+}
+@media screen and (max-height: 656px) {
+    .modal-body {
+        height: 300px;
+    }
+}
