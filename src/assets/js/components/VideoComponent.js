@@ -11,7 +11,7 @@ var VideoComponent = function(){
 	
     
     var init = function(_ref, _cb){
-		controller_ = _ref;
+
 		callback_ = _cb;
 	}
 

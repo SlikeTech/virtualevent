@@ -8,10 +8,12 @@ var ModalComponent = function(){
 	var imageComponent_;
 	var agendaTimer;
 	var timeout = 12000
+	var videoComponent_;
+	var objActModal_;
+	var mailContainer_;
 
 	
 	var init = function(_ref, _cb){
-		controller_ = _ref;
 		callback_ = _cb;
 		videoComponent_ = new VideoComponent();
 		videoComponent_.init(this, videoCallback_.bind(this));
@@ -21,6 +23,8 @@ var ModalComponent = function(){
 		cardContainer_.init();
 
 		imageComponent_ = new ImageContainer();
+		mailContainer_ = new Mail();
+		mailContainer_.init();
 
 
 		initUI();
@@ -255,7 +259,7 @@ var ModalComponent = function(){
 	/*POLLS*/
 	var polls = function(){
 		
-		
+		var q;
 		if(mData.body[0].submitted_answers){
 			q = mData.body[0].questions = JSON.parse(mData.body[0].submitted_answers)
 		}else{
@@ -703,7 +707,7 @@ var ModalComponent = function(){
 					str += '<div class="actions">'
 					str += '<img src="images/chat.svg" alt="" data-id="chat_'+i+'">'
 					//str += '<i class="material-icons">mail</i>'
-					str += '<img src="images/briefcase.svg" alt="" data-id="mail_'+i+'">'
+					str += '<img src="images/email.svg" alt="" data-id="mail_'+i+'">'
 
 
 					
@@ -742,7 +746,7 @@ var ModalComponent = function(){
 				$("#exampleModal").modal("hide");
 				Chat.openSingleWindow(o);
 			}else if(t === "mail"){
-				populateMail(o, true, this)
+				populateEmail(o, true, this)
 			}else if(t === "bcard"){
 				populateCard(o, true, this)
 
@@ -985,8 +989,16 @@ var ModalComponent = function(){
 		
 	}
 	
-	var populateMail = function(_o){
-		emailCOntainer.renderEmail($("#modalinsidebody"), _o)
+	// var populateMail = function(_o){
+	// 	emailCOntainer.renderEmail($("#modalinsidebody"), _o)
+	// }
+
+	var populateEmail = function(_o,_editable, _ref){
+		$(".modal-overlay-cont #modalinsidelable").text("Email");
+		//$(".modal-overlay-cont .titleHdng").text('Send Email to '+_o.firstname+ ' ' + _o.lastname+' ('+_o.companyname+')');
+		$(".modal-overlay-cont").addClass("show");
+		//mailContainer_.render
+		mailContainer_.renderMail($("#modalinsidebody"),  _o, _editable, cardEditAction.bind(this), _ref);
 	}
 
 	var populateCard = function( _o, _editable, _ref){

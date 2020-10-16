@@ -1,0 +1,4 @@
+node_modules
+*.7Z
+*.gz
+*.gzip

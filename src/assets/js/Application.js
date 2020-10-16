@@ -6,8 +6,8 @@
  		uiELements();
  		pRenderer_ = new PageRenderer();
  		pRenderer_.init(this, pRenderCallback.bind(this));
- 		router_ = new Router();
- 		nav_ = new Navigation();
+		 router_ = new Router();
+		nav_ = new Navigation();
  		user_ = new User();
  		
 
@@ -84,8 +84,8 @@
  		if(_d.data){
 	 		var g = EventStore.parseMaster(_d.data);
 	 		if(g.suc){
-	 			pRenderer_.renderPage(EventStore.getPageData(g.actPage));
-	 			nav_.init(pRenderer_, pRenderCallback.bind(this))
+				 pRenderer_.renderPage(EventStore.getPageData(g.actPage));
+				 nav_.init(pRenderer_, pRenderCallback.bind(this));
 
 	 			router_.init(this, browserCallback.bind(this));
 	 			window.location.hash = g.actPage;
@@ -98,7 +98,8 @@
 	 			
 	 			user_.init(pRenderer_, pRenderCallback.bind(this));
 
-	 			Chat.init();
+				 Chat.init();
+				 Notification.init();
 
 
 

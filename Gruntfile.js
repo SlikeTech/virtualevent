@@ -44,8 +44,8 @@ module.exports = function (grunt) {
             },
             js: {
                 files: {
-                    'dist/scripts.min.js': 'src/assets/js/**/*.js',
-                    //'temp/scripts.js': 'src/assets/js/**/*.js',
+                    //'dist/scripts.min.js': 'src/assets/js/**/*.js',
+                    'temp/scripts.js': 'src/assets/js/**/*.js',
                 },
             },
         },
@@ -88,6 +88,6 @@ module.exports = function (grunt) {
 
 
 
-    grunt.registerTask('default', [ 'sass', 'concat', 'babel', 'cssmin',   'imagemin']);
+    grunt.registerTask('default', [ 'sass', 'concat', 'babel', 'cssmin',  'uglify', 'imagemin']);
 
 };

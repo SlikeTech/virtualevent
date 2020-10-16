@@ -27,22 +27,24 @@ var Login = (function () {
 	    }
 	    else {
 	        expires = "";
-	    }
+		}
+		console.log("cookie name is ",name + "=" + value + expires + "; path=/");
 	    document.cookie = name + "=" + value + expires + "; path=/";
 	}
 
 	var getCookie = function() {
 	    if (document.cookie.length > 0) {
 	    	
-	        c_start = document.cookie.indexOf(c_name + "=");
+	        var c_start = document.cookie.indexOf(c_name + "=");
 
 	        if (c_start != -1) {
 	            c_start = c_start + c_name.length + 1;
-	            c_end = document.cookie.indexOf(";", c_start);
+	            var c_end = document.cookie.indexOf(";", c_start);
 	           
 	            if (c_end == -1) {
 	                c_end = document.cookie.length;
-	            }
+				}
+				console.log("coookie name getting");
 	          
 	            return unescape(document.cookie.substring(c_start, c_end));
 	        }

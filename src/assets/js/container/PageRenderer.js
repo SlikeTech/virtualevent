@@ -1,9 +1,8 @@
 var PageRenderer = function(){
-	var controller_, callback_, videoComponent_, modalContent_, bgContainer, floterLeft, floterRight, objActive;
+	var callback_, videoComponent_, modalContent_, bgContainer, floterLeft, floterRight, objActive;
 	var animVideo, animVidContainer;
 	
 	var init = function(_ref, _cb){
-		controller_ = _ref;
 		callback_ = _cb;
 		
 		//videoComponent_ = new VideoComponent();
@@ -49,7 +48,7 @@ var PageRenderer = function(){
 		var strHotspot = "";
 		var strFloaterLeft = "";
 		var strFloaterRight = "";
-		var l,t,h,g,c,tp;
+		var l,t,h,g,c,tp,w;
 		strHotspot += '<img src="'+_o.image+'" alt="">';
 		var vcont = [];
 

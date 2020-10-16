@@ -1,8 +1,7 @@
 var Router = function(){
-  var controller_, callback_;
+  var callback_;
   
   var init = function(_ref, _cb){
-    controller_ = _ref;
     callback_ = _cb;
     addHashListeners()
   }

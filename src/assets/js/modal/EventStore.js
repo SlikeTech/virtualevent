@@ -80,7 +80,7 @@ var EventStore = (function(){
 		
 
 		if(oT.length){
-			store_,actPage = _key;
+			store_.actPage = _key;
 			return oT[0]
 		}
 		return "";
@@ -116,6 +116,9 @@ var EventStore = (function(){
 		return store_.attendies;	
 	}
 
+	var getUserSession = function(){
+		return store_.user.uuid;
+	}
 
 
 
@@ -133,6 +136,7 @@ var EventStore = (function(){
 		getActivePage:getActivePage,
 		updateUserProfile:updateUserProfile,
 		setAttendies:setAttendies,
-		getAttendies:getAttendies
+		getAttendies:getAttendies,
+		getUserSession:getUserSession,
 	}
 })();

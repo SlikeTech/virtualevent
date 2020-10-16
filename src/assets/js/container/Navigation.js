@@ -1,12 +1,10 @@
 var Navigation = function () {
-	var pRenderer_, pCallback_;
+	var pRenderer_, pCallback_, nav_;
 	
 
 	var init = function(pgr, cb){
 		pRenderer_ = pgr;
 		pCallback_ = cb
-		
-		
 		nav_ = EventStore.getNavigation();
 
 		populateNav()
