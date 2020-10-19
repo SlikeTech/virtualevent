@@ -53,13 +53,27 @@ var Utility = (function () {
 		var loadExternalData = function(obj){          
 		  	
 			var o = {};
-			o.url = baseUrl+obj.url
+			var ts = validateURL(obj.url);
+			if(ts){
+				o.url = obj.url;
+			}else{
+				o.url = baseUrl+obj.url
+			}
+			
+		
+			
 			if(obj.type && obj.type === "POST"){
 				o.type = "POST";
 				o.data = obj.data;
 
-				o.processData = false;
-				o.contentType = false;
+				if(ts){
+					o.contentType = "application/json";
+				}else{
+					o.processData = false;
+					o.contentType = false;
+				}
+
+				
 			}else{
 				o.type = "GET";
 				o.datatype = "application/json"
@@ -96,7 +110,16 @@ var Utility = (function () {
 
     var trim = function (str) {
         return str.replace(/^\s+|\s+$/g, '');
-    }
+	}
+	
+	var validateURL = function(link){
+		if (link.indexOf("http://") == 0 || link.indexOf("https://") == 0) {
+			return true;
+		}
+		else{
+			return false;
+		}
+}
 
 
 	return {

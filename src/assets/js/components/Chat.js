@@ -2,6 +2,9 @@ var Chat = (function(){
 	var _cOuter, lhsActiveArr_, connection_, chats_;
     var admin_ = true;
     var chatStatus_;
+    var rhsDisplay_;
+    var uuid_;
+    var handshake_;
 	
     var init = function(_ref, _cb){
 		chats_ = {
@@ -24,23 +27,66 @@ var Chat = (function(){
             }
         }
 
+        uuid_ = EventStore.getUser().uuid;
+        handshake_ = false;
+
         Utility.loader({url: "users/attendees.json?eventid=f5n9o69lkl", cb:attendies.bind(this)});
         initUI();
 
+        //Utility.loader({url: "https://act-dev.cleo.live/chatf?evtid=f5n9o69lkl", data : JSON.stringify({roomid:"f5n9o69lkl", ftype:"f5c9o6l9lk", query:{eq:"f5c9o6l9lk"}}), type :"POST", cb:chatHistory.bind(this)})
+        //Utility.loader({url: "http://localhost/gchat.json", cb:chatHistory.bind(this)})
+
         
 	}
-	
+    
+    var chatHistory = function(_d){
+        console.log("================")
+        console.log(_d)
+        //var uuid = EventStore.getUser().uuid;
+        var eid = EventStore.getUser().eventid
+        var d = _d.data.data
+
+        for(var i=0; i<d.length; i++){
+            if(d[i].ReceiverID === "*"){
+                chats_.messages[eid].newMessage.push({sender:d[i].SenderID, receiver:eid, msg:d[i].Message, ts:d[i].Ts})
+            }else{
+               // console.log(d[i].ReceiverID)
+                if(!chats_.messages[d[i].ReceiverID]){
+                    chats_.messages[d[i].ReceiverID] = {
+                        newMessage:[],
+                        archieved:[]
+                    }    
+                }
+                chats_.messages[d[i].ReceiverID].newMessage.push({sender:d[i].SenderID, receiver:d[i].ReceiverID, msg:d[i].Message, ts:d[i].Ts})
+            }
+            // if(d[i].ReceiverID === "*"){
+            //     chats_.messages[eid].newMessage.push({sender:d[i].SenderID, msg:d[i].Message, ts:d[i].Ts})
+            // }else{
+            //     if(d[i].SenderrID === uuid_){
+            //         chats_.messages[d[i].ReceiverID].newMessage.push({sender:uuid_, msg:d[i].Message, ts:d[i].Ts})
+            //     }else{
+            //         chats_.messages[d[i].SenderID].newMessage.push({sender:d[i].SenderID, msg:d[i].Message, ts:d[i].Ts})
+            //     }
+            // }
+        }
+        
+    }
+
 
     var initUI = function(){
         $(".chat-floater .chat-icon").off("click").on("click", function(){
         	debugger
         })
+        
         $(".chat-floater .minimise-icon").off("click").on("click", function(){
         	if( $(".chat-cOuter").hasClass("H")){
         		$(".chat-cOuter").removeClass("H")
                 $(".chat-floater").addClass("show-minimise-chat")
                 if(chatStatus_.lhs.data.length === 0){
-                    var o = getAllUsersAndGroups()
+                    //var o = getAllUsersAndGroups()
+                    $("#singleChat .chat-messages").html(genRHSMsg(eventId, "min"))
+                }else{
+                    $("#singleChat .chat-messages").html(genRHSMsg(rhsDisplay_, "min"))
                 }
         	}else{
         		 $(".chat-cOuter").addClass("H")
@@ -48,32 +94,77 @@ var Chat = (function(){
                 
         	}
         })
+        
         $(".chat-floater .maximize-icon").off("click").on("click", function(){
         	//$("#modalBodyP3").html(myvar1)
             $("#exampleModal3").modal("show");
-
             $("#singleChat .fChat-header .min-Icon").click()
             
             if(chatStatus_.lhs.data.length === 0){
                 var o = getAllUsersAndGroups()
+            }else{
+                $("#chatBox .chat-messages").html(genRHSMsg(rhsDisplay_, "max"))
             }
         })
 
         //Full Chat Box
         $("#modalBodyP3").html(genFullChat())
         
-        $(".full-chat .chat-edit").off("click").on("click", function(){
-            if($(".full-chat #editGroup").is(":visible")){
+        
+        $(".full-chat .chat-edit svg").off("click").on("click", function(){
+            if($("#dummybtn").is(":visible")){
+                $("#dummybtn").hide()
                 $(".full-chat #editGroup").addClass("H");
             }else{
-                $(".full-chat #editGroup").removeClass("H")
-                
-                //var to = createOrEditRoom("create");
-                var to = createOrEditRoom("edit");
-                $("#editGroup .chat-header").html(to.header);
-                $("#editGroup .chat-messages").html(to.message);
-
+                $("#dummybtn").show()
             }
+            // if($(".full-chat #editGroup").is(":visible")){
+            //     $(".full-chat #editGroup").addClass("H");
+            // }else{
+            //     $(".full-chat #editGroup").removeClass("H")
+                
+            //     var to = createOrEditRoom("create");
+            //     //var to = createOrEditRoom("edit");
+            //     $("#editGroup .chat-header").html(to.header);
+            //     $("#editGroup .chat-messages").html(to.message);
+
+            // }
+            //add group
+        })
+        
+        $("#dummybtn button").off("click").on("click", function(){
+            var to;
+            if($(this).text() === "Create"){
+                to = createOrEditRoom("create");
+                getUsersOnly()
+            }else{
+                to = createOrEditRoom("edit");
+                getRoomsOnly();
+            }
+            $(".full-chat #editGroup").removeClass("H")
+            $("#editGroup .chat-header").html(to.header);
+            $("#editGroup .chat-messages").html(to.message);
+           
+            $("#editGroup #cancelBtn").off("click").on("click", function(){
+                getAllUsersAndGroups()
+                $(".full-chat .chat-edit svg").click()
+            })
+
+            $("#editGroup #saveBtn").off("click").on("click", function(){
+                
+            })
+            
+            // if($(".full-chat #editGroup").is(":visible")){
+            //     $(".full-chat #editGroup").addClass("H");
+            // }else{
+            //     $(".full-chat #editGroup").removeClass("H")
+                
+            //     var to = createOrEditRoom("create");
+            //     //var to = createOrEditRoom("edit");
+            //     $("#editGroup .chat-header").html(to.header);
+            //     $("#editGroup .chat-messages").html(to.message);
+
+            // }
             //add group
         })
         
@@ -83,7 +174,7 @@ var Chat = (function(){
         })
         
         $(".full-chat .min-Icon").off("click").on("click", function(){
-            debugger
+            $("#exampleModal3").modal("hide");
             //min message
         })
 
@@ -97,6 +188,7 @@ var Chat = (function(){
         $(".full-chat .close-Icon").off("click").on("click", function(){
            // debugger
             $("#exampleModal3").modal("hide");
+            $(".chat-floater").addClass("H");
             
             //close message
         })
@@ -136,19 +228,58 @@ var Chat = (function(){
 
         $("#singleChat").html(collapseChat())
         $("#singleChat .fChat-header .min-Icon").off("click").on("click", function(){
-            $("#singleChat .chat-cOuter").addClass("H")
+            $("#singleChat .chat-cOuter").addClass("H");
             $(".chat-floater").removeClass("show-minimise-chat")
         })
 
         $("#singleChat .fChat-header .dock-Icon").off("click").on("click", function(){
-            
+            $(".chat-floater .maximize-icon").click();
+            $("#chatBox .chat-messages").html(genRHSMsg(rhsDisplay_, "max"))
         })
 
         $("#singleChat .fChat-header .close-Icon").off("click").on("click", function(){
-            
+            $(".chat-floater").addClass("H");
+            $("#singleChat .chat-cOuter").addClass("H");
         })
+
+        
+        $("#chatInputMsgMax").off("keypress").on('keypress',function(e) {
+		    if(e.which == 13) {
+                sendMessage($(this), "#chatBox .chat-messages");
+		    }
+		});
+        $("#chatSendMsgMax").off("click").on("click", function(){
+            sendMessage($("#chatInputMsgMax"), "#chatBox .chat-messages");
+        })
+        $("#chatSendMsgMin").off("click").on("click", function(){
+            sendMessage($("#chatInputMsgMin"), "#singleChat .chat-messages");
+        })
+        $("#chatInputMsgMin").off("keypress").on('keypress',function(e) {
+            
+		    if(e.which == 13) {
+		        sendMessage($(this), "#singleChat .chat-messages");
+		    }
+		});
+       
 	}
 
+    var sendMessage = function(_div, _divid){
+        var msg = _div.val();
+        _div.val("");
+        var t = chats_.master[rhsDisplay_];
+        if(t.type === "room"){
+            connection_.send("41::msg::"+rhsDisplay_+"::*::"+msg);
+        }else{
+            connection_.send("41::msg::"+eventId+"::"+rhsDisplay_+"::"+msg);
+        }
+        $(_divid).append(chatSelf({msg:msg}));
+        chats_.messages[rhsDisplay_].newMessage.push({sender:uuid_, receiver:rhsDisplay_, msg:msg});
+        //$("#chatBox .chat-messages").append(chatSelf({msg:msg}));
+        //$('#chatBox .chat-messages').scrollTop($('#chatBox .chat-messages')[0].scrollHeight);
+        
+        
+    }
+    
     var openSingleWindow = function (_user){
             console.log(_user)
             $(".chat-floater .minimise-icon").click();
@@ -237,16 +368,16 @@ var Chat = (function(){
         var h, l;
         var d = chatStatus_.lhs.data;
         for(var i=0; i<d.length; i++){
-            console.log(chats_.master[d[i]])
+            //console.log(chats_.master[d[i]])
             str += '<div class="chat-row" data-id="'+d[i]+'" data-type="'+chats_.master[d[i]].type+'">'
             str += '<i class="material-icons">account_circle</i>'
             str += '<div class="chat-name text-truncate">'+ chats_.master[d[i]].name+'</div>'
             
             //Unread chat
-            console.log(d[i])
+            //console.log(d[i])
             //debugger
             l = chats_.messages[d[i]].newMessage.length
-            h = l === 0 ? "H" : "l"
+            h = l === 0 ? " H" : " l"
             str += '<div class="chat-date'+h+' ">'
             //str += '10:30 AM '
             str += '<span>'
@@ -291,10 +422,14 @@ var Chat = (function(){
 
         connection_.onclose = () => {
           console.log('disconnected');
+          connection_ =  new WebSocket("wss://act-dev.cleo.live/event?evtid="+EventStore.getUser().eventid+"&jwt="+EventStore.getUser().jwt);
         };
 
         connection_.onerror = (error) => {
           console.log('failed to connect', error);
+          setTimeout(function(){
+            connection_ =  new WebSocket("wss://act-dev.cleo.live/event?evtid="+EventStore.getUser().eventid+"&jwt="+EventStore.getUser().jwt);
+          }, 1000)
         };
 
         connection_.onmessage = (event) => {
@@ -302,9 +437,10 @@ var Chat = (function(){
           var t = event.data.split("::")
           if(t.length){
               if(t[0] === "74"){
+                  if(handshake_)
+                    return;
                   if(t.length > 1){
                       var r = JSON.parse(t[1]).rooms;
-                      console.log(r)
                       for(var i=0; i< r.length; i++){
                           if(!chats_.master[r[i].ID]){
                               chats_.master[r[i].ID] = {
@@ -326,22 +462,30 @@ var Chat = (function(){
                   //console.log(JSON.parse(t[1]))
 
                   //debugger
+                  handshake_ = true;
+                Utility.loader({url: "http://localhost/gchat.json", cb:chatHistory.bind(this)})
 
 
               }else if(t[0] === "41"){
-
+                chats_.messages[t[2]].newMessage.push({sender:t[2], receiver:uuid_, msg:t[3]});
+                addToMessage(t[2])
               }
           }
         }
 
     }
 
-    var chatAdmin = function(){
+    var chatAdmin = function(_o){
         var str = '<div class="row admin-chat">'
         str += '<i class="material-icons">account_circle</i>'
         str += '<div class="message-text">'
+        //str += '<b>Admin</b>'
+        //str += '<p>Lorem Ipsum is</p>'
+        
         str += '<b>Admin</b>'
-        str += '<p>Lorem Ipsum is</p>'
+        str += '<p>'+_o.msg+'</p>'
+        
+
         str += '<div class="pin-chat">'
         str += '<svg xmlns="http://www.w3.org/2000/svg" width="9.159" height="13.495" viewBox="0 0 9.159 13.495"><path d="M16.653,13.885l-4.5-2.6a1.155,1.155,0,1,0-1.156,2l4.5,2.6a1.156,1.156,0,0,0,1.156-2Zm-3.715-2.812,3.5,2.023L17.633,9.78l-2.419-1.4-2.276,2.689Zm-2.583,8.518,3.351-4.071-1.5-.867ZM19.081,7.946l-3-1.734a.867.867,0,0,0-.867,1.5l3,1.734a.867.867,0,1,0,.866-1.5Z" transform="translate(-10.356 -6.096)"/></svg>'
         str += '</div>'
@@ -352,32 +496,50 @@ var Chat = (function(){
 
     }
 
-    var chatOthers = function(){
+    var chatOthers = function(_o){
         var str = '<div class="row other-chat">'
+        if(_o.for === "max")
         str += '<i class="material-icons">account_circle</i>'
         str += '<div class="message-text">'
-        str += '<b>Admin</b>'
-        str += '<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text.</p>'
-        str += '<span class="chat-time">10:38 AM</span>'
+        
+        //str += '<b>Admin</b>'
+        //str += '<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text.</p>'
+        
+        str += '<b>'+_o.name+'</b>'
+        str += '<p>'+_o.msg+'</p>'
+        
+        
+       // str += '<span class="chat-time">10:38 AM</span>'
+        str += '<span class="chat-time"></span>'
         str += '</div>'
-        str += '<div class="email-chat">                                    '
-        str += '<svg xmlns="http://www.w3.org/2000/svg" width="19.54" height="13.19" viewBox="0 0 19.54 13.19"><defs><style>.a{fill:#acacac;}</style></defs><path class="a" d="M.072,16.09V5.236q0-.019.057-.358l6.388,5.465L.147,16.467a1.6,1.6,0,0,1-.075-.377ZM.92,4.125a.812.812,0,0,1,.32-.057h17.2a1.067,1.067,0,0,1,.339.057L12.377,9.608l-.848.678L9.852,11.662,8.175,10.286l-.848-.678ZM.939,17.2,7.364,11.04l2.487,2.016,2.487-2.016L18.764,17.2a.9.9,0,0,1-.32.057H1.24a.853.853,0,0,1-.3-.057Zm12.248-6.859,6.369-5.465a1.125,1.125,0,0,1,.057.358V16.09a1.444,1.444,0,0,1-.057.377Z" transform="translate(-0.072 -4.068)"/></svg>'
-        str += '</div>'
-        str += '<div class="business-icon">'
-        str += '<svg xmlns="http://www.w3.org/2000/svg" width="17.967" height="13.974" viewBox="0 0 17.967 13.974"><defs><style>.a{fill:#acacac;}</style></defs><path class="a" d="M16.47,2.25H1.5A1.5,1.5,0,0,0,0,3.747v10.98a1.5,1.5,0,0,0,1.5,1.5H16.47a1.5,1.5,0,0,0,1.5-1.5V3.747A1.5,1.5,0,0,0,16.47,2.25ZM5.49,5.244a2,2,0,1,1-2,2A2,2,0,0,1,5.49,5.244Zm3.494,7.386a.654.654,0,0,1-.7.6H2.7a.654.654,0,0,1-.7-.6v-.6a1.964,1.964,0,0,1,2.1-1.8h.156a3.213,3.213,0,0,0,2.483,0h.156a1.964,1.964,0,0,1,2.1,1.8Zm6.987-1.647a.25.25,0,0,1-.25.25H11.229a.25.25,0,0,1-.25-.25v-.5a.25.25,0,0,1,.25-.25h4.492a.25.25,0,0,1,.25.25Zm0-2a.25.25,0,0,1-.25.25H11.229a.25.25,0,0,1-.25-.25v-.5a.25.25,0,0,1,.25-.25h4.492a.25.25,0,0,1,.25.25Zm0-2a.25.25,0,0,1-.25.25H11.229a.25.25,0,0,1-.25-.25v-.5a.25.25,0,0,1,.25-.25h4.492a.25.25,0,0,1,.25.25Z" transform="translate(0 -2.25)"/></svg>'
-        str += '</div>'
+
+        if(_o.for === "max"){
+            str += '<div class="email-chat">                                    '
+            str += '<svg xmlns="http://www.w3.org/2000/svg" width="19.54" height="13.19" viewBox="0 0 19.54 13.19"><defs><style>.a{fill:#acacac;}</style></defs><path class="a" d="M.072,16.09V5.236q0-.019.057-.358l6.388,5.465L.147,16.467a1.6,1.6,0,0,1-.075-.377ZM.92,4.125a.812.812,0,0,1,.32-.057h17.2a1.067,1.067,0,0,1,.339.057L12.377,9.608l-.848.678L9.852,11.662,8.175,10.286l-.848-.678ZM.939,17.2,7.364,11.04l2.487,2.016,2.487-2.016L18.764,17.2a.9.9,0,0,1-.32.057H1.24a.853.853,0,0,1-.3-.057Zm12.248-6.859,6.369-5.465a1.125,1.125,0,0,1,.057.358V16.09a1.444,1.444,0,0,1-.057.377Z" transform="translate(-0.072 -4.068)"/></svg>'
+            str += '</div>'
+            str += '<div class="business-icon">'
+            str += '<svg xmlns="http://www.w3.org/2000/svg" width="17.967" height="13.974" viewBox="0 0 17.967 13.974"><defs><style>.a{fill:#acacac;}</style></defs><path class="a" d="M16.47,2.25H1.5A1.5,1.5,0,0,0,0,3.747v10.98a1.5,1.5,0,0,0,1.5,1.5H16.47a1.5,1.5,0,0,0,1.5-1.5V3.747A1.5,1.5,0,0,0,16.47,2.25ZM5.49,5.244a2,2,0,1,1-2,2A2,2,0,0,1,5.49,5.244Zm3.494,7.386a.654.654,0,0,1-.7.6H2.7a.654.654,0,0,1-.7-.6v-.6a1.964,1.964,0,0,1,2.1-1.8h.156a3.213,3.213,0,0,0,2.483,0h.156a1.964,1.964,0,0,1,2.1,1.8Zm6.987-1.647a.25.25,0,0,1-.25.25H11.229a.25.25,0,0,1-.25-.25v-.5a.25.25,0,0,1,.25-.25h4.492a.25.25,0,0,1,.25.25Zm0-2a.25.25,0,0,1-.25.25H11.229a.25.25,0,0,1-.25-.25v-.5a.25.25,0,0,1,.25-.25h4.492a.25.25,0,0,1,.25.25Zm0-2a.25.25,0,0,1-.25.25H11.229a.25.25,0,0,1-.25-.25v-.5a.25.25,0,0,1,.25-.25h4.492a.25.25,0,0,1,.25.25Z" transform="translate(0 -2.25)"/></svg>'
+            str += '</div>'
+        }
         str += '</div>'
 
         return str
     
     }
 
-    var chatSelf = function(){
+    var chatSelf = function(_o){
         var str = '<div class="row self-chat">'
+        if(_o.for === "max")
         str += '<i class="material-icons">account_circle</i>'
+        
         str += '<div class="message-text">'
-        str += '<b>Admin</b>'
-        str += '<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text.</p>'
+        
+        //str += '<b>Admin</b>'
+        //str += '<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text.</p>'
+        
+        str += '<b>You</b>'
+        str += '<p>'+_o.msg+'</p>'
+        
         str += '</div>'
         str += '</div>'
 
@@ -422,15 +584,15 @@ var Chat = (function(){
         if(type === "edit"){
             
         }else{
-            str += '<div class="chip"><span class="text-truncate">Tag 220</span> <i class="material-icons">cancel</i></div>'
-            str += '<div class="chip"><span class="text-truncate">Tag 220</span> <i class="material-icons">cancel</i></div>'
-            str += '<div class="chip"><span class="text-truncate">Tag 220</span> <i class="material-icons">cancel</i></div>'
+            // str += '<div class="chip"><span class="text-truncate">Tag 220</span> <i class="material-icons">cancel</i></div>'
+            // str += '<div class="chip"><span class="text-truncate">Tag 220</span> <i class="material-icons">cancel</i></div>'
+            // str += '<div class="chip"><span class="text-truncate">Tag 220</span> <i class="material-icons">cancel</i></div>'
         }
         
         str += '</div>'
         str += '<div class="user-add-btn">'
-        str += '<button class="lightBtn" type="button">Cancel</button>'
-        str += '<button class="lightBtn" type="button">Save</button>'
+        str += '<button id="cancelBtn" class="lightBtn" type="button">Cancel</button>'
+        str += '<button id="saveBtn" class="lightBtn" type="button">Save</button>'
         str += '</div>'
         //str += '</div>'
        // str += '</div>'
@@ -474,24 +636,227 @@ var Chat = (function(){
             str += '</div>'
             str += '</div>'
         }
-
         $("#chatBox .chat-header").html(str);
-        var arr = ['f5d9k9699k', 'f5n9o69lkl', 'fr15ol9zg9']
-        //chat-messages
+        //var arr = ['f5d9k9699k', 'f5n9o69lkl', 'fr15ol9zg9']
+        $("#chatBox .chat-messages").html(genRHSMsg(id, "max"));
+    }
 
-        var p = ""
-        for(var j=0; j<arr.length; j++){
-            if(j % 2 === 0){
-                p += chatOthers()
+    var getUsersOnly = function(){
+        var d = chats_.list.users;
+        var str = ""
+        for(var i=0; i<d.length; i++){
+            //console.log(chats_.master[d[i]])
+            str += '<div class="chat-row" data-id="'+d[i]+'" >'
+            str += '<i class="material-icons">account_circle</i>'
+            str += '<div class="chat-name text-truncate">'+ chats_.master[d[i]].name+'</div>'
+            
+            //Unread chat
+            //console.log(d[i])
+            //debugger
+            l = chats_.messages[d[i]].newMessage.length
+            h = "" //l === 0 ? " H" : " l"
+            str += '<div class="chat-date H'+h+' ">'
+            //str += '10:30 AM '
+            str += '<span>'
+            str += l
+            str += '</span>'
+            str += '</div>'
+
+            //Add User to the group
+            str += '<div class="add-user">'
+            str += '<svg xmlns="http://www.w3.org/2000/svg" width="30.013" height="18.013" viewBox="0 0 30.013 18.013"><defs><style>.a{fill:#138329;}</style></defs><path d="M16.881,13.506a4.5,4.5,0,1,0-4.5-4.5A4.516,4.516,0,0,0,16.881,13.506Zm0,2.252c-2.983,0-9.006,1.52-9.006,4.5v2.252H25.888V20.261C25.888,17.278,19.865,15.758,16.881,15.758Z" transform="translate(4.125 -4.5)"/><path d="M9.218,3.375a5.843,5.843,0,1,0,5.843,5.843A5.843,5.843,0,0,0,9.218,3.375Zm3.006,6.433H9.808v2.416H8.628V9.808H6.212V8.628H8.628V6.212h1.18V8.628h2.416Z" transform="translate(-3.375 -3.375)"/></svg>'
+            str += '</div>'
+            
+            str += '</div>'
+        }
+        $(".full-chat .chat-user").html(str);
+
+        $(".full-chat .chat-user .chat-row").off("click").on("click", function(){
+            var el = $(this);
+            if(el.attr("data-added") === "1"){
+                return;
+            }
+
+            el.find(".add-user").addClass("H");
+            el.attr("data-added", "1")
+            
+
+            var id = el.attr("data-id")
+            chats_.master[id].name
+
+            var h = '<div class="chip"><span class="text-truncate">'+chats_.master[id].name+'</span> <i class="material-icons" data-id="'+id+'">cancel</i></div>'
+            $("#editGroup .user-add .user-add-list").append(h);
+
+            $("#editGroup .user-add .user-add-list [data-id="+id+"]").off("click").on("click", function(){
+                var p = $(this).attr("data-id");
+                var lhsEl = $(".full-chat .chat-user .chat-row[data-id="+p+"] .add-user")
+                lhsEl.removeClass("H");
+                $(this).parent().remove();
+                lhsEl.prop("disabled", false)
+                lhsEl.parent().attr("data-added", "0")
+            })
+
+        })
+    }
+
+    var getRoomsOnly = function(){
+        var d = chats_.list.rooms.concat(chats_.list.users);
+        var rl = chats_.list.rooms.length
+        var str = ""
+        for(var i=0; i<d.length; i++){
+            //console.log(chats_.master[d[i]])
+            if(i < rl){
+                str += '<div class="chat-row" data-id="'+d[i]+'" data-type="room">'
             }else{
-                p += chatSelf()
+                str += '<div class="chat-row H" data-id="'+d[i]+'"  data-type="user" data-added="0">'
+            }
+            
+            str += '<i class="material-icons">account_circle</i>'
+            str += '<div class="chat-name text-truncate">'+ chats_.master[d[i]].name+'</div>'
+            
+            //Unread chat
+            //console.log(d[i])
+            //debugger
+            l = chats_.messages[d[i]].newMessage.length
+            h = "" //l === 0 ? " H" : " l"
+            str += '<div class="chat-date H'+h+' ">'
+            //str += '10:30 AM '
+            str += '<span>'
+            str += l
+            str += '</span>'
+            str += '</div>'
+
+            //Add User to the group
+            if(i >= rl){
+                str += '<div class="add-user">'
+                str += '<svg xmlns="http://www.w3.org/2000/svg" width="30.013" height="18.013" viewBox="0 0 30.013 18.013"><defs><style>.a{fill:#138329;}</style></defs><path d="M16.881,13.506a4.5,4.5,0,1,0-4.5-4.5A4.516,4.516,0,0,0,16.881,13.506Zm0,2.252c-2.983,0-9.006,1.52-9.006,4.5v2.252H25.888V20.261C25.888,17.278,19.865,15.758,16.881,15.758Z" transform="translate(4.125 -4.5)"/><path d="M9.218,3.375a5.843,5.843,0,1,0,5.843,5.843A5.843,5.843,0,0,0,9.218,3.375Zm3.006,6.433H9.808v2.416H8.628V9.808H6.212V8.628H8.628V6.212h1.18V8.628h2.416Z" transform="translate(-3.375 -3.375)"/></svg>'
+                str += '</div>'
+            }
+            
+            str += '</div>'
+        }
+        $(".full-chat .chat-user").html(str);
+
+        $(".full-chat .chat-user .chat-row[data-type=room]").off("click").on("click", function(){
+            var el = $(this);
+            if(el.attr("data-added") === "1"){
+                return;
+            }
+
+            el.find(".add-user").addClass("H");
+            el.attr("data-added", "1")
+            
+            //HIDE and Disable elements added in the group
+            $(".full-chat .chat-user .chat-row[data-type=user]").removeClass("H")
+            
+            // var id = el.attr("data-id")
+            // chats_.master[id].name
+
+            // var h = '<div class="chip"><span class="text-truncate">'+chats_.master[id].name+'</span> <i class="material-icons" data-id="'+id+'">cancel</i></div>'
+            // $("#editGroup .user-add .user-add-list").append(h);
+
+            // $("#editGroup .user-add .user-add-list [data-id="+id+"]").off("click").on("click", function(){
+            //     var p = $(this).attr("data-id");
+            //     var lhsEl = $(".full-chat .chat-user .chat-row[data-id="+p+"] .add-user")
+            //     lhsEl.removeClass("H");
+            //     $(this).parent().remove();
+            //     lhsEl.prop("disabled", false)
+            //     lhsEl.parent().attr("data-added", "0")
+            // })
+
+        })
+
+        $(".full-chat .chat-user .chat-row[data-type=user]").off("click").on("click", function(){
+            var el = $(this)
+            var id = el.attr("data-id")
+            chats_.master[id].name
+
+             var h = '<div class="chip"><span class="text-truncate">'+chats_.master[id].name+'</span> <i class="material-icons" data-id="'+id+'">cancel</i></div>'
+             $("#editGroup .user-add .user-add-list").append(h);
+
+            el.find(".add-user").addClass("H");
+            el.attr("data-added", "1")
+
+            $("#editGroup .user-add .user-add-list [data-id="+id+"]").off("click").on("click", function(){
+                var p = $(this).attr("data-id");
+                var lhsEl = $(".full-chat .chat-user .chat-row[data-id="+p+"] .add-user")
+                lhsEl.removeClass("H");
+                $(this).parent().remove();
+                lhsEl.prop("disabled", false)
+                lhsEl.parent().attr("data-added", "0")
+            })
+        })
+    }
+    
+    var addToMessage = function(_id){
+        var ch = chats_.master[_id];
+        var adm = false;
+        if(ch.type === "room"){
+            if(ch.admin[0] === _id){
+                adm = true
             }
         }
 
-        $("#chatBox .chat-messages").html(p)
+        if(rhsDisplay_ === _id){
+            var str = ""
+            //appedn the div
+            if(adm){
+                if(admin_){
+                    str = chatAdmin({name:chats_.master[_id].name, msg:chats_.messages[_id].newMessage[0]})
+                }else{
+                    str = chatSelf({name:chats_.master[_id].name, msg:chats_.messages[_id].newMessage[0]})
+                }
+            }else{
+                str = chatSelf({name:chats_.master[_id].name, msg:chats_.messages[_id].newMessage[0]})
+            }
+            $("#chatBox .chat-messages").append(str);
+            $('#chatBox .chat-messages').scrollTop($('#chatBox .chat-messages')[0].scrollHeight);
+        }else{
+            //increament the count LHS
+        }
     }
 
 
+    var genRHSMsg = function(_id, _for){
+        rhsDisplay_ = _id
+        var o;
+       // var s = EventStore.getUser().uuid;
+        var a = chats_.messages[_id].archieved.concat(chats_.messages[_id].newMessage)
+        var str = ""
+        $("#chatBox .chat-messages").html(str);
+        for(var i=0; i<a.length; i++){
+            o = chats_.master[a[i].sender];
+            if(o.type === "room"){
+                if(o.admin[0] === a[i].sender){
+                    if(a[i].sender === uuid_){
+                        // I am the admin 
+                        str += chatAdmin({name:o.name, msg:a[i].msg, for:_for})
+                    }else{
+                        //othe user is the admin
+                        str += chatAdmin({name:o.name, msg:a[i].msg, for:_for})
+                    }
+                }else{
+                    // User
+                    str += chatSelf({name:o.name, msg:a[i].msg, for:_for})
+                }
+            }else{
+                // General user
+                //str += chatOthers({name:o.name, msg:a[i].msg})
+              
+                if(a[i].sender === uuid_){
+                    str += chatSelf({name:o.name, msg:a[i].msg, for:_for})
+                }else{
+                    str += chatOthers({name:o.name, msg:a[i].msg, for:_for})
+                }
+            }
+           
+        }
+        return str;
+        //$("#chatBox .chat-messages").html(str);
+       // $('#chatBox .chat-messages').scrollTop($('#chatBox .chat-messages')[0].scrollHeight);
+    }
+    
+    
     var collapseChatMsgHeader = function(id){
 
         var uname = chats_.master[id].name;
@@ -613,6 +978,10 @@ var Chat = (function(){
             '                        </div>'+
             '                    </div>'+
             '                    <div class="chat-edit">'+admin("edit")+
+                                '<div id="dummybtn" style="display:none;"><button onclick="">Edit</button><button>Create</button></div>'+   
+
+
+
             '                    </div>'+
             '                </div>                    '+
             '                </div>'+
@@ -655,8 +1024,8 @@ var Chat = (function(){
             '                <div class="chat-messages" style="height: calc(100% - 140px);">'+
             '                </div>'+
             '            <div class="chat-input">'+
-            '                <input type="text" id="msgBox" name="" placeholder="Type your message here">'+
-            '                <button class="chat-button" type="button">Send <i class="material-icons">send</i></button>'+
+            '                <input type="text" id="chatInputMsgMax" name="" placeholder="Type your message here">'+
+            '                <button class="chat-button" id="chatSendMsgMax" type="button">Send <i class="material-icons">send</i></button>'+
             '            </div>'+
             '            </div>'+
             '            </div>';
@@ -735,8 +1104,8 @@ var Chat = (function(){
         // '                        </div>'+
         '                    </div>'+
         '                <div class="chat-input">'+
-        '                    <input type="text" id="attSearch" name="" placeholder="Type your message here">'+
-        '                    <button class="chat-button" type="button">Send <i class="material-icons">send</i></button>'+
+        '                    <input type="text" id="chatInputMsgMin"" name="" placeholder="Type your message here">'+
+        '                    <button class="chat-button" type="button" id="chatSendMsgMin">Send <i class="material-icons">send</i></button>'+
         '                </div>';
 
         return myvar

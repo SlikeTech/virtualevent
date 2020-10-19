@@ -86,7 +86,7 @@ var Mail = (function(){
                             </div>`;
                 }
             })
-            $(".chat-messages").html(messags);
+            $(".email-rhs .chat-messages").html(messags);
         }
     }
     var manageSendbox = function(_u){
